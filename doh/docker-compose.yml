@@ -1,0 +1,29 @@
+version: '3'
+
+services:
+
+  unbound:
+    build:
+      context:
+        ./unbound
+    logging:
+      options:
+        max-size: 1m
+
+  doh:
+    image: satishweb/doh-server:latest
+    environment:
+      DEBUG: "0"
+      UPSTREAM_DNS_SERVER: "udp:unbound:53"
+      DOH_HTTP_PREFIX: "/dns"
+      DOH_SERVER_LISTEN: ":80"
+      DOH_SERVER_TIMEOUT: "10"
+      DOH_SERVER_TRIES: "3"
+      DOH_SERVER_VERBOSE: "true"
+    ports:
+      - 127.0.0.1:8380:80
+    depends_on:
+      - unbound
+    logging:
+      options:
+        max-size: 1m
