@@ -1,0 +1,25 @@
+
+server {
+    listen 8443;
+    ssl_preread on;
+
+    proxy_pass $name;
+    proxy_protocol on;
+}
+
+map $ssl_preread_server_name $name {
+    hostnames;
+    ssh.$DOMAIN unix:/etc/nginx/tls_to_1022;
+    default 127.0.0.1:443;
+}
+
+server {
+    listen unix:/etc/nginx/tls_to_1022 ssl proxy_protocol;
+
+    ssl_protocols TLSv1.3;
+
+    ssl_certificate /etc/letsencrypt/live/$DOMAIN/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/$DOMAIN/privkey.pem;
+
+    proxy_pass host.docker.internal:1022;
+}

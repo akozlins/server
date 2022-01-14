@@ -1,0 +1,26 @@
+#
+
+#location / {
+#    access_log off;
+#    return 301 https://$host$request_uri;
+#}
+
+location @444 {
+#    access_log logs/access_444.log;
+    access_log /dev/stdout;
+    return 444;
+}
+
+location / { try_files $uri @444; }
+error_page 400 =444 @444;
+
+location = / { access_log off; }
+location = /index.html { access_log off; }
+
+location = /404.html {}
+location = /50x.html {}
+
+location = /favicon.ico {}
+location = /robots.txt {}
+
+location /.well-known {}
