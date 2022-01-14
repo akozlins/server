@@ -3,7 +3,7 @@ set -euf
 
 PIDS=""
 for port in "$@" ; do
-    rm -v "/run/socat/$port.sock"
+    rm -- "/run/socat/$port.sock" || true
     socat -d "UNIX-LISTEN:/run/socat/$port.sock,mode=666,reuseaddr,fork" "TCP:127.0.0.1:$port" &
     PIDS="$PIDS $!"
 done

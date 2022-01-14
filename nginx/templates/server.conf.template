@@ -11,7 +11,7 @@ location @444 {
     return 444;
 }
 
-location / { try_files $uri @444; }
+location / { try_files "" @444; }
 error_page 400 =444 @444;
 
 location = / { access_log off; }
