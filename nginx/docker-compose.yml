@@ -18,55 +18,24 @@ services:
     ports:
       - "0.0.0.0:80:80"
       - "0.0.0.0:443:8443"
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
-#    restart: "unless-stopped"
     depends_on:
       - "socat"
-      - "socat_8180"
-      - "socat_8280"
-      - "socat_8380"
+#    restart: "unless-stopped"
     stop_grace_period: 5s
     logging:
       options:
         max-size: 1m
 
-  # create unix socket that redirects to 127.0.0.1:$SOCAT_PORT on host network
+  # create unix sockets that redirect to 127.0.0.1:$port on host network
   socat:
-#    build: socat
     image: "alpine:edge"
-    environment:
-      - "SOCAT_PORT=8080"
-    command: sh -c "set -euf
-        && ( test -x /usr/bin/socat || apk --no-cache add socat )
-        && exec socat UNIX-LISTEN:/run/socat/$$SOCAT_PORT.sock,mode=666,reuseaddr,fork TCP:127.0.0.1:$$SOCAT_PORT"
     volumes:
       - "socat:/run/socat:rw"
+      - ./socat:/etc/socat:ro
+    command: sh -c "set -euf
+        && ( test -x /usr/bin/socat || apk --no-cache add socat )
+        && exec /etc/socat/run.sh 1022 8008 8180 8280 8380"
     network_mode: "host"
-
-  socat_8008:
-    extends:
-      service: "socat"
-    environment:
-      - "SOCAT_PORT=8008"
-
-  socat_8180:
-    extends:
-      service: "socat"
-    environment:
-      - "SOCAT_PORT=8180"
-
-  socat_8280:
-    extends:
-      service: "socat"
-    environment:
-      - "SOCAT_PORT=8280"
-
-  socat_8380:
-    extends:
-      service: "socat"
-    environment:
-      - "SOCAT_PORT=8380"
 
 volumes:
   socat:

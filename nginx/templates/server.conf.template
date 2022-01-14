@@ -16,11 +16,11 @@ error_page 400 =444 @444;
 
 location = / { access_log off; }
 location = /index.html { access_log off; }
+location = /favicon.ico {}
+
+location /.well-known {}
+
+location = /robots.txt {}
 
 location = /404.html {}
 location = /50x.html {}
-
-location = /favicon.ico {}
-location = /robots.txt {}
-
-location /.well-known {}
