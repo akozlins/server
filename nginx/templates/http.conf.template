@@ -33,6 +33,8 @@ ssl_stapling on;
 ssl_stapling_verify on;
 ssl_trusted_certificate /etc/ssl/certs/ca-certificates.crt;
 
+resolver 8.8.8.8;
+
 # https://owasp.org/www-project-secure-headers/
 add_header Strict-Transport-Security "max-age=31536000 ; includeSubDomains" always;
 add_header X-Frame-Options "deny" always;

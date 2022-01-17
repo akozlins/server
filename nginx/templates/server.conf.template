@@ -5,6 +5,10 @@
 #    return 301 https://$host$request_uri;
 #}
 
+if ( $request_method !~ ^(GET|HEAD|POST)$ ) {
+    return 444;
+}
+
 location / {
 #    access_log logs/access_444.log;
     access_log /dev/stdout;
@@ -17,9 +21,6 @@ location = /444.html {
     access_log /dev/stdout;
     return 444;
 }
-
-location / { try_files "" @444; }
-error_page 400 =444 @444;
 
 location = / { access_log off; }
 location = /index.html { access_log off; }
