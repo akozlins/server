@@ -10,8 +10,16 @@ server {
 
 map $ssl_preread_server_name $name {
     hostnames;
+    $DOMAIN 127.0.0.1:443;
+    *.$DOMAIN 127.0.0.1:443;
     ssh.$DOMAIN unix:/etc/nginx/tls_to_1022;
-    default 127.0.0.1:443;
+    default 127.0.0.1:1443;
+}
+
+server {
+    listen 127.0.0.1:1443 proxy_protocol;
+
+    proxy_pass unix:/run/socat/1443.sock;
 }
 
 server {

@@ -5,7 +5,14 @@
 #    return 301 https://$host$request_uri;
 #}
 
-location @444 {
+location / {
+#    access_log logs/access_444.log;
+    access_log /dev/stdout;
+    return 444;
+}
+
+error_page 400 =444 /444.html;
+location = /444.html {
 #    access_log logs/access_444.log;
     access_log /dev/stdout;
     return 444;
