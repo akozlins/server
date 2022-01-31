@@ -1,24 +1,17 @@
 #
 
-#location / {
-#    access_log off;
-#    return 301 https://$host$request_uri;
-#}
-
 if ( $request_method !~ ^(GET|HEAD|POST)$ ) {
     return 444;
 }
 
 location / {
 #    access_log logs/access_444.log;
-    access_log /dev/stdout;
     return 444;
 }
 
 error_page 400 =444 /444.html;
 location = /444.html {
 #    access_log logs/access_444.log;
-    access_log /dev/stdout;
     return 444;
 }
 
@@ -32,3 +25,20 @@ location = /robots.txt {}
 
 location = /404.html {}
 location = /50x.html {}
+
+# headers
+# https://owasp.org/www-project-secure-headers/
+#add_header Strict-Transport-Security "max-age=31536000; includeSubDomains; preload" always;
+add_header X-Frame-Options "deny" always;
+add_header X-Content-Type-Options "nosniff" always;
+#add_header Content-Security-Policy "default-src 'self'; object-src 'none'; child-src 'self'; frame-ancestors 'none'; upgrade-insecure-requests; block-all-mixed-content" always;
+add_header X-Permitted-Cross-Domain-Policies "none" always;
+add_header Referrer-Policy "no-referrer" always;
+#add_header Clear-Site-Data "cache","cookies","storage" always;
+#add_header Cross-Origin-Embedder-Policy "require-corp" always;
+add_header Cross-Origin-Opener-Policy "same-origin" always;
+add_header Cross-Origin-Resource-Policy "same-origin" always;
+#add_header Permissions-Policy "accelerometer=(),autoplay=(),camera=(),display-capture=(),document-domain=(),encrypted-media=(),fullscreen=(),geolocation=(),gyroscope=(),magnetometer=(),microphone=(),midi=(),payment=(),picture-in-picture=(),publickey-credentials-get=(),screen-wake-lock=(),sync-xhr=(self),usb=(),web-share=(),xr-spatial-tracking=()" always;
+#add_header Cache-Control "no-store, max-age=0" always;
+
+add_header Strict-Transport-Security $sts_header;
