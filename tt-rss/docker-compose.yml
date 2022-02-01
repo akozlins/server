@@ -1,0 +1,35 @@
+#
+
+services:
+  tt-rss-db:
+    image: postgres:alpine
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=${TTRSS_DB_USER}
+      - POSTGRES_PASSWORD=${TTRSS_DB_PASS}
+      - POSTGRES_DB=${TTRSS_DB_NAME}
+
+  tt-rss-app:
+    build:
+      context:
+        ./app
+    env_file:
+      - .env
+    restart: unless-stopped
+    volumes:
+      - tt-rss-app:/var/www/html
+    depends_on:
+      - tt-rss-db
+
+  tt-rss-web:
+    image: "nginx:alpine"
+    volumes:
+      - "./web/nginx.conf:/etc/nginx/nginx.conf:ro"
+      - tt-rss-app:/var/www/html
+    ports:
+      - "127.0.0.1:80:80"
+    depends_on:
+      - tt-rss-app
+
+volumes:
+  tt-rss-app:
