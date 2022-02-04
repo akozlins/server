@@ -1,0 +1,6 @@
+#
+
+/media_store/
+
+*.db
+*.key

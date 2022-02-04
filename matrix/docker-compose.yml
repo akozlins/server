@@ -1,0 +1,18 @@
+#
+
+# <https://hub.docker.com/r/matrixdotorg/synapse/>
+
+services:
+  synapse:
+    image: matrixdotorg/synapse:latest
+    restart: unless-stopped
+    environment:
+      - UID=1000
+      - GID=1000
+    volumes:
+      - "./data:/data:rw"
+    ports:
+      - "127.0.0.1:8008:8008"
+    logging:
+      options:
+        max-size: 1m
