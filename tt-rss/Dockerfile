@@ -25,16 +25,21 @@ RUN apk add --no-cache \
         -e 's/;\(error_log\) = .*/\1 = \/dev\/stderr/' \
         /etc/php8/php-fpm.conf
 
-RUN mkdir -p -- ./backup && \
+ENV TTRSS_RUN_DIR=/var/run/tt-rss
+ENV TTRSS_CACHE_DIR="$TTRSS_RUN_DIR/cache"
+ENV TTRSS_LOCK_DIRECTORY="$TTRSS_RUN_DIR/lock"
+ENV TTRSS_ICONS_DIR="$TTRSS_RUN_DIR/feed-icons"
+
+RUN mkdir -p -- "$TTRSS_RUN_DIR" && \
+    cp -r -t "$TTRSS_RUN_DIR" ./cache ./lock ./feed-icons && \
     addgroup -g 1000 -S app && \
     adduser -u 1000 -S app -G app && \
-    chown -R app:app -- .
+    chown -R app:app -- "$TTRSS_RUN_DIR"
 
-COPY run.sh .
+COPY run.sh "$TTRSS_RUN_DIR"
 
-ENV TTRSS_PHP_EXECUTABLE="/usr/bin/php8"
-ENV TTRSS_DB_TYPE=pgsql
+ENV TTRSS_PHP_EXECUTABLE=/usr/bin/php8
 
 USER app
 
-CMD ./run.sh
+CMD "$TTRSS_RUN_DIR/run.sh"

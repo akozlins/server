@@ -1,36 +1,48 @@
 #
 
 services:
-  tt-rss-db:
+  db:
     image: postgres:alpine
     restart: unless-stopped
     environment:
       - POSTGRES_USER=${TTRSS_DB_USER}
       - POSTGRES_PASSWORD=${TTRSS_DB_PASS}
       - POSTGRES_DB=${TTRSS_DB_NAME}
+    volumes:
+      - "db:/var/lib/postgresql/data"
+    logging:
+      options:
+        max-size: 1m
 
-  tt-rss-app:
+  app:
     build:
-      context:
-        ./app
+      context: .
+    restart: unless-stopped
     env_file:
       - .env
+    volumes:
+      - "./backup:/var/run/tt-rss/backup:rw"
+      - "tt-rss:/var/www/html/tt-rss:ro"
+    depends_on:
+      - db
+    logging:
+      options:
+        max-size: 1m
+
+  web:
+    image: "nginx:alpine"
     restart: unless-stopped
     volumes:
-      - tt-rss-app:/var/www/html/tt-rss
-      - ./backup:/var/www/html/tt-rss/backup
-    depends_on:
-      - tt-rss-db
-
-  tt-rss-web:
-    image: "nginx:alpine"
-    volumes:
-      - "./app/nginx.conf:/etc/nginx/nginx.conf:ro"
-      - tt-rss-app:/var/www/html/tt-rss
+      - "./nginx.conf:/etc/nginx/nginx.conf:ro"
+      - "tt-rss:/var/www/html/tt-rss:ro"
     ports:
       - "127.0.0.1:80:80"
     depends_on:
-      - tt-rss-app
+      - app
+    logging:
+      options:
+        max-size: 1m
 
 volumes:
-  tt-rss-app:
+  db:
+  tt-rss:
