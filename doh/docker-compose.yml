@@ -6,22 +6,19 @@ services:
     build:
       context:
         ./unbound
+    volumes:
+      - "./unbound/unbound.conf:/etc/unbound/conf.d/unbound.conf:ro"
     logging:
       options:
         max-size: 1m
 
-  doh:
-    image: satishweb/doh-server:latest
-    environment:
-      DEBUG: "0"
-      UPSTREAM_DNS_SERVER: "udp:unbound:53"
-      DOH_HTTP_PREFIX: "/dns"
-      DOH_SERVER_LISTEN: ":80"
-      DOH_SERVER_TIMEOUT: "10"
-      DOH_SERVER_TRIES: "3"
-      DOH_SERVER_VERBOSE: "true"
+  proxy:
+    build:
+      context: dns-over-https
+    volumes:
+      - "./dns-over-https/doh-server.conf:/doh-server.conf:ro"
     ports:
-      - 127.0.0.1:8380:80
+      - 127.0.0.1:8053:8053
     depends_on:
       - unbound
     logging:

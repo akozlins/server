@@ -1,13 +1,12 @@
 FROM alpine:latest
 
-EXPOSE 53/tcp
-EXPOSE 53/udp
+EXPOSE 1053/tcp
+EXPOSE 1053/udp
 
 RUN apk add --no-cache unbound openssl
 
 WORKDIR /etc/unbound
 
-COPY unbound.conf my_unbound.conf
-RUN echo 'include: "/etc/unbound/my_unbound.conf"' >> unbound.conf
+RUN echo 'include: "/etc/unbound/conf.d/*.conf"' >> unbound.conf
 
 CMD unbound
