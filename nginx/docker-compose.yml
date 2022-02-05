@@ -31,13 +31,13 @@ services:
 
   # create unix sockets that redirect to 127.0.0.1:$port on host network
   socat:
-    image: "alpine:edge"
+    image: "alpine"
     volumes:
       - "socat:/run/socat:rw"
       - ./socat:/etc/socat:ro
     command: sh -c "set -euf
         && ( test -x /usr/bin/socat || apk --no-cache add socat )
-        && exec /etc/socat/run.sh 1022 1443 8008 8180 8280 8380 8580"
+        && exec /etc/socat/run.sh 1022 1443 8008 8053 8180 8280 8380"
     network_mode: "host"
 
   sslh:

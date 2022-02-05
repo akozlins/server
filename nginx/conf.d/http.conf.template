@@ -75,7 +75,7 @@ server {
 
     include conf.d/server.conf;
 
-    location ~* ^\/(mailu|sso|static) {
+    location ~ ^/(mailu|sso|static) {
         access_log logs/access_mailu.log;
         proxy_pass http://unix:/run/socat/8180.sock;
         proxy_set_header X-Forwarded-For $remote_addr;
@@ -111,7 +111,7 @@ server {
 
     include conf.d/server.conf;
 
-    location ~* ^(\/_matrix|\/_synapse\/client) {
+    location ~ ^/(_matrix|_synapse/client) {
         access_log logs/access_matrix.log;
         proxy_pass http://unix:/run/socat/8008.sock;
         proxy_set_header X-Forwarded-For $remote_addr;

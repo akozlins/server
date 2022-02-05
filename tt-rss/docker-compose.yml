@@ -18,8 +18,7 @@ services:
     build:
       context: .
     restart: unless-stopped
-    env_file:
-      - .env
+    env_file: .env
     volumes:
       - "./backup:/var/run/tt-rss/backup:rw"
       - "tt-rss:/var/www/html/tt-rss:ro"

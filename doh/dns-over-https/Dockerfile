@@ -10,7 +10,7 @@ RUN apk add --no-cache git make && \
 
 #
 
-FROM alpine:latest
+FROM alpine
 
 EXPOSE 8053
 

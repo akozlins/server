@@ -19,12 +19,14 @@ location = / { access_log off; }
 location = /index.html { access_log off; }
 location = /favicon.ico {}
 
-location /.well-known {}
-
 location = /robots.txt {}
 
 location = /404.html {}
 location = /50x.html {}
+
+location /.well-known {}
+
+
 
 # headers
 # https://owasp.org/www-project-secure-headers/

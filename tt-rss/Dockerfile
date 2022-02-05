@@ -1,6 +1,6 @@
 #
 
-FROM alpine:latest
+FROM alpine
 
 EXPOSE 9000/tcp
 

@@ -1,4 +1,6 @@
-FROM alpine:latest
+#
+
+FROM alpine
 
 EXPOSE 1053/tcp
 EXPOSE 1053/udp
