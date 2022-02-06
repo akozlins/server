@@ -5,9 +5,9 @@ version: '3'
 services:
 
   unbound:
-    build: "./unbound"
+    build: { dockerfile: "Dockerfile.unbound" }
     volumes:
-      - "./unbound/unbound.conf:/etc/unbound/conf.d/unbound.conf:ro"
+      - "./unbound.conf:/etc/unbound/conf.d/unbound.conf:ro"
     logging:
       options: { max-size: "1m" }
 
