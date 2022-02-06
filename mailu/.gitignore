@@ -1,0 +1,10 @@
+#
+
+/redis/
+/filter/
+/data/
+/dkim/
+/mailqueue/
+/mail/
+/certs/
+/overrides/
