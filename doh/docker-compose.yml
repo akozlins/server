@@ -1,26 +1,22 @@
+#
+
 version: '3'
 
 services:
 
   unbound:
-    build:
-      context:
-        ./unbound
+    build: "./unbound"
     volumes:
       - "./unbound/unbound.conf:/etc/unbound/conf.d/unbound.conf:ro"
     logging:
-      options:
-        max-size: 1m
+      options: { max-size: "1m" }
 
   proxy:
-    build:
-      context: dns-over-https
-    volumes:
-      - "./dns-over-https/doh-server.conf:/doh-server.conf:ro"
+    build: "./dns-over-https"
+    depends_on: [ "unbound" ]
     ports:
       - 127.0.0.1:8053:8053
-    depends_on:
-      - unbound
+    volumes:
+      - "./dns-over-https/doh-server.conf:/doh-server.conf:ro"
     logging:
-      options:
-        max-size: 1m
+      options: { max-size: "1m" }

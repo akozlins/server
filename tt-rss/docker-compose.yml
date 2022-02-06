@@ -15,8 +15,7 @@ services:
         max-size: 1m
 
   app:
-    build:
-      context: .
+    build: "."
     restart: unless-stopped
     env_file: .env
     volumes:
