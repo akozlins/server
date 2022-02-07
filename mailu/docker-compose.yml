@@ -4,103 +4,97 @@ version: '2.2'
 
 services:
 
-  # External dependencies
-  redis:
-    image: "redis:alpine"
-    restart: "always"
-    volumes:
-      - "./redis:/data"
-    depends_on: [ "resolver" ]
-    dns: ${DNS:?}
-    logging:
-      options: { max-size: "1m" }
-
-  # Core services
   front:
     image: "${DOCKER_ORG:-mailu}/${DOCKER_PREFIX:-}nginx:${MAILU_VERSION:?}"
-    restart: "always"
+    depends_on: [ "resolver" ]
+    dns: ${DNS:?}
     env_file: .env
     ports:
       - "127.0.0.1:8180:80"
       - "${IP4:?}:25:25"
-      - "[${IP6:?}]:25:25"
+#      - "[${IP6:?}]:25:25"
       - "${IP4:?}:465:465"
-      - "[${IP6:?}]:465:465"
+#      - "[${IP6:?}]:465:465"
       - "${IP4:?}:587:587"
-      - "[${IP6:?}]:587:587"
+#      - "[${IP6:?}]:587:587"
       - "${IP4:?}:993:993"
-      - "[${IP6:?}]:993:993"
+#      - "[${IP6:?}]:993:993"
     volumes:
       - "./certs:/certs"
       - "/etc/letsencrypt:/etc/letsencrypt:ro"
       - "./overrides/nginx:/overrides:ro"
-    depends_on: [ "resolver" ]
-    dns: ${DNS:?}
-    logging:
-      options: { max-size: "1m" }
-
-  resolver:
-    image: "${DOCKER_ORG:-mailu}/${DOCKER_PREFIX:-}unbound:${MAILU_VERSION:?}"
-    env_file: .env
     restart: "always"
-    networks:
-      default:
-        ipv4_address: ${DNS:?}
     logging:
       options: { max-size: "1m" }
 
   admin:
     image: "${DOCKER_ORG:-mailu}/${DOCKER_PREFIX:-}admin:${MAILU_VERSION:?}"
-    restart: always
+    depends_on: [ "resolver", "redis" ]
+    dns: ${DNS:?}
     env_file: .env
     volumes:
       - "./data:/data"
       - "./dkim:/dkim"
-    depends_on: [ "resolver", "redis" ]
-    dns: ${DNS:?}
-    logging:
-      options: { max-size: "1m" }
-
-  imap:
-    image: "${DOCKER_ORG:-mailu}/${DOCKER_PREFIX:-}dovecot:${MAILU_VERSION:?}"
-    restart: "always"
-    env_file: .env
-    volumes:
-      - "./mail:/mail"
-      - "./overrides/dovecot:/overrides:ro"
-    depends_on: [ "resolver", "front" ]
-    dns: ${DNS:?}
+    restart: always
     logging:
       options: { max-size: "1m" }
 
   smtp:
     image: "${DOCKER_ORG:-mailu}/${DOCKER_PREFIX:-}postfix:${MAILU_VERSION:?}"
-    restart: "always"
+    depends_on: [ "resolver", "front" ]
+    dns: ${DNS:?}
     env_file: .env
     volumes:
       - "./mailqueue:/queue"
       - "./overrides/postfix:/overrides:ro"
+    restart: "always"
+    logging:
+      options: { max-size: "1m" }
+
+  imap:
+    image: "${DOCKER_ORG:-mailu}/${DOCKER_PREFIX:-}dovecot:${MAILU_VERSION:?}"
     depends_on: [ "resolver", "front" ]
     dns: ${DNS:?}
+    env_file: .env
+    volumes:
+      - "./mail:/mail"
+      - "./overrides/dovecot:/overrides:ro"
+    restart: "always"
     logging:
       options: { max-size: "1m" }
 
   antispam:
     image: "${DOCKER_ORG:-mailu}/${DOCKER_PREFIX:-}rspamd:${MAILU_VERSION:?}"
     hostname: antispam
-    restart: "always"
+    depends_on: [ "resolver", "front" ]
+    dns: ${DNS:?}
     env_file: .env
     volumes:
       - "./filter:/var/lib/rspamd"
       - "./overrides/rspamd:/etc/rspamd/override.d:ro"
-    depends_on: [ "resolver", "front" ]
-    dns: ${DNS:?}
+    restart: "always"
     logging:
       options: { max-size: "1m" }
 
-  # Optional services
+  redis:
+    image: "redis:alpine"
+    volumes:
+      - "./redis:/data"
+    depends_on: [ "resolver" ]
+    dns: ${DNS:?}
+    restart: "always"
+    logging:
+      options: { max-size: "1m" }
 
-  # Webmail
+  resolver:
+    image: "${DOCKER_ORG:-mailu}/${DOCKER_PREFIX:-}unbound:${MAILU_VERSION:?}"
+    env_file: .env
+    networks:
+      default:
+        ipv4_address: ${DNS:?}
+    restart: "always"
+    logging:
+      options: { max-size: "1m" }
 
 networks:
   default:

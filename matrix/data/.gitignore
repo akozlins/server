@@ -1,6 +1,7 @@
 #
 
-/media_store/
-
 *.db
 *.key
+
+/media_store/
+/homeserver.yaml

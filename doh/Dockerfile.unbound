@@ -2,8 +2,8 @@
 
 FROM alpine
 
-EXPOSE 1053/tcp
-EXPOSE 1053/udp
+EXPOSE 53/tcp
+EXPOSE 53/udp
 
 RUN apk add --no-cache unbound openssl
 
