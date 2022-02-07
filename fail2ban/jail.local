@@ -1,0 +1,22 @@
+#
+
+[sshd]
+enabled = true
+maxretry = 4
+findtime = 1d
+bantime = 7d
+ignoreip = 127.0.0.1/8
+mode = aggressive
+port = 0-65535
+banaction = nftables[blocktype=counter drop]
+
+[mailu-front]
+enabled = true
+maxretry = 4
+findtime = 1d
+bantime = 7d
+ignoreip = 127.0.0.1/8
+backend = systemd
+filter = mailu-front
+chain=f2b-chain-forward
+banaction = nftables[blocktype=counter drop, chain_hook=forward]
