@@ -16,19 +16,13 @@ location = /444.html {
 }
 
 location = / { access_log off; }
-location = /index.html { access_log off; }
 location = /favicon.ico {}
-
-location = /robots.txt {}
-
-location = /404.html {}
-location = /50x.html {}
-
-location /.well-known {}
+location /.well-known/ {}
 
 
 
 # headers
+
 # https://owasp.org/www-project-secure-headers/
 add_header Strict-Transport-Security "max-age=31536000; includeSubDomains; preload" always;
 #add_header X-Frame-Options "deny" always;
@@ -44,3 +38,48 @@ add_header Cross-Origin-Resource-Policy "same-origin" always;
 #add_header Cache-Control "no-store, max-age=0" always;
 
 #add_header Strict-Transport-Security $sts_header;
+
+
+
+# default content
+
+location = /index.html {
+    access_log off;
+    default_type text/html;
+    return 200 "<html><head><title></title></head><body></body></html>";
+}
+
+location = /404.html {
+    default_type text/html;
+    return 404 "<html><head><title>404 Not Found</title></head><body><h1>404 Not Found</h1></body></html>";
+}
+
+location = /50x.html {
+    default_type text/html;
+    return 500 "<html><head><title>50x</title></head><body><h1>50x</h1></body></html>";
+}
+
+location = /robots.txt {
+    default_type text/plain;
+    return 200 "User-agent: *\nDisallow: /\n";
+}
+
+location = /.well-known/mta-sts.txt {
+    default_type text/plain;
+    return 200 "version: STSv1\nmode: enforce\nmax_age: 86400\nmx: mailu.$DOMAIN\n";
+}
+
+location = /.well-known/security.txt {
+    default_type text/plain;
+    return 200 "Contact: mailto:security@$DOMAIN\nExpires: 2023-01-01T00:00:00.000Z\n";
+}
+
+location = /.well-known/matrix/client {
+    default_type application/json;
+    return 200 '{ "m.homeserver" : { "base_url" : "https://matrix.$DOMAIN" } }';
+}
+
+location = /.well-known/matrix/server {
+    default_type application/json;
+    return 200 '{ "m.server" : "matrix.$DOMAIN:443" }';
+}
