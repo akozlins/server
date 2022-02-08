@@ -1,22 +1,29 @@
 #
 
-version: '3'
+version: '3.9'
+
+
+x-service:
+  &service
+  env_file: ".env"
+  logging:
+    { options: { max-size: "1m" } }
+  restart: "always"
+  stop_grace_period: "5s"
 
 services:
 
   unbound:
+    << : *service
     build: { context: ".", dockerfile: "Dockerfile.unbound" }
     volumes:
       - "./unbound.conf:/etc/unbound/conf.d/unbound.conf:ro"
-    logging:
-      options: { max-size: "1m" }
 
   proxy:
+    << : *service
     build: "./dns-over-https"
     depends_on: [ "unbound" ]
     ports:
       - 127.0.0.1:8053:8053
     volumes:
       - "./dns-over-https/doh-server.conf:/doh-server.conf:ro"
-    logging:
-      options: { max-size: "1m" }

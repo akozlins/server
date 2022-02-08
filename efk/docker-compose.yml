@@ -1,9 +1,18 @@
 #
 
-version: '2.2'
+version: '3.9'
+
+x-service:
+  &service
+  env_file: ".env"
+  logging: { options: { max-size: "1m" } }
+  restart: "always"
+  stop_grace_period: "5s"
 
 services:
+
   es:
+    << : *service
     image: "docker.elastic.co/elasticsearch/elasticsearch:7.17.0"
     environment:
       - "discovery.type=single-node"
@@ -14,6 +23,7 @@ services:
       - "data:/usr/share/elasticsearch/data"
 
   fluentd:
+    << : *service
     build: { context: ".", dockerfile: "Dockerfile.fluentd" }
     command: -c /fluentd/etc/fluentd.conf -v
     depends_on: [ "es" ]
@@ -25,6 +35,7 @@ services:
       - "./fluentd.conf:/fluentd/etc/fluentd.conf"
 
   kibana:
+    << : *service
     image: "docker.elastic.co/kibana/kibana:7.17.0"
     depends_on: [ "es" ]
     environment:
