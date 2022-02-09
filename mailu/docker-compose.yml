@@ -30,6 +30,7 @@ services:
       - "./certs:/certs"
       - "./overrides/nginx:/overrides:ro"
       - "/etc/letsencrypt:/etc/letsencrypt:ro"
+    logging: { driver: "journald", options: { tag: "mailu-front" } }
 
   admin:
     << : *service
