@@ -8,4 +8,4 @@ docker run -it --rm \
     -e GID=1000 \
     matrixdotorg/synapse:latest generate
 
-# register_new_matrix_user http://localhost:8008 -c /data/homeserver.yaml
+# register_new_matrix_user http://127.0.0.1:8008 -c /data/homeserver.yaml
