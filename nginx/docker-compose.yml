@@ -35,7 +35,7 @@ services:
     image: "alpine"
     command: sh -c "set -euf
         && ( test -x /usr/bin/socat || apk --no-cache add socat )
-        && exec /etc/socat/run.sh 1022 1443 8008 8053 8180 8280 8380"
+        && exec /etc/socat/run.sh 1022 1443 2580 8008 8053 8080 9080"
     network_mode: "host"
     volumes:
       - "socat:/run/socat:rw"
