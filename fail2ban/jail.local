@@ -7,8 +7,8 @@ findtime = 1d
 bantime = 7d
 ignoreip = 127.0.0.1/8
 mode = aggressive
-port = 0-65535
-banaction = nftables[blocktype=counter drop]
+port = 22
+banaction = nftables[blocktype=counter drop, match=tcp dport ne 443]
 
 [mailu-front]
 enabled = true
