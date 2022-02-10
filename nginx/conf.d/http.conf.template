@@ -28,8 +28,8 @@ ssl_session_timeout 1d;
 ssl_session_cache shared:MozSSL:10m;
 ssl_session_tickets off;
 
-ssl_protocols TLSv1.2 TLSv1.3;
-ssl_prefer_server_ciphers off;
+ssl_protocols TLSv1.3;
+ssl_prefer_server_ciphers on;
 
 ssl_stapling on;
 ssl_stapling_verify on;
@@ -46,7 +46,7 @@ map $scheme $sts_header {
 
 
 server {
-    listen 80;
+    listen 0.0.0.0:80;
 
     location / {
         access_log off;

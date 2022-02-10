@@ -1,7 +1,7 @@
 #
 
 server {
-    listen 8443;
+    listen 0.0.0.0:8443;
     ssl_preread on;
 
     proxy_pass $name;
