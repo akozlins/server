@@ -17,7 +17,7 @@ RUN apk add --no-cache \
     sed -i \
         -e 's/^listen = 127.0.0.1:9000/listen = 9000/' \
         -e 's/;\(clear_env\) = .*/\1 = no/i' \
-        -e 's/^\(user\|group\) = .*/\1 = app/i' \
+        -e 's/^\(user\|group\) = .*/\1 = rss/i' \
         -e 's/;\(php_admin_value\[error_log\]\) = .*/\1 = \/dev\/stderr/' \
         -e 's/;\(php_admin_flag\[log_errors\]\) = .*/\1 = on/' \
         /etc/php8/php-fpm.d/www.conf && \
@@ -32,14 +32,14 @@ ENV TTRSS_ICONS_DIR="$TTRSS_RUN_DIR/feed-icons"
 
 RUN mkdir -p -- "$TTRSS_RUN_DIR" && \
     cp -r -t "$TTRSS_RUN_DIR" ./cache ./lock ./feed-icons && \
-    addgroup -g 1000 -S app && \
-    adduser -u 1000 -S app -G app && \
-    chown -R app:app -- "$TTRSS_RUN_DIR"
+    addgroup -g 1000 -S rss && \
+    adduser -u 1000 -S rss -G rss && \
+    chown -R rss:rss -- "$TTRSS_RUN_DIR"
 
 COPY run.sh "$TTRSS_RUN_DIR"
 
 ENV TTRSS_PHP_EXECUTABLE=/usr/bin/php8
 
-USER app
+USER rss
 
 CMD "$TTRSS_RUN_DIR/run.sh"

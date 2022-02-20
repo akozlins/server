@@ -21,7 +21,7 @@ services:
     volumes:
       - "db:/var/lib/postgresql/data"
 
-  app:
+  rss:
     << : *service
     build: "."
     depends_on: [ "db" ]
@@ -29,15 +29,17 @@ services:
       - "./backup:/var/run/tt-rss/backup:rw"
       - "tt-rss:/var/www/html/tt-rss:ro"
 
-  web:
+  nginx:
     << : *service
     image: "nginx:alpine"
-    depends_on: [ "app" ]
+    depends_on: [ "rss" ]
     ports:
       - "127.0.0.1:9080:80"
     volumes:
       - "./nginx.conf:/etc/nginx/nginx.conf:ro"
       - "tt-rss:/var/www/html/tt-rss:ro"
+    healthcheck:
+      test: "curl --fail http://127.0.0.1/tt-rss/index.php || exit 1"
 
 volumes:
   db:

@@ -28,6 +28,8 @@ services:
       - "/etc/letsencrypt:/etc/letsencrypt:ro"
 #      - "./${DOMAIN:?}:/etc/letsencrypt/live/${DOMAIN:?}:ro"
       - "socat:/run/socat:rw"
+    healthcheck:
+      test: "curl --fail http://127.0.0.1:80 || exit 1"
 
   # create unix sockets that redirect to 127.0.0.1:$port on host network
   socat:
