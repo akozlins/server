@@ -26,15 +26,11 @@ RUN apk add --no-cache \
         /etc/php8/php-fpm.conf
 
 ENV TTRSS_RUN_DIR=/var/run/tt-rss
-ENV TTRSS_CACHE_DIR="$TTRSS_RUN_DIR/cache"
-ENV TTRSS_LOCK_DIRECTORY="$TTRSS_RUN_DIR/lock"
-ENV TTRSS_ICONS_DIR="$TTRSS_RUN_DIR/feed-icons"
 
 RUN mkdir -p -- "$TTRSS_RUN_DIR" && \
-    cp -r -t "$TTRSS_RUN_DIR" ./cache ./lock ./feed-icons && \
     addgroup -g 1000 -S rss && \
     adduser -u 1000 -S rss -G rss && \
-    chown -R rss:rss -- "$TTRSS_RUN_DIR"
+    chown -R rss:rss -- "./cache" "./feed-icons" "./lock"
 
 COPY run.sh "$TTRSS_RUN_DIR"
 
