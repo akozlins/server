@@ -15,9 +15,9 @@ RUN apk add --no-cache \
         php8-intl php8-mbstring php8-pcntl php8-pdo_pgsql php8-posix \
         php8-session php8-xml php8-zip && \
     sed -i \
+        -e 's/^\(user\|group\) = .*/\1 = rss/i' \
         -e 's/^listen = 127.0.0.1:9000/listen = 9000/' \
         -e 's/;\(clear_env\) = .*/\1 = no/i' \
-        -e 's/^\(user\|group\) = .*/\1 = rss/i' \
         -e 's/;\(php_admin_value\[error_log\]\) = .*/\1 = \/dev\/stderr/' \
         -e 's/;\(php_admin_flag\[log_errors\]\) = .*/\1 = on/' \
         /etc/php8/php-fpm.d/www.conf && \

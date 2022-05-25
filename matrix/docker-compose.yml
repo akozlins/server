@@ -10,7 +10,6 @@ x-service:
   stop_grace_period: "5s"
 
 services:
-
   # <https://hub.docker.com/r/matrixdotorg/synapse/>
   synapse:
     << : *service

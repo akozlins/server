@@ -1,10 +1,19 @@
-#!/bin/sh
+#!/bin/bash
 set -euf
 
 PIDS=""
-for port in "$@" ; do
-    rm -- "/run/socat/$port.sock" || true
-    socat -d "UNIX-LISTEN:/run/socat/$port.sock,mode=666,reuseaddr,fork" "TCP:127.0.0.1:$port" &
+for spec in "$@" ; do
+    nf=1
+    if [ "$nf" -gt 1 ] ; then
+        exit 1
+    elif [ "$nf" -eq 1 ] ; then
+        port="$spec"
+        host="127.0.0.1"
+        name="$port"
+    fi
+
+    rm -- "/run/socat/$name.sock" || true
+    socat -d "UNIX-LISTEN:./$name.sock,mode=666,reuseaddr,fork" "TCP:$host:$port" &
     PIDS="$PIDS $!"
 done
 

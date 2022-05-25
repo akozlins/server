@@ -36,6 +36,7 @@ services:
     << : *service
     image: "alpine"
     command: sh -c "set -euf
+        && ( test -x /usr/bin/bash || apk --no-cache add bash )
         && ( test -x /usr/bin/socat || apk --no-cache add socat )
         && exec /etc/socat/run.sh 1022 1443 2580 8008 8053 8080 9080"
     network_mode: "host"
@@ -51,3 +52,6 @@ services:
 
 volumes:
   socat:
+    driver_opts:
+      type: tmpfs
+      device: tmpfs

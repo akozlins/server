@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euf
 
 export EASYRSA=/etc/easy-rsa
 export EASYRSA_PKI="$(pwd)/pki"

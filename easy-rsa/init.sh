@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euf
 
 # <https://easy-rsa.readthedocs.io/en/latest/advanced/>
 
