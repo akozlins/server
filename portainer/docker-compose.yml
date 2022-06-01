@@ -20,6 +20,13 @@ services:
     volumes:
       - "data:/data"
       - "/var/run/docker.sock:/var/run/docker.sock"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.services.portainer.loadbalancer.server.port=9000"
+      - "traefik.http.routers.portainer.rule=PathPrefix(`/portainer`)"
+      - "traefik.http.routers.portainer.middlewares=portainer@docker"
+      - "traefik.http.middlewares.portainer.stripprefix.prefixes=/portainer"
+      - "traefik.http.middlewares.portainer.stripprefix.forceslash=false"
 
 volumes:
   data:

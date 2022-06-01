@@ -50,6 +50,19 @@ services:
     command: --listen=127.0.0.1:1443 --ssh=127.0.0.1:22 --openvpn=127.0.0.1:1194 --anyprot=127.0.0.1:1194 --on-timeout=anyprot
     network_mode: "host"
 
+  traefik:
+    << : *service
+    image: "traefik:latest"
+    ports:
+#      - "127.0.0.1:80:80"
+      - "127.0.0.1:8080:8080"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+      - "./traefik.yml:/etc/traefik/traefik.yml"
+    labels:
+      - "traefik.http.routers.dashboard.rule=(PathPrefix(`/api`) || PathPrefix(`/dashboard`))"
+      - "traefik.http.routers.dashboard.service=api@internal"
+
 volumes:
   socat:
     driver_opts:

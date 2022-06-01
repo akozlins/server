@@ -45,11 +45,6 @@ map $scheme $sts_header {
 
 
 
-upstream upstream_portainer {
-    server portainer:9000;
-#    server 127.0.0.1:9000;
-}
-
 server {
     listen 0.0.0.0:80;
 
@@ -70,21 +65,13 @@ server {
 
     include conf.d/server.conf;
 
+
     location /portainer/ {
         access_log logs/access_portainer.log;
-        proxy_pass http://upstream_portainer/;
+        proxy_pass http://traefik/portainer/;
         proxy_set_header X-Forwarded-For $remote_addr;
         proxy_set_header X-Forwarded-Proto $scheme;
         proxy_set_header Host $host;
-    }
-    location /portainer/api/websocket/ {
-        access_log logs/access_portainer.log;
-        proxy_pass http://upstream_portainer/api/websocket/;
-        proxy_set_header X-Forwarded-For $remote_addr;
-        proxy_set_header X-Forwarded-Proto $scheme;
-        proxy_set_header Host $host;
-        proxy_set_header Upgrade $http_upgrade;
-        proxy_set_header Connection "upgrade";
     }
 }
 
