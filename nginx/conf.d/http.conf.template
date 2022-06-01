@@ -65,6 +65,13 @@ server {
 
     include conf.d/server.conf;
 
+    location /jenkins/ {
+        access_log logs/access_jenkins.log;
+        proxy_pass http://traefik/jenkins/;
+        proxy_set_header X-Forwarded-For $remote_addr;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header Host $host;
+    }
 
     location /portainer/ {
         access_log logs/access_portainer.log;
