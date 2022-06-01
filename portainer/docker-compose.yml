@@ -1,0 +1,30 @@
+#
+
+# <https://docs.portainer.io/v/ce-2.11/advanced/reverse-proxy/nginx>
+
+version: "3.9"
+
+x-service:
+  &service
+  env_file: ".env"
+  logging: { options: { max-size: "1m" } }
+  restart: "always"
+  stop_grace_period: "5s"
+
+services:
+  portainer:
+    << : *service
+    image: "portainer/portainer-ce:latest"
+#    ports:
+#      - "127.0.0.1:9000:9000"
+    volumes:
+      - "data:/data"
+      - "/var/run/docker.sock:/var/run/docker.sock"
+
+volumes:
+  data:
+
+networks:
+  default:
+    name: nginx-network
+    external: true

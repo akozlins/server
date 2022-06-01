@@ -1,7 +1,7 @@
 #
 
 if ( $request_method !~ ^(GET|HEAD|POST)$ ) {
-    return 444;
+#    return 444;
 }
 
 location / {

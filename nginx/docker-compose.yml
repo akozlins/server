@@ -55,3 +55,8 @@ volumes:
     driver_opts:
       type: tmpfs
       device: tmpfs
+
+networks:
+  default:
+    name: nginx-network
+    external: true
