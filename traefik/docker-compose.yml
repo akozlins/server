@@ -1,0 +1,26 @@
+#
+
+version: "3.9"
+
+x-service:
+  &service
+  env_file: ".env"
+  logging: { options: { max-size: "1m" } }
+  restart: "always"
+  stop_grace_period: "5s"
+
+services:
+  proxy:
+    << : *service
+    image: "traefik:latest"
+    command: --api.insecure=true --providers.docker
+    ports:
+      # web UI (with --api.insecure=true)
+      - "127.0.0.1:8080:8080"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+
+networks:
+  default:
+    name: network-traefik
+    external: true
