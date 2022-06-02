@@ -17,7 +17,7 @@ services:
 #      - "127.0.0.1:8080:8080"
 #      - "127.0.0.1:50000:50000"
     volumes:
-      - "workspace:/var/jenkins_home"
+      - "${JENKINS_WORKSPACE:?}:/var/jenkins_home"
     labels:
       - "traefik.enable=true"
       - "traefik.http.services.jenkins.loadbalancer.server.port=8080"
@@ -28,5 +28,5 @@ volumes:
 
 networks:
   default:
-    name: nginx-network
+    name: server
     external: true

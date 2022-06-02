@@ -26,12 +26,11 @@ services:
       - "traefik.http.routers.portainer.rule=PathPrefix(`/portainer`)"
       - "traefik.http.routers.portainer.middlewares=portainer@docker"
       - "traefik.http.middlewares.portainer.stripprefix.prefixes=/portainer"
-      - "traefik.http.middlewares.portainer.stripprefix.forceslash=false"
 
 volumes:
   data:
 
 networks:
   default:
-    name: nginx-network
+    name: server
     external: true

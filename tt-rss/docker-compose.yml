@@ -27,7 +27,7 @@ services:
     depends_on: [ "db" ]
     volumes:
       - "./backup:/var/run/tt-rss/backup:rw"
-      - "tt-rss:/var/www/html/tt-rss:ro"
+      - "rss:/var/www/html/tt-rss:rw"
 
   nginx:
     << : *service
@@ -37,10 +37,10 @@ services:
       - "127.0.0.1:9080:80"
     volumes:
       - "./nginx.conf:/etc/nginx/nginx.conf:ro"
-      - "tt-rss:/var/www/html/tt-rss:ro"
+      - "rss:/var/www/html/tt-rss:ro"
     healthcheck:
       test: "curl --fail http://127.0.0.1/tt-rss/index.php || exit 1"
 
 volumes:
   db:
-  tt-rss:
+  rss:
