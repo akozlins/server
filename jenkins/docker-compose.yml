@@ -17,14 +17,18 @@ services:
 #      - "127.0.0.1:8080:8080"
 #      - "127.0.0.1:50000:50000"
     volumes:
-      - "${JENKINS_WORKSPACE:?}:/var/jenkins_home"
+      - "./.cache/jenkins_home:/var/jenkins_home"
     labels:
       - "traefik.enable=true"
       - "traefik.http.services.jenkins.loadbalancer.server.port=8080"
       - "traefik.http.routers.jenkins.rule=PathPrefix(`/jenkins`)"
 
-volumes:
-  workspace:
+  jenkins-node-1:
+    << : *service
+    image: "archlinux:latest"
+    entrypoint: /usr/bin/sshd -D -e
+    volumes:
+      - "./.cache/node-1"
 
 networks:
   default:
