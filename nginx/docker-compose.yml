@@ -27,7 +27,7 @@ services:
       - "./.cache/logs:/etc/nginx/logs:rw"
       - "/opt/html:/opt/html:ro"
       - "/etc/letsencrypt:/etc/letsencrypt:ro"
-#      - "./${DOMAIN:?}:/etc/letsencrypt/live/${DOMAIN:?}:ro"
+#      - "./letsencrypt:/etc/letsencrypt:ro"
       - "socat:/run/socat:rw"
     healthcheck:
       test: "curl --fail http://127.0.0.1:80 || exit 1"
