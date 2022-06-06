@@ -35,11 +35,8 @@ services:
   # create unix sockets that redirect to 127.0.0.1:$port on host network
   socat:
     << : *service
-    image: "alpine"
-    command: sh -c "set -euf
-        && ( test -x /usr/bin/bash || apk --no-cache add bash )
-        && ( test -x /usr/bin/socat || apk --no-cache add socat )
-        && exec /etc/socat/run.sh 1022 1443 2580 8008 8053 8080 9080"
+    build: "./socat"
+    command: /etc/socat/run.sh 'ssh:127.0.0.1:1022' 2580 8008 8053 8080 8384
     network_mode: "host"
     volumes:
       - "socat:/run/socat:rw"
@@ -48,8 +45,9 @@ services:
   sslh:
     << : *service
     build: "./sslh"
-    command: --listen=127.0.0.1:1443 --ssh=127.0.0.1:22 --openvpn=127.0.0.1:1194 --anyprot=127.0.0.1:1194 --on-timeout=anyprot
+    command: --listen=127.0.0.1:443 --ssh=127.0.0.1:22 --openvpn=127.0.0.1:1194 --anyprot=127.0.0.1:1194 --on-timeout=anyprot
     network_mode: "host"
+    profiles: [ "DISABLE" ]
 
   traefik:
     << : *service

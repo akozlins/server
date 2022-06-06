@@ -31,8 +31,14 @@ for spec in "$@" ; do
         name="$port"
     fi
 
-    [ -w "$DIR/$name.sock" ] && rm -- "/run/socat/$name.sock" || true
-    socat -d "UNIX-LISTEN:$DIR/$name.sock,mode=666,reuseaddr,fork" "TCP:$host:$port" &
+    if [[ $name != /* ]] ; then
+        # set default path
+        name="/run/socat/$name.sock"
+    fi
+
+    [ -w "$name" ] && rm -- "$name" || true
+    echo "I [$0] '$name' -> $host:$port"
+    socat -d "UNIX-LISTEN:$name,mode=777,fork" "TCP:$host:$port,retry=3" &
     PIDS="$PIDS $!"
 done
 
