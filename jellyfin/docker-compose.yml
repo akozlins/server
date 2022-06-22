@@ -19,7 +19,7 @@ services:
     volumes:
       - "cache:/cache"
       - "./.cache/config:/config"
-      - "./.cache/media:/media"
+      - "./.cache/media:/media:ro"
     labels:
       - "traefik.enable=true"
       - "traefik.http.services.jellyfin.loadbalancer.server.port=8096"

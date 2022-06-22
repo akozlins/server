@@ -19,10 +19,14 @@ services:
     volumes:
       - "./.cache/config:/config"
       - "./.cache/data:/data"
+      - "tmp:/tmp"
     labels:
       - "traefik.enable=true"
       - "traefik.http.services.komga.loadbalancer.server.port=8080"
-      - "traefik.http.routers.traefik.rule=PathPrefix(`/komga`)"
+      - "traefik.http.routers.komga.rule=PathPrefix(`/komga`)"
+
+volumes:
+  tmp:
 
 networks:
   default:

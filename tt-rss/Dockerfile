@@ -31,12 +31,12 @@ ENV TTRSS_RUN_DIR=/var/run/tt-rss
 RUN mkdir -p -- "$TTRSS_RUN_DIR" && \
     addgroup -g 1000 -S rss && \
     adduser -u 1000 -S rss -G rss && \
-    chown -R rss:rss -- "./cache" "./feed-icons" "./lock"
+    chown -R 1000:1000 -- "./cache" "./feed-icons" "./lock"
 
 COPY run.sh "$TTRSS_RUN_DIR"
 
 ENV TTRSS_PHP_EXECUTABLE=/usr/bin/php8
 
-USER rss
+USER 1000
 
 CMD "$TTRSS_RUN_DIR/run.sh"
