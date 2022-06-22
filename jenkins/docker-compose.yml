@@ -23,12 +23,11 @@ services:
       - "traefik.http.services.jenkins.loadbalancer.server.port=8080"
       - "traefik.http.routers.jenkins.rule=PathPrefix(`/jenkins`)"
 
-  jenkins-node-1:
+  jenkins-node:
     << : *service
-    image: "archlinux:latest"
-    entrypoint: /usr/bin/sshd -D -e
+    build: { context: ".", dockerfile: "Dockerfile.node" }
     volumes:
-      - "./.cache/node-1"
+      - "./.cache/node:/home/jenkins"
 
 networks:
   default:
