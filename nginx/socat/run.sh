@@ -38,7 +38,7 @@ for spec in "$@" ; do
 
     [ -w "$name" ] && rm -- "$name" || true
     echo "I [$0] '$name' -> $host:$port"
-    socat -d "UNIX-LISTEN:$name,mode=777,fork" "TCP:$host:$port,retry=3" &
+    socat -d "UNIX-LISTEN:$name,mode=666,fork" "TCP:$host:$port" &
     PIDS="$PIDS $!"
 done
 
