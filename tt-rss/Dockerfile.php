@@ -4,18 +4,13 @@ FROM alpine
 
 EXPOSE 9000/tcp
 
-WORKDIR /var/www/html/tt-rss
-
-RUN apk add --no-cache git && \
-    git clone --depth 1 https://git.tt-rss.org/fox/tt-rss .
-
 RUN apk add --no-cache \
         postgresql-client \
         php8 php8-curl php8-dom php8-fileinfo php8-fpm php8-json php8-iconv \
         php8-intl php8-mbstring php8-pcntl php8-pdo_pgsql php8-posix \
         php8-session php8-xml php8-zip && \
     sed -i \
-        -e 's/^\(user\|group\) = .*/\1 = rss/i' \
+        -e 's/^\(user\|group\) = .*/\1 = php/i' \
         -e 's/^listen = 127.0.0.1:9000/listen = 9000/' \
         -e 's/^\(pm\.max_children\) = .*/\1 = 16/i' \
         -e 's/;\(clear_env\) = .*/\1 = no/i' \
@@ -26,17 +21,7 @@ RUN apk add --no-cache \
         -e 's/;\(error_log\) = .*/\1 = \/dev\/stderr/' \
         /etc/php8/php-fpm.conf
 
-ENV TTRSS_RUN_DIR=/var/run/tt-rss
-
-RUN mkdir -p -- "$TTRSS_RUN_DIR" && \
-    addgroup -g 1000 -S rss && \
-    adduser -u 1000 -S rss -G rss && \
-    chown -R 1000:1000 -- "./cache" "./feed-icons" "./lock"
-
-COPY run.sh "$TTRSS_RUN_DIR"
-
-ENV TTRSS_PHP_EXECUTABLE=/usr/bin/php8
+RUN addgroup -g 1000 -S php && \
+    adduser -u 1000 -S php -G php
 
 USER 1000
-
-CMD "$TTRSS_RUN_DIR/run.sh"

@@ -21,26 +21,31 @@ services:
     volumes:
       - "db:/var/lib/postgresql/data"
 
-  rss:
+  php:
     << : *service
-    build: "."
+    build: { context: ".", dockerfile: "Dockerfile.php" }
+    command: "/run.sh"
     depends_on: [ "db" ]
     volumes:
-      - "./backup:/var/run/tt-rss/backup:rw"
-      - "rss:/var/www/html/tt-rss:rw"
+      - "./run.sh:/run.sh:ro"
+      - "./backup:/backup:rw"
+      - ".cache/tt-rss:/var/www/html/tt-rss"
 
-  nginx:
+  tt-rss:
     << : *service
     image: "nginx:alpine"
-    depends_on: [ "rss" ]
-    ports:
-      - "127.0.0.1:9080:80"
+    depends_on: [ "php" ]
+#    ports:
+#      - "127.0.0.1:80:80"
     volumes:
       - "./nginx.conf:/etc/nginx/nginx.conf:ro"
-      - "rss:/var/www/html/tt-rss:ro"
+      - ".cache/tt-rss:/var/www/html/tt-rss"
     healthcheck:
       test: "curl --fail http://127.0.0.1/tt-rss/index.php || exit 1"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.services.tt-rss.loadbalancer.server.port=80"
+      - "traefik.http.routers.tt-rss.rule=PathPrefix(`/tt-rss`)"
 
 volumes:
   db:
-  rss:

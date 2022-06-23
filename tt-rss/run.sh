@@ -1,6 +1,8 @@
 #!/bin/sh
 set -euf
 
+cd /var/www/html/tt-rss || exit 1
+
 export PGPASSWORD=$TTRSS_DB_PASS
 PGOPTS="--host=$TTRSS_DB_HOST --dbname=$TTRSS_DB_NAME --username=$TTRSS_DB_USER"
 
@@ -8,7 +10,7 @@ $TTRSS_PHP_EXECUTABLE ./update.php --update-schema=force-yes
 psql $PGOPTS -c "create extension if not exists pg_trgm"
 
 backup () {
-    BACKUP="$TTRSS_RUN_DIR/backup"
+    BACKUP="/backup"
     while true ; do
         sleep 30
         echo "I [$0] check"
