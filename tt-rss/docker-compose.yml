@@ -35,6 +35,7 @@ services:
     << : *service
     image: "nginx:alpine"
     depends_on: [ "php" ]
+    networks: [ "default", "backend" ]
 #    ports:
 #      - "127.0.0.1:80:80"
     volumes:
@@ -49,3 +50,7 @@ services:
 
 volumes:
   db:
+
+networks:
+  backend:
+    external: true

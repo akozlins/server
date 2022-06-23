@@ -16,6 +16,7 @@ services:
     image: "nginx:alpine"
 #    command: [nginx-debug, '-g', 'daemon off;']
     depends_on: [ "traefik" ]
+    networks: [ "default", "backend" ]
     ports:
       - "0.0.0.0:80:80"
       - "0.0.0.0:443:8443"
@@ -55,6 +56,7 @@ services:
 #    ports:
 #      - "127.0.0.1:80:80"
 #      - "127.0.0.1:8080:8080"
+    networks: [ "default", "backend" ]
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock"
       - "./traefik.yml:/etc/traefik/traefik.yml"
@@ -71,6 +73,5 @@ volumes:
       device: tmpfs
 
 networks:
-  default:
-    name: server
+  backend:
     external: true

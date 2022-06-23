@@ -13,6 +13,7 @@ services:
   komga:
     << : *service
     image: gotson/komga
+    networks: [ "default", "backend" ]
 #    ports:
 #      - "127.0.0.1:8080:8080"
     user: "1000:1000"
@@ -29,6 +30,5 @@ volumes:
   tmp:
 
 networks:
-  default:
-    name: server
+  backend:
     external: true

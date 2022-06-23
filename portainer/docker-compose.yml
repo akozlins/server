@@ -17,6 +17,7 @@ services:
     image: "portainer/portainer-ce:latest"
 #    ports:
 #      - "127.0.0.1:9000:9000"
+    networks: [ "default", "backend" ]
     volumes:
       - "data:/data"
       - "/var/run/docker.sock:/var/run/docker.sock"
@@ -31,6 +32,5 @@ volumes:
   data:
 
 networks:
-  default:
-    name: server
+  backend:
     external: true

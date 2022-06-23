@@ -16,6 +16,7 @@ services:
 #    ports:
 #      - "127.0.0.1:8080:8080"
 #      - "127.0.0.1:50000:50000"
+    networks: [ "default", "backend" ]
     volumes:
       - "./.cache/jenkins_home:/var/jenkins_home"
     labels:
@@ -30,6 +31,5 @@ services:
       - "./.cache/node:/home/jenkins"
 
 networks:
-  default:
-    name: server
+  backend:
     external: true
