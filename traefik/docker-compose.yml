@@ -1,0 +1,51 @@
+#
+
+version: "3.9"
+
+x-service:
+  &service
+  env_file: .env
+  logging: { options: { max-size: "1m" } }
+  restart: "always"
+  stop_grace_period: "5s"
+
+services:
+
+  traefik:
+    << : *service
+    image: "traefik:latest"
+    environment:
+      - "TRAEFIK_GLOBAL_CHECKNEWVERSION=false"
+      - "TRAEFIK_GLOBAL_SENDANONYMOUSUSAGE=false"
+    networks: [ "default", "backend" ]
+    ports:
+      - "0.0.0.0:80:80"
+      - "0.0.0.0:443:443"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+      - "./traefik.yml:/etc/traefik/traefik.yml"
+      - "./dynamic.yml:/etc/traefik/dynamic.yml"
+      - "../nginx/letsencrypt/$DOMAIN:/etc/letsencrypt/example.com:ro"
+
+  nginx:
+    << : *service
+    image: "nginx:alpine"
+    networks: [ "default", "backend" ]
+#    ports:
+#      - "0.0.0.0:80:80"
+#      - "0.0.0.0:443:8443"
+    volumes:
+      - "./nginx.conf:/etc/nginx/nginx.conf:ro"
+      - "./conf.d:/etc/nginx/templates:ro"
+      - "./.cache/logs:/etc/nginx/logs:rw"
+      - "/opt/html:/opt/html:ro"
+#      - "/etc/letsencrypt:/etc/letsencrypt:ro"
+      - "../nginx/letsencrypt/$DOMAIN:/etc/letsencrypt/example.com:ro"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.services.nginx.loadbalancer.server.port=80"
+      - "traefik.http.routers.nginx.rule=PathPrefix(`/`)"
+
+networks:
+  backend:
+    external: true
