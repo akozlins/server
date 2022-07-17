@@ -1,0 +1,79 @@
+#
+
+location / {
+    return 444;
+}
+
+error_page 400 =444 /444.html;
+location = /444.html {
+    return 444;
+}
+
+location = / { access_log off; }
+location = /favicon.ico {}
+location /.well-known/ {}
+
+
+
+# headers
+
+# https://owasp.org/www-project-secure-headers/
+#add_header Strict-Transport-Security "max-age=31536000; includeSubDomains; preload" always;
+#add_header X-Frame-Options "deny" always;
+add_header X-Content-Type-Options "nosniff" always;
+#add_header Content-Security-Policy "default-src 'self'; object-src 'none'; child-src 'self'; frame-ancestors 'none'; upgrade-insecure-requests; block-all-mixed-content" always;
+add_header X-Permitted-Cross-Domain-Policies "none" always;
+add_header Referrer-Policy "no-referrer" always;
+#add_header Clear-Site-Data "cache","cookies","storage" always;
+#add_header Cross-Origin-Embedder-Policy "require-corp" always;
+add_header Cross-Origin-Opener-Policy "same-origin" always;
+add_header Cross-Origin-Resource-Policy "same-origin" always;
+#add_header Permissions-Policy "accelerometer=(),autoplay=(),camera=(),display-capture=(),document-domain=(),encrypted-media=(),fullscreen=(),geolocation=(),gyroscope=(),magnetometer=(),microphone=(),midi=(),payment=(),picture-in-picture=(),publickey-credentials-get=(),screen-wake-lock=(),sync-xhr=(self),usb=(),web-share=(),xr-spatial-tracking=()" always;
+#add_header Cache-Control "no-store, max-age=0" always;
+
+#add_header Strict-Transport-Security $sts_header;
+
+
+
+# default content
+
+location = /index.html {
+    access_log off;
+    default_type text/html;
+    return 200 "<html><head><title></title></head><body></body></html>";
+}
+
+location = /404.html {
+    default_type text/html;
+    return 404 "<html><head><title>404 Not Found</title></head><body><h1>404 Not Found</h1></body></html>";
+}
+
+location = /50x.html {
+    default_type text/html;
+    return 500 "<html><head><title>50x</title></head><body><h1>50x</h1></body></html>";
+}
+
+location = /robots.txt {
+    default_type text/plain;
+    return 200 "User-agent: *\nDisallow: /\n";
+}
+
+location = /.well-known/mta-sts.txt {
+    default_type text/plain;
+    return 200 "version: STSv1\nmode: enforce\nmax_age: 86400\nmx: mail.$DOMAIN\n";
+}
+
+location = /.well-known/security.txt {
+    default_type text/plain;
+    return 200 "Contact: mailto:security@$DOMAIN\nExpires: 2023-01-01T00:00:00.000Z\n";
+}
+
+location = /.well-known/matrix/client {
+    default_type application/json;
+    return 200 '{ "m.homeserver" : { "base_url" : "https://matrix.$DOMAIN" } }';
+}
+
+location = /.well-known/matrix/server {
+    default_type application/json;
+    return 200 '{ "m.server" : "matrix.$DOMAIN:443" }';
+}

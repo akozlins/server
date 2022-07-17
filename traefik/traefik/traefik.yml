@@ -13,11 +13,11 @@ entryPoints:
       tls: true
 
 log:
-  level: DEBUG
+  level: INFO
 
 providers:
   docker:
     endpoint: "unix:///var/run/docker.sock"
     exposedByDefault: false
   file:
-    filename: "/etc/traefik/traefik-tls.yml"
+    filename: "/etc/traefik/provider.yml"

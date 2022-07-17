@@ -19,9 +19,5 @@ proxy_intercept_errors on;
 server {
     listen 0.0.0.0:80;
 
-    location / {
-        access_log off;
-        return 301 https://$host$request_uri;
-    }
-    location /.well-known {}
+    include conf.d/server.conf;
 }
