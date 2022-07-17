@@ -7,8 +7,6 @@ if [ $# -eq 0 ] ; then
     exit 1
 fi
 
-DIR=/run/socat
-
 PIDS=""
 for spec in "$@" ; do
     # number of fields
@@ -38,10 +36,10 @@ for spec in "$@" ; do
 
     [ -w "$name" ] && rm -- "$name" || true
     echo "I [$0] '$name' -> $host:$port"
-    socat -d "UNIX-LISTEN:$name,mode=666,fork" "TCP:$host:$port" &
+    socat -d "UNIX-LISTEN:$name,fork,mode=666" "TCP:$host:$port" &
     PIDS="$PIDS $!"
 done
 
-trap "kill --timeout 1000 TERM --signal KILL $PIDS" TERM
+trap "kill --signal KILL --timeout 1000 TERM -- $PIDS" TERM
 
 wait

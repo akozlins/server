@@ -1,5 +1,9 @@
 #
 
+upstream nginx {
+    server 127.0.0.1:443;
+}
+
 # https entry point
 server {
     listen 0.0.0.0:8443;
@@ -12,20 +16,21 @@ server {
 # use hostname to select destination
 map $ssl_preread_server_name $name {
     hostnames;
-#    "" 127.0.0.1:443;
-    "localhost" 127.0.0.1:443;
-    $DOMAIN 127.0.0.1:443;
-    *.$DOMAIN 127.0.0.1:443;
+    $DOMAIN nginx;
+    *.$DOMAIN nginx;
     ssh.$DOMAIN unix:/etc/nginx/ssh;
-    default 127.0.0.1:443;
+    default nginx;
 #    default unix:/etc/nginx/sslh;
 }
 
 # proxy to sslh
+upstream sslh {
+    server unix:/run/socat/sslh.sock;
+}
 server {
     listen unix:/etc/nginx/sslh proxy_protocol;
 
-    proxy_pass unix:/run/socat/sslh.sock;
+    proxy_pass sslh;
 }
 
 # unwrap tls and proxy to ssh
