@@ -16,4 +16,4 @@ RUN npm exec -- grunt prod
 FROM nginx:alpine
 EXPOSE 80
 
-COPY --from=build /tmp/1000/build/prod /usr/share/nginx/html
+COPY --from=build /tmp/1000/build/prod /usr/share/nginx/html/cyberchef
