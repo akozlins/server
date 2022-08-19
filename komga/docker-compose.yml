@@ -23,8 +23,8 @@ services:
       - "tmp:/tmp"
     labels:
       - "traefik.enable=true"
-      - "traefik.http.services.komga.loadbalancer.server.port=8080"
       - "traefik.http.routers.komga.rule=PathPrefix(`/komga`)"
+      - "traefik.http.services.komga.loadbalancer.server.port=8080"
 
 volumes:
   tmp:

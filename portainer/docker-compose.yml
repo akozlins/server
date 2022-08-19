@@ -15,18 +15,19 @@ services:
   portainer:
     << : *service
     image: "portainer/portainer-ce:latest"
+    networks: [ "default", "backend" ]
 #    ports:
 #      - "127.0.0.1:9000:9000"
-    networks: [ "default", "backend" ]
     volumes:
       - "data:/data"
       - "/var/run/docker.sock:/var/run/docker.sock"
     labels:
       - "traefik.enable=true"
-      - "traefik.http.services.portainer.loadbalancer.server.port=9000"
-      - "traefik.http.routers.portainer.rule=PathPrefix(`/portainer`)"
-      - "traefik.http.routers.portainer.middlewares=portainer@docker"
       - "traefik.http.middlewares.portainer.stripprefix.prefixes=/portainer"
+      - "traefik.http.routers.portainer.middlewares=portainer"
+      - "traefik.http.routers.portainer.rule=PathPrefix(`/portainer`)"
+      - "traefik.http.routers.portainer.tls=true"
+      - "traefik.http.services.portainer.loadbalancer.server.port=9000"
 
 volumes:
   data:

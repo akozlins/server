@@ -11,4 +11,4 @@ WORKDIR /etc/unbound
 
 RUN echo 'include: "/etc/unbound/conf.d/*.conf"' >> unbound.conf
 
-CMD unbound
+CMD unbound -d

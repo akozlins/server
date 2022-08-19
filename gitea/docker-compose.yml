@@ -22,10 +22,10 @@ services:
       - "/etc/timezone:/etc/timezone:ro"
     labels:
       - "traefik.enable=true"
-      - "traefik.http.services.gitea.loadbalancer.server.port=3000"
+      - "traefik.http.middlewares.gitea.stripprefix.prefixes=/gitea"
+      - "traefik.http.routers.gitea.middlewares=gitea"
       - "traefik.http.routers.gitea.rule=PathPrefix(`/gitea`)"
-      - "traefik.http.routers.gitea.middlewares=gitea-strip"
-      - "traefik.http.middlewares.gitea-strip.stripprefix.prefixes=/gitea"
+      - "traefik.http.services.gitea.loadbalancer.server.port=3000"
 
 networks:
   default:

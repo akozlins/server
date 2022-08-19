@@ -21,8 +21,9 @@ services:
       - "./.cache/jenkins_home:/var/jenkins_home"
     labels:
       - "traefik.enable=true"
-      - "traefik.http.services.jenkins.loadbalancer.server.port=8080"
       - "traefik.http.routers.jenkins.rule=PathPrefix(`/jenkins`)"
+      - "traefik.http.routers.jenkins.tls=true"
+      - "traefik.http.services.jenkins.loadbalancer.server.port=8080"
 
   jenkins-node:
     << : *service

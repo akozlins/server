@@ -66,9 +66,9 @@ services:
       - "./traefik.yml:/etc/traefik/traefik.yml"
     labels:
       - "traefik.enable=false"
-      - "traefik.http.services.traefik.loadbalancer.server.port=8080"
-      - "traefik.http.routers.traefik.service=api@internal"
       - "traefik.http.routers.traefik.rule=(PathPrefix(`/api`) || PathPrefix(`/dashboard`))"
+      - "traefik.http.routers.traefik.service=api@internal"
+      - "traefik.http.services.traefik.loadbalancer.server.port=8080"
 
 volumes:
   socat:

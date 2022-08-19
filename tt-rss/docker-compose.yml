@@ -45,8 +45,9 @@ services:
       test: "curl --fail http://127.0.0.1/tt-rss/index.php || exit 1"
     labels:
       - "traefik.enable=true"
-      - "traefik.http.services.tt-rss.loadbalancer.server.port=80"
       - "traefik.http.routers.tt-rss.rule=PathPrefix(`/tt-rss`)"
+      - "traefik.http.routers.tt-rss.tls=true"
+      - "traefik.http.services.tt-rss.loadbalancer.server.port=80"
 
 volumes:
   db:
