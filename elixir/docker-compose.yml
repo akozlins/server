@@ -1,0 +1,37 @@
+#
+
+version: "3.9"
+
+x-service:
+  &service
+  env_file: .env
+  logging: { options: { max-size: "1m" } }
+  restart: "always"
+  stop_grace_period: "5s"
+
+services:
+
+  elixir:
+    << : *service
+    build: { context: ".", dockerfile: "Dockerfile" }
+    networks: [ "default", "backend" ]
+    ports:
+      - "0.0.0.0:8080:8080"
+    volumes:
+      - "./.cache:/1000/proj_dir"
+      - "./lighttpd.conf:/1000/lighttpd.conf:ro"
+      - "tmp:/tmp:rw"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.elixir.rule=PathPrefix(`/elixir`)"
+      - "traefik.http.services.elixir.loadbalancer.server.port=8080"
+
+volumes:
+  tmp:
+    driver_opts:
+      type: tmpfs
+      device: tmpfs
+
+networks:
+  backend:
+    external: true
