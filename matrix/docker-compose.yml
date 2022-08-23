@@ -11,15 +11,20 @@ x-service:
 
 services:
   # <https://hub.docker.com/r/matrixdotorg/synapse/>
-  synapse:
+  matrix:
     << : *service
     image: matrixdotorg/synapse:latest
-    ports:
-      - "127.0.0.1:8008:8008"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.matrix.rule=PathPrefix(`/_matrix`, `/_synapse/client`)"
+      - "traefik.http.routers.matrix.tls=true"
+      - "traefik.http.services.matrix.loadbalancer.server.port=8008"
+    networks: [ "default", "backend" ]
+#    ports:
+#      - "127.0.0.1:8008:8008"
     volumes:
       - "./data:/data:rw"
 
 networks:
-  default:
-    name: server
+  backend:
     external: true
