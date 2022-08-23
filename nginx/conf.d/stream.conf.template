@@ -25,7 +25,8 @@ map $ssl_preread_server_name $name {
 
 # proxy to sslh
 upstream sslh {
-    server unix:/run/socat/sslh.sock;
+#    server unix:/run/socat/sslh.sock;
+    server sslh:443;
 }
 server {
     listen unix:/etc/nginx/sslh proxy_protocol;

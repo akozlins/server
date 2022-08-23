@@ -19,12 +19,11 @@ services:
       - --entrypoints.http.address=:80
       - --entrypoints.https.address=:443
       - --entrypoints.https.http.tls=true
+      - --global.checknewversion=false
+      - --global.sendanonymoususage=false
       - --log.level=ERROR
       - --providers.docker.exposedbydefault=false
       - --providers.file.filename=/etc/traefik/provider.yml
-    environment:
-      - "TRAEFIK_GLOBAL_CHECKNEWVERSION=false"
-      - "TRAEFIK_GLOBAL_SENDANONYMOUSUSAGE=false"
     networks: [ "default", "backend" ]
     ports:
       - "0.0.0.0:80:80"

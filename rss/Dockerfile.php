@@ -21,6 +21,8 @@ RUN apk add --no-cache \
         -e 's/;\(error_log\) = .*/\1 = \/dev\/stderr/' \
         /etc/php8/php-fpm.conf
 
+RUN apk add --no-cache git
+
 RUN addgroup -g 1000 -S php && \
     adduser -u 1000 -S php -G php
 

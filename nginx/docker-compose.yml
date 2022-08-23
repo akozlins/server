@@ -38,7 +38,7 @@ services:
     command: >
       /etc/socat/run.sh
       ssh:127.0.0.1:1022
-      2580 8008 8053 8080
+      8080
       syncthing:127.0.0.1:8384
     network_mode: "host"
     volumes:
@@ -48,7 +48,7 @@ services:
   sslh:
     << : *service
     build: "./sslh"
-    command: --listen=0.0.0.0:443 --anyprot=127.0.0.1:1194 --on-timeout=anyprot
+    command: --listen=0.0.0.0:443 --anyprot=${DOMAIN:?}:1194 --on-timeout=anyprot
     profiles: [ "DISABLE" ]
 
   traefik:

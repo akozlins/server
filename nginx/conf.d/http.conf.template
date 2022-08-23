@@ -104,7 +104,8 @@ server {
 
     location ~ ^/(mailu|sso|static) {
         access_log logs/access_mailu.log;
-        proxy_pass http://unix:/run/socat/2580.sock;
+#        proxy_pass http://unix:/run/socat/2580.sock;
+        proxy_pass http://traefik;
         proxy_set_header X-Forwarded-For $remote_addr;
         proxy_set_header X-Forwarded-Proto $scheme;
         proxy_set_header X-Forwarded-Host $host;
@@ -122,7 +123,8 @@ server {
 
     location ~ ^/(_matrix|_synapse/client|health) {
         access_log logs/access_matrix.log;
-        proxy_pass http://unix:/run/socat/8008.sock;
+#        proxy_pass http://unix:/run/socat/8008.sock;
+        proxy_pass http://traefik;
         proxy_set_header X-Forwarded-For $remote_addr;
         proxy_set_header X-Forwarded-Proto $scheme;
         proxy_set_header X-Forwarded-Host $host;
