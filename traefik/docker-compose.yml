@@ -22,7 +22,9 @@ services:
       - --global.checknewversion=false
       - --global.sendanonymoususage=false
       - --log.level=ERROR
+      - --providers.docker=true
       - --providers.docker.exposedbydefault=false
+      - --providers.docker.network=backend
       - --providers.file.filename=/etc/traefik/provider.yml
     networks: [ "default", "backend" ]
     ports:
