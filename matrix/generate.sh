@@ -1,4 +1,5 @@
-#!/bin/sh
+#!/bin/bash
+set -euf
 
 docker run -it --rm \
     -v "$(pwd)/data:/data" \

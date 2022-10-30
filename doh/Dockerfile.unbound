@@ -5,7 +5,7 @@ FROM alpine
 EXPOSE 53/tcp
 EXPOSE 53/udp
 
-RUN apk add --no-cache unbound openssl
+RUN apk add --no-cache gettext openssl unbound
 
 WORKDIR /etc/unbound
 
