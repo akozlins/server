@@ -1,19 +1,24 @@
 #
 
-up :
-	sudo docker-compose up -d
-
 down :
 	sudo docker-compose down
 
 logs :
 	sudo docker-compose logs -f
 
-start : up
+ps :
+	sudo docker-compose ps
 
-stop : down
+pull :
+	sudo docker-compose pull
 
 restart : | stop start
 
-pull :
-	sudo docker-coupose pull
+up :
+	sudo docker-compose up -d
+
+
+
+start : up
+
+stop : down
