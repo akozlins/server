@@ -1,6 +1,8 @@
 #!/bin/bash
 set -euf
 
+# <https://hub.docker.com/r/matrixdotorg/synapse>
+
 docker run -it --rm \
     -v "$(pwd)/data:/data" \
     -e SYNAPSE_SERVER_NAME=example.com \

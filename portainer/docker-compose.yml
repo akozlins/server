@@ -16,13 +16,7 @@ services:
     << : *service
     image: "portainer/portainer-ce:latest"
     command: >
-      --admin-password '${PORTAINER_ADMIN_PASSWORD:?}'
-    networks: [ "default", "backend" ]
-#    ports:
-#      - "127.0.0.1:9000:9000"
-    volumes:
-      - "data:/data"
-      - "/var/run/docker.sock:/var/run/docker.sock"
+      --admin-password-file /tmp/portainer_password
     labels:
       - "traefik.enable=true"
       - "traefik.http.middlewares.portainer.stripprefix.prefixes=/portainer"
@@ -30,6 +24,13 @@ services:
       - "traefik.http.routers.portainer.rule=PathPrefix(`/portainer`)"
       - "traefik.http.routers.portainer.tls=true"
       - "traefik.http.services.portainer.loadbalancer.server.port=9000"
+    networks: [ "default", "backend" ]
+#    ports:
+#      - "127.0.0.1:9000:9000"
+    volumes:
+      - "data:/data"
+      - "./portainer_password:/tmp/portainer_password:ro"
+      - "/var/run/docker.sock:/var/run/docker.sock"
 
 volumes:
   data:

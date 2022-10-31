@@ -13,17 +13,19 @@ services:
   jenkins:
     << : *service
     image: "jenkins/jenkins:lts-jdk11"
-#    ports:
-#      - "127.0.0.1:8080:8080"
-#      - "127.0.0.1:50000:50000"
-    networks: [ "default", "backend" ]
-    volumes:
-      - "./.cache/jenkins_home:/var/jenkins_home"
+    environment:
+      - JENKINS_OPTS=--prefix=/jenkins
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.jenkins.rule=PathPrefix(`/jenkins`)"
       - "traefik.http.routers.jenkins.tls=true"
       - "traefik.http.services.jenkins.loadbalancer.server.port=8080"
+    networks: [ "default", "backend" ]
+#    ports:
+#      - "127.0.0.1:8080:8080"
+#      - "127.0.0.1:50000:50000"
+    volumes:
+      - "./.cache/jenkins_home:/var/jenkins_home"
 
   jenkins-node:
     << : *service

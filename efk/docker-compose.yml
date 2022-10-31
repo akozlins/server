@@ -2,10 +2,11 @@
 
 version: '3.9'
 
-x-service:
-  &service
+x-service: &service
   env_file: ".env"
-  logging: { options: { max-size: "1m" } }
+  logging:
+    { options: { max-size: "1m" } }
+#    { driver: "fluentd", options: { fluentd-address: "127.0.0.1:24224", fluentd-async: "true" } }
   restart: "always"
   stop_grace_period: "5s"
 

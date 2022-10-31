@@ -13,6 +13,12 @@ services:
   komga:
     << : *service
     image: gotson/komga
+    environment:
+      - SERVER_SERVLET_CONTEXT_PATH=/komga/
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.komga.rule=PathPrefix(`/komga`)"
+      - "traefik.http.services.komga.loadbalancer.server.port=8080"
     networks: [ "default", "backend" ]
 #    ports:
 #      - "127.0.0.1:8080:8080"
@@ -21,10 +27,6 @@ services:
       - "./.cache/config:/config"
       - "./.cache/data:/data"
       - "tmp:/tmp"
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.komga.rule=PathPrefix(`/komga`)"
-      - "traefik.http.services.komga.loadbalancer.server.port=8080"
 
 volumes:
   tmp:

@@ -4,6 +4,8 @@ location / {
     return 444;
 }
 
+location /1000/ {}
+
 error_page 400 =444 /444.html;
 location = /444.html {
     return 444;
