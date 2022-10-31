@@ -11,58 +11,62 @@ x-service:
 
 services:
 
-  postgres:
+  rss_db:
     << : *service
     image: "postgres:alpine"
     environment:
-      - POSTGRES_DB=db
-      - POSTGRES_PASSWORD=password
-      - POSTGRES_USER=user
+      - POSTGRES_DB=db_name
+      - POSTGRES_PASSWORD=db_password
+      - POSTGRES_USER=db_user
+    healthcheck:
+      test: "/backup/backup.sh || exit 1"
+      interval: 30s
+      start_period: 30s
     volumes:
-      - "postgres:/var/lib/postgresql/data"
+      - "db:/var/lib/postgresql/data"
+      - "./backup:/backup:rw"
 
-  php:
+  rss_php:
     << : *service
     build: { context: ".", dockerfile: "Dockerfile.php" }
     command: "/run.sh"
-    depends_on: [ "postgres" ]
+    depends_on: [ "rss_db" ]
     environment:
-      - TTRSS_DB_HOST=postgres
-      - TTRSS_DB_NAME=db
-      - TTRSS_DB_PASS=password
-      - TTRSS_DB_USER=user
+      - TTRSS_DB_HOST=rss_db
+      - TTRSS_DB_NAME=db_name
+      - TTRSS_DB_PASS=db_password
+      - TTRSS_DB_USER=db_user
       - TTRSS_PHP_EXECUTABLE=/usr/bin/php8
       - TTRSS_PLUGINS=auth_internal
-      - TTRSS_SELF_URL_PATH=/tt-rss
+      - TTRSS_SELF_URL_PATH=/rss
       # default lifetime of a session cookie in seconds
       # (0 means cookie will be deleted when browser closes)
       - TTRSS_SESSION_COOKIE_LIFETIME=31415927
     volumes:
       - "./run.sh:/run.sh:ro"
-      - "./backup:/backup:rw"
-      - "./.cache/tt-rss:/var/www/html/tt-rss"
+      - "./.cache/tt-rss:/var/www/html/rss"
 
-  nginx:
+  rss:
     << : *service
     image: "nginx:alpine"
-    depends_on: [ "php" ]
+    depends_on: [ "rss_php" ]
     healthcheck:
-      test: "curl --fail http://127.0.0.1/tt-rss/index.php || exit 1"
+      test: "curl --fail http://127.0.0.1/rss/index.php || exit 1"
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.tt-rss.rule=PathPrefix(`/tt-rss`)"
-      - "traefik.http.routers.tt-rss.tls=true"
-      - "traefik.http.services.tt-rss.loadbalancer.server.port=80"
+      - "traefik.http.routers.rss.rule=PathPrefix(`/rss`)"
+      - "traefik.http.routers.rss.tls=true"
+      - "traefik.http.services.rss.loadbalancer.server.port=80"
     networks: [ "default", "backend" ]
 #    ports:
 #      - "127.0.0.1:80:80"
     volumes:
       - "./nginx.conf:/etc/nginx/nginx.conf:ro"
-      - "./.cache/tt-rss:/var/www/html/tt-rss"
+      - "./.cache/tt-rss:/var/www/html/rss"
 
 
 volumes:
-  postgres:
+  db:
 
 networks:
   backend:

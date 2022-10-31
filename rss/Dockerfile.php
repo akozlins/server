@@ -5,7 +5,6 @@ FROM alpine
 EXPOSE 9000/tcp
 
 RUN apk add --no-cache \
-        postgresql-client \
         php8 php8-curl php8-dom php8-fileinfo php8-fpm php8-json php8-iconv \
         php8-intl php8-mbstring php8-pcntl php8-pdo_pgsql php8-posix \
         php8-session php8-xml php8-zip && \
@@ -21,7 +20,7 @@ RUN apk add --no-cache \
         -e 's/;\(error_log\) = .*/\1 = \/dev\/stderr/' \
         /etc/php8/php-fpm.conf
 
-RUN apk add --no-cache git
+RUN apk add --no-cache git postgresql-client
 
 RUN addgroup -g 1000 -S php && \
     adduser -u 1000 -S php -G php
