@@ -10,13 +10,12 @@ x-service:
   stop_grace_period: "5s"
 
 services:
-  # <https://hub.docker.com/r/matrixdotorg/synapse/>
   matrix:
     << : *service
     image: matrixdotorg/synapse:latest
     environment:
-      - UID=1000
       - GID=1000
+      - UID=1000
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.matrix.rule=PathPrefix(`/_matrix`, `/_synapse/client`)"

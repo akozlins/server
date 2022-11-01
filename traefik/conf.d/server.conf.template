@@ -72,10 +72,10 @@ location = /.well-known/security.txt {
 
 location = /.well-known/matrix/client {
     default_type application/json;
-    return 200 '{ "m.homeserver" : { "base_url" : "https://matrix.$DOMAIN" } }';
+    return 200 '{ "m.homeserver" : { "base_url" : "https://matrix.$DOMAIN" } }\n';
 }
 
 location = /.well-known/matrix/server {
     default_type application/json;
-    return 200 '{ "m.server" : "matrix.$DOMAIN:443" }';
+    return 200 '{ "m.server" : "matrix.$DOMAIN:443" }\n';
 }
