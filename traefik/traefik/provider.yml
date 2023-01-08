@@ -10,7 +10,4 @@ tls:
       minVersion: VersionTLS13
       sniStrict: false
   stores:
-    default:
-      defaultCertificate:
-        certFile: /etc/letsencrypt/live/example.com/fullchain.pem
-        keyFile: /etc/letsencrypt/live/example.com/privkey.pem
+    default: {}

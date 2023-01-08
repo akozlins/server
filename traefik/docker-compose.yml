@@ -21,11 +21,12 @@ services:
       - --entrypoints.https.http.tls=true
       - --global.checknewversion=false
       - --global.sendanonymoususage=false
-      - --log.level=ERROR
+      - --log.level=WARN
+      - --ping
       - --providers.docker=true
       - --providers.docker.exposedbydefault=false
       - --providers.docker.network=backend
-      - --providers.file.filename=/etc/traefik/provider.yml
+      - --providers.file.directory=/etc/traefik
     healthcheck:
       test: "traefik healthcheck --ping || exit 1"
     networks: [ "default", "backend" ]
@@ -65,7 +66,7 @@ services:
     network_mode: "host"
     volumes:
       - "socat:/run/socat:rw"
-      - ./socat:/etc/socat:ro
+      - "./socat:/etc/socat:ro"
 
 volumes:
   socat:
