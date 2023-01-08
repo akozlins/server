@@ -15,6 +15,8 @@ services:
   cyberchef:
     << : *service
     build: { context: ".", dockerfile: "Dockerfile", args: [ "TAG=v9.48.0" ] }
+    healthcheck:
+      test: "curl --fail http://127.0.0.1/cyberchef/ || exit 1"
     networks: [ "default", "backend" ]
 #    ports:
 #      - "127.0.0.1:8080:80"

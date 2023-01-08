@@ -26,6 +26,8 @@ services:
       - --providers.docker.exposedbydefault=false
       - --providers.docker.network=backend
       - --providers.file.filename=/etc/traefik/provider.yml
+    healthcheck:
+      test: "traefik healthcheck --ping || exit 1"
     networks: [ "default", "backend" ]
     ports:
       - "0.0.0.0:80:80"
@@ -40,6 +42,8 @@ services:
   nginx:
     << : *service
     image: "nginx:alpine"
+    healthcheck:
+      test: "curl --fail http://127.0.0.1/index.html || exit 1"
 #    ports:
 #      - "0.0.0.0:80:80"
     volumes:
