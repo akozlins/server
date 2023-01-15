@@ -34,7 +34,7 @@ services:
   # create unix sockets that redirect to 127.0.0.1:$port on host network
   socat:
     << : *service
-    build: "./socat"
+    build: "../socat"
     command: >
       /etc/socat/run.sh
       ssh:127.0.0.1:1022
@@ -43,7 +43,7 @@ services:
     network_mode: "host"
     volumes:
       - "socat:/run/socat:rw"
-      - ./socat:/etc/socat:ro
+      - ../socat:/etc/socat:ro
 
   sslh:
     << : *service

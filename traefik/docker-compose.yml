@@ -59,14 +59,14 @@ services:
 
   socat:
     << : *service
-    build: "./socat"
-    command: >
-      /etc/socat/run.sh
-      syncthing:127.0.0.1:8384
+    build: "../socat"
+    command:
+      - "/etc/socat/run.sh"
+      - "syncthing:127.0.0.1:8384"
     network_mode: "host"
     volumes:
       - "socat:/run/socat:rw"
-      - "./socat:/etc/socat:ro"
+      - "../socat:/etc/socat:ro"
 
 volumes:
   socat:
