@@ -1,0 +1,23 @@
+#
+
+version: '3.9'
+
+x-service:
+  &service
+  env_file: ".env"
+  logging:
+    { options: { max-size: "1m" } }
+  restart: "always"
+  stop_grace_period: "5s"
+
+services:
+
+  qbittorrent:
+    << : *service
+    build: { context: ".", dockerfile: "Dockerfile" }
+    ports:
+      - "8080:8080"
+    volumes:
+      - "./.cache/downloads:/qbittorrent/downloads"
+      - "./.cache/qBittorrent:/qbittorrent/qBittorrent"
+#      - "./qBittorrent.conf:/qbittorrent/qBittorrent/qBittorrent.conf"
