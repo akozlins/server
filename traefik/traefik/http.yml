@@ -1,0 +1,17 @@
+#
+
+http:
+  middlewares:
+    auth:
+      basicauth:
+       users:
+  routers:
+    test:
+      rule: "PathPrefix(`/test/`)"
+      service: test
+      tls: {}
+  services:
+    test:
+      loadBalancer:
+        servers:
+        - url: "http://127.0.0.1/test/"
