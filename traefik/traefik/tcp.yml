@@ -1,0 +1,21 @@
+#
+
+tcp:
+  routers:
+    ssh-router:
+      rule: "HostSNI(`ssh.{{env "DOMAIN"}}`)"
+      service: "ssh-service"
+      tls: true
+    vpn-router:
+      rule: "HostSNI(`vpn.{{env "DOMAIN"}}`)"
+      service: "vpn-service"
+      tls: true
+  services:
+    ssh-service:
+      loadBalancer:
+        servers:
+          - address: "{{env "DOMAIN"}}:22"
+    vpn-service:
+      loadBalancer:
+        servers:
+          - address: "{{env "DOMAIN"}}:1194"
