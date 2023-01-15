@@ -1,0 +1,36 @@
+#
+
+version: "3.9"
+
+x-service:
+  &service
+  env_file: ".env"
+  logging: { options: { max-size: "1m" } }
+  restart: "always"
+  stop_grace_period: "5s"
+
+services:
+  upkuma:
+    << : *service
+#    image: "louislam/uptime-kuma"
+    build: { context: ".", dockerfile: "Dockerfile", }
+    environment:
+      - "PGID=1000"
+      - "PUID=1000"
+      - "UPTIME_KUMA_BASE_PATH=/upkuma/"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.upkuma.middlewares=auth@file"
+      - "traefik.http.routers.upkuma.rule=PathPrefix(`/upkuma`)"
+#      - "traefik.http.routers.upkuma.tls=true"
+      - "traefik.http.services.upkuma.loadbalancer.server.port=3001"
+    networks: [ "default", "backend" ]
+#    ports:
+#      - "127.0.0.1:3001:3001"
+    volumes:
+      - "./.cache:/app/data"
+
+networks:
+  default:
+  backend:
+    external: true
