@@ -12,21 +12,23 @@ x-service:
 services:
   searx:
     << : *service
-    image: "searx/searx"
+    image: "searxng/searxng"
     environment:
       - "BASE_URL=/searx/"
+      - "SEARXNG_BASE_URL=/searx/"
     healthcheck:
       test: "wget -q --spider http://127.0.0.1:8080/searx/ || exit 1"
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.searx.rule=PathPrefix(`/searx`)"
-      - "traefik.http.routers.searx.tls=true"
+#      - "traefik.http.routers.searx.tls=true"
       - "traefik.http.services.searx.loadbalancer.server.port=8080"
     networks: [ "default", "backend" ]
 #    ports:
 #      - "127.0.0.1:8080:8080"
     volumes:
       - ".cache:/etc/searx"
+      - ".cache:/etc/searxng"
       - "uwsgi:/var/log/uwsgi:rw"
 
 volumes:
