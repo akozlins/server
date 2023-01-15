@@ -5,10 +5,11 @@ FROM alpine
 EXPOSE 53/tcp
 EXPOSE 53/udp
 
-RUN apk add --no-cache gettext openssl unbound
+RUN apk add --no-cache \
+    bind-tools gettext openssl unbound
 
 WORKDIR /etc/unbound
 
 RUN echo 'include: "/etc/unbound/conf.d/*.conf"' >> unbound.conf
 
-CMD unbound -d
+CMD [ "unbound", "-d" ]

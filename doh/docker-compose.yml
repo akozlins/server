@@ -14,29 +14,31 @@ services:
   unbound:
     << : *service
     build: { context: ".", dockerfile: "./Dockerfile.unbound" }
-    networks: [ "default", "backend" ]
-    volumes:
-      - "./unbound.conf:/etc/unbound/conf.d/unbound.conf:ro"
     labels:
       - "traefik.enable=true"
       - "traefik.tcp.routers.unbound.rule=HostSNI(`dot.${DOMAIN:?}`)"
       - "traefik.tcp.routers.unbound.tls=true"
       - "traefik.tcp.services.unbound.loadbalancer.server.port=53"
+    networks: [ "default", "backend" ]
+#    ports:
+#      - 127.0.0.1:53:53
+    volumes:
+      - "./unbound.conf:/etc/unbound/conf.d/unbound.conf:ro"
 
   doh:
     << : *service
     build: { context: ".", dockerfile: "./Dockerfile.doh-server" }
     depends_on: [ "unbound" ]
-    networks: [ "default", "backend" ]
-#    ports:
-#      - 127.0.0.1:8053:8053
-    volumes:
-      - "./doh-server.conf:/doh-server.conf:ro"
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.doh.rule=PathPrefix(`/doh`)"
       - "traefik.http.routers.doh.tls=true"
       - "traefik.http.services.doh.loadbalancer.server.port=8053"
+    networks: [ "default", "backend" ]
+#    ports:
+#      - 127.0.0.1:8053:8053
+    volumes:
+      - "./doh-server.conf:/doh-server.conf:ro"
 
 networks:
   backend:

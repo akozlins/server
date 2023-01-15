@@ -5,6 +5,7 @@ http:
     auth:
       basicauth:
        users:
+       # `htpasswd -nb -B username password | cut -d ":" -f 2`
   routers:
     test:
       rule: "PathPrefix(`/test/`)"

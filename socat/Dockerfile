@@ -2,6 +2,7 @@
 
 FROM alpine
 
-RUN apk add --no-cache bash socat
+RUN apk add --no-cache \
+    bash socat
 
 WORKDIR /run/socat

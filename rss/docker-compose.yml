@@ -29,7 +29,7 @@ services:
   rss_php:
     << : *service
     build: { context: ".", dockerfile: "Dockerfile.php" }
-    command: "/run.sh"
+    command: [ "/run.sh" ]
     depends_on: [ "rss_db" ]
     environment:
       - TTRSS_DB_HOST=rss_db
