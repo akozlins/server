@@ -48,7 +48,7 @@ services:
   sslh:
     << : *service
     build: "../sslh"
-    command: --listen=0.0.0.0:443 --anyprot=${DOMAIN:?}:1194 --on-timeout=anyprot
+    command: [ "sslh", "-f", "--listen=0.0.0.0:443", "--anyprot=${DOMAIN:?}:1194", "--on-timeout=anyprot" ]
     profiles: [ "DISABLE" ]
 
   traefik:
