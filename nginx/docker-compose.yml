@@ -47,7 +47,7 @@ services:
 
   sslh:
     << : *service
-    build: "./sslh"
+    build: "../sslh"
     command: --listen=0.0.0.0:443 --anyprot=${DOMAIN:?}:1194 --on-timeout=anyprot
     profiles: [ "DISABLE" ]
 
