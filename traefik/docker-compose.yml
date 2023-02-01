@@ -37,9 +37,7 @@ services:
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock"
       - "./traefik:/etc/traefik"
-#      - "/etc/letsencrypt:/etc/letsencrypt:ro"
-      - "/etc/letsencrypt/archive:/etc/letsencrypt/archive:ro"
-      - "/etc/letsencrypt/live/${DOMAIN:?}:/etc/letsencrypt/live/example.com:ro"
+      - "./letsencrypt/live:/etc/letsencrypt/live:ro"
 
   nginx:
     << : *service
@@ -53,6 +51,7 @@ services:
       - "./conf.d:/etc/nginx/templates:ro"
       - "/opt/html:/opt/html:ro"
       - "socat:/run/socat:rw"
+      - "./letsencrypt/live:/etc/letsencrypt/live:ro"
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.nginx.rule=PathPrefix(`/`)"

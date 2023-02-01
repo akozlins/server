@@ -2,8 +2,10 @@
 
 FROM alpine AS build
 
-RUN apk add --no-cache git make gcc
-RUN apk add --no-cache musl-dev libconfig-dev pcre2-dev
+RUN apk add --no-cache \
+    git make gcc
+RUN apk add --no-cache \
+    libconfig-dev musl-dev pcre2-dev perl
 
 WORKDIR /src
 RUN git clone https://github.com/yrutschle/sslh --branch=v1.22 .
