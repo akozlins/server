@@ -7,12 +7,16 @@ http:
        users:
        # `htpasswd -nb -B username password | cut -d ":" -f 2`
   routers:
-    test:
-      rule: "PathPrefix(`/test/`)"
-      service: test
-      tls: {}
+    test-router:
+      rule: "Host(`test.{{env "DOMAIN"}}`)"
+      service: "test-service"
+      tls: true
+  serversTransports:
+    test-transport:
+      serverName: "test.example.com"
   services:
-    test:
+    test-service:
       loadBalancer:
         servers:
-        - url: "http://127.0.0.1/test/"
+        - url: "https://10.8.0.1"
+        serversTransport: "test-transport"

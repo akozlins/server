@@ -22,7 +22,7 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.searx.middlewares=auth@file"
       - "traefik.http.routers.searx.rule=PathPrefix(`/searx`)"
-#      - "traefik.http.routers.searx.tls=true"
+      - "traefik.http.routers.searx.tls=true"
       - "traefik.http.services.searx.loadbalancer.server.port=8080"
     networks: [ "default", "backend" ]
 #    ports:
