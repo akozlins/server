@@ -52,7 +52,7 @@ services:
       "--on-timeout=anyprot"
     ]
     depends_on: [ "nginx" ]
-    profiles: [ "DISABLE" ]
+    profiles: [ "TEST" ]
 
   traefik:
     << : *service
