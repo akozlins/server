@@ -16,6 +16,7 @@ services:
     image: "traefik:latest"
     command:
       - --accesslog=true
+      - --api.dashboard=true
       - --entrypoints.http.address=:80
       - --entrypoints.http.http.redirections.entrypoint.to=https
       - --entrypoints.http.http.redirections.entrypoint.scheme=https
@@ -31,6 +32,12 @@ services:
       - --providers.file.directory=/etc/traefik
     healthcheck:
       test: "traefik healthcheck --ping || exit 1"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.api.middlewares=auth@file"
+      - "traefik.http.routers.api.rule=Host(`traefik.${DOMAIN:?}`)"
+      - "traefik.http.routers.api.service=api@internal"
+      - "traefik.http.routers.api.tls=true"
     networks: [ "default", "backend" ]
     ports:
       - "0.0.0.0:80:80"
