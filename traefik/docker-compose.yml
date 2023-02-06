@@ -28,7 +28,7 @@ services:
       - --ping
       - --providers.docker=true
       - --providers.docker.exposedbydefault=false
-      - --providers.docker.network=backend
+      - --providers.docker.network=traefik
       - --providers.file.directory=/etc/traefik
     healthcheck:
       test: "traefik healthcheck --ping || exit 1"
@@ -38,7 +38,7 @@ services:
       - "traefik.http.routers.api.rule=Host(`traefik.${DOMAIN:?}`)"
       - "traefik.http.routers.api.service=api@internal"
       - "traefik.http.routers.api.tls=true"
-    networks: [ "default", "backend" ]
+    networks: [ "default", "traefik", "traefik_jenkins", "traefik_portainer", "traefik_upkuma" ]
     ports:
       - "0.0.0.0:80:80"
       - "0.0.0.0:443:443"
@@ -62,6 +62,7 @@ services:
       - "socat:/run/socat:rw"
       - "./letsencrypt/live:/etc/letsencrypt/live:ro"
     labels:
+      - "traefik.docker.network=traefik_default"
       - "traefik.enable=true"
       - "traefik.http.routers.nginx.rule=PathPrefix(`/`)"
       - "traefik.http.services.nginx.loadbalancer.server.port=80"
@@ -89,6 +90,7 @@ services:
     ]
     depends_on: [ "nginx" ]
     labels:
+      - "traefik.docker.network=traefik_default"
       - "traefik.enable=true"
       - "traefik.tcp.routers.sslh.rule=HostSNI(`tls.${DOMAIN:?}`)"
       - "traefik.tcp.routers.sslh.tls.passthrough=true"
@@ -99,6 +101,7 @@ services:
     << : *service
     image: "containous/whoami"
     labels:
+      - "traefik.docker.network=traefik_default"
       - "traefik.enable=true"
       - "traefik.http.routers.whoami.rule=PathPrefix(`/whoami`)"
       - "traefik.http.routers.whoami.tls=true"
@@ -111,5 +114,8 @@ volumes:
       device: tmpfs
 
 networks:
-  backend:
-    external: true
+  default:
+  traefik: { external: true }
+  traefik_jenkins: { external: true }
+  traefik_portainer: { external: true }
+  traefik_upkuma: { external: true }

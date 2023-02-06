@@ -19,7 +19,7 @@ services:
       - "traefik.http.routers.mailu.rule=Host(`tailscale.${DOMAIN:?}`)"
       - "traefik.http.routers.headscale.tls=true"
       - "traefik.http.services.headscale.loadbalancer.server.port=8080"
-    networks: [ "default", "backend" ]
+    networks: [ "traefik" ]
 #    ports:
 #      - "127.0.0.1:8080:8080"
 #      - "127.0.0.1:9090:9090"
@@ -28,5 +28,4 @@ services:
       - "./.cahce:/etc/headscale"
 
 networks:
-  backend:
-    external: true
+  traefik: { external: true }

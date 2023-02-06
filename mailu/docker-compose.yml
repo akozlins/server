@@ -16,7 +16,7 @@ services:
     image: "${DOCKER_ORG:-mailu}/${DOCKER_PREFIX:-}nginx:${MAILU_VERSION:?}"
     depends_on: [ "resolver" ]
     dns: "${DNS:?}"
-    networks: [ "default", "backend" ]
+    networks: [ "default", "traefik_mailu" ]
     ports:
 #      - "127.0.0.1:2580:80"
       - "${IP4:?}:25:25"
@@ -92,5 +92,4 @@ networks:
       driver: "default"
       config:
         - subnet: "${SUBNET:?}"
-  backend:
-    external: true
+  traefik_mailu: { external: true }

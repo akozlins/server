@@ -14,7 +14,7 @@ services:
   elixir:
     << : *service
     build: { context: ".", dockerfile: "Dockerfile" }
-    networks: [ "default", "backend" ]
+    networks: [ "traefik" ]
     ports:
       - "0.0.0.0:8080:8080"
     volumes:
@@ -33,5 +33,4 @@ volumes:
       device: tmpfs
 
 networks:
-  backend:
-    external: true
+  traefik: { external: true }

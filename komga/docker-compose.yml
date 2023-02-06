@@ -20,7 +20,7 @@ services:
       - "traefik.http.routers.komga.rule=PathPrefix(`/komga`)"
       - "traefik.http.routers.komga.tls=true"
       - "traefik.http.services.komga.loadbalancer.server.port=8080"
-    networks: [ "default", "backend" ]
+    networks: [ "traefik" ]
 #    ports:
 #      - "127.0.0.1:8080:8080"
     user: "1000:1000"
@@ -33,5 +33,4 @@ volumes:
   tmp:
 
 networks:
-  backend:
-    external: true
+  traefik: { external: true }

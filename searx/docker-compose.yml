@@ -24,7 +24,7 @@ services:
       - "traefik.http.routers.searx.rule=PathPrefix(`/searx`)"
       - "traefik.http.routers.searx.tls=true"
       - "traefik.http.services.searx.loadbalancer.server.port=8080"
-    networks: [ "default", "backend" ]
+    networks: [ "traefik" ]
 #    ports:
 #      - "127.0.0.1:8080:8080"
     volumes:
@@ -39,5 +39,4 @@ volumes:
       device: tmpfs
 
 networks:
-  backend:
-    external: true
+  traefik: { external: true }

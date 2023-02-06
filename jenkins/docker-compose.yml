@@ -18,11 +18,12 @@ services:
     healthcheck:
       test: "curl --fail http://127.0.0.1:8080/jenkins/login || exit 1"
     labels:
+      - "traefik.docker.network=traefik_jenkins"
       - "traefik.enable=true"
       - "traefik.http.routers.jenkins.rule=PathPrefix(`/jenkins`)"
       - "traefik.http.routers.jenkins.tls=true"
       - "traefik.http.services.jenkins.loadbalancer.server.port=8080"
-    networks: [ "default", "backend" ]
+    networks: [ "default", "traefik_jenkins" ]
 #    ports:
 #      - "127.0.0.1:8080:8080"
 #      - "127.0.0.1:50000:50000"
@@ -36,5 +37,5 @@ services:
       - "./.cache/node:/home/jenkins"
 
 networks:
-  backend:
-    external: true
+  default:
+  traefik_jenkins: { external: true }

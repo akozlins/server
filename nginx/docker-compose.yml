@@ -18,7 +18,7 @@ services:
     depends_on: [ "traefik" ]
     healthcheck:
       test: "curl --fail http://127.0.0.1/index.html || exit 1"
-    networks: [ "default", "backend" ]
+    networks: [ "default", "nginx" ]
     ports:
       - "0.0.0.0:80:80"
       - "0.0.0.0:443:8443"
@@ -60,7 +60,7 @@ services:
     environment:
       - "TRAEFIK_GLOBAL_CHECKNEWVERSION=false"
       - "TRAEFIK_GLOBAL_SENDANONYMOUSUSAGE=false"
-    networks: [ "default", "backend" ]
+    networks: [ "default", "nginx" ]
 #    ports:
 #      - "0.0.0.0:80:80"
 #      - "0.0.0.0:443:443"
@@ -80,5 +80,4 @@ volumes:
       device: tmpfs
 
 networks:
-  backend:
-    external: true
+  nginx: { external: true }

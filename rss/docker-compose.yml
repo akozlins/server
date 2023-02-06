@@ -57,7 +57,7 @@ services:
       - "traefik.http.routers.rss.rule=PathPrefix(`/rss`)"
       - "traefik.http.routers.rss.tls=true"
       - "traefik.http.services.rss.loadbalancer.server.port=80"
-    networks: [ "default", "backend" ]
+    networks: [ "traefik" ]
 #    ports:
 #      - "127.0.0.1:80:80"
     volumes:
@@ -69,5 +69,4 @@ volumes:
   db:
 
 networks:
-  backend:
-    external: true
+  traefik: { external: true }

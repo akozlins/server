@@ -18,13 +18,14 @@ services:
     command: >
       --admin-password-file /tmp/portainer_password
     labels:
+      - "traefik.docker.network=traefik_portainer"
       - "traefik.enable=true"
       - "traefik.http.middlewares.portainer.stripprefix.prefixes=/portainer"
       - "traefik.http.routers.portainer.middlewares=portainer"
       - "traefik.http.routers.portainer.rule=PathPrefix(`/portainer`)"
       - "traefik.http.routers.portainer.tls=true"
       - "traefik.http.services.portainer.loadbalancer.server.port=9000"
-    networks: [ "default", "backend" ]
+    networks: [ "traefik_portainer" ]
 #    ports:
 #      - "127.0.0.1:9000:9000"
     volumes:
@@ -36,5 +37,4 @@ volumes:
   data:
 
 networks:
-  backend:
-    external: true
+  traefik_portainer: { external: true }
