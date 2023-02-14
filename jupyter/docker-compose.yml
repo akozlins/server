@@ -1,0 +1,35 @@
+#
+
+version: "3.9"
+
+x-service:
+  &service
+  env_file: ".env"
+  logging: { options: { max-size: "1m" } }
+  restart: "always"
+  stop_grace_period: "5s"
+
+services:
+  jupyter:
+    << : *service
+    image: "jupyter/scipy-notebook"
+    command: [ "start-notebook.sh", "--NotebookApp.base_url=/jupyter", "--NotebookApp.token=" ]
+    environment:
+      - "NB_GID=1000"
+      - "NB_UID=1000"
+    healthcheck: { test: "true" }
+    labels:
+      - "traefik.docker.network=traefik_jupyter"
+      - "traefik.enable=true"
+      - "traefik.http.routers.jupyter.middlewares=authelia@docker"
+      - "traefik.http.routers.jupyter.rule=PathPrefix(`/jupyter`)"
+      - "traefik.http.routers.jupyter.tls=true"
+      - "traefik.http.services.jupyter.loadbalancer.server.port=8888"
+    networks: [ "traefik_jupyter" ]
+#    ports:
+#      - "127.0.0.1:8888:8888"
+    volumes:
+      - "./.cache:/home/jovyan"
+
+networks:
+  traefik_jupyter: { external: true }
