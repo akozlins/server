@@ -22,7 +22,7 @@ services:
       - "traefik.enable=true"
       - "traefik.http.middlewares.portainer.stripprefix.prefixes=/portainer"
       - "traefik.http.routers.portainer.middlewares=portainer"
-      - "traefik.http.routers.portainer.rule=PathPrefix(`/portainer`)"
+      - "traefik.http.routers.portainer.rule=PathPrefix(`/portainer`) && Host(`traefik.${DOMAIN:?}`)"
       - "traefik.http.routers.portainer.tls=true"
       - "traefik.http.services.portainer.loadbalancer.server.port=9000"
     networks: [ "traefik_portainer" ]
