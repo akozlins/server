@@ -27,9 +27,11 @@ services:
       - --log.level=WARN
       - --ping
       - --providers.docker=true
+      - --providers.docker.endpoint=tcp://docker_sock:2375
       - --providers.docker.exposedbydefault=false
       - --providers.docker.network=traefik
       - --providers.file.directory=/etc/traefik
+    depends_on: [ "docker_sock" ]
     healthcheck:
       test: "traefik healthcheck --ping || exit 1"
     labels:
@@ -44,7 +46,6 @@ services:
       - "0.0.0.0:443:443"
 #      - "0.0.0.0:8080:8080"
     volumes:
-      - "/var/run/docker.sock:/var/run/docker.sock"
       - "./traefik:/etc/traefik"
       - "./letsencrypt/live:/etc/letsencrypt/live:ro"
 
@@ -106,6 +107,13 @@ services:
       - "traefik.http.routers.whoami.rule=PathPrefix(`/whoami`)"
       - "traefik.http.routers.whoami.tls=true"
       - "traefik.http.services.whoami.loadbalancer.server.port=80"
+
+  docker_sock:
+    image: "tecnativa/docker-socket-proxy"
+    environment:
+      - "CONTAINERS=1"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
 
 volumes:
   socat:
