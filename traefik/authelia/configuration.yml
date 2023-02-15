@@ -1,0 +1,31 @@
+#
+
+# <https://www.authelia.com/integration/prologue/get-started/>
+# <https://www.authelia.com/configuration/miscellaneous/introduction/>
+
+authentication_backend:
+  # <https://www.authelia.com/configuration/first-factor/file/>
+  file:
+    path: "/config/users.yml"
+    watch: true
+    search:
+      email: true
+
+# <https://www.authelia.com/configuration/storage/introduction/>
+storage:
+  local:
+    path: "/config/storage.sqlite3"
+
+# <https://www.authelia.com/configuration/session/introduction/>
+session:
+  domain: "example.com"
+
+notifier:
+  filesystem:
+    filename: "/config/notifier.txt"
+
+access_control:
+  default_policy: "deny"
+  rules:
+    - domain_regex: ".*"
+      policy: "one_factor"

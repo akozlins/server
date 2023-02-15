@@ -36,6 +36,10 @@ services:
       test: "traefik healthcheck --ping || exit 1"
     labels:
       - "traefik.enable=true"
+#      - "traefik.http.middlewares.authelia.forwardAuth.address=http://authelia:9091/authelia/api/verify?rd=https://${DOMAIN:?}/authelia/#/"
+      - "traefik.http.middlewares.authelia.forwardAuth.address=http://authelia:9091/authelia/api/verify?auth=basic"
+      - "traefik.http.middlewares.authelia.forwardAuth.authResponseHeaders=Remote-User,Remote-Groups,Remote-Name,Remote-Email"
+      - "traefik.http.middlewares.authelia.forwardAuth.trustForwardHeader=true"
       - "traefik.http.routers.api.middlewares=auth@file"
       - "traefik.http.routers.api.rule=Host(`traefik.${DOMAIN:?}`)"
       - "traefik.http.routers.api.service=api@internal"
@@ -48,6 +52,26 @@ services:
     volumes:
       - "./traefik:/etc/traefik"
       - "./letsencrypt/live:/etc/letsencrypt/live:ro"
+
+  authelia:
+    << : *service
+    image: "authelia/authelia"
+    environment:
+      - "AUTHELIA_LOG_LEVEL=debug"
+      - "AUTHELIA_SERVER_PATH=authelia"
+      - "AUTHELIA_SESSION_DOMAIN=${DOMAIN}"
+      - "AUTHELIA_JWT_SECRET_FILE=/config/jwt_secret.key"
+      - "AUTHELIA_STORAGE_ENCRYPTION_KEY_FILE=/config/storage_encryption_key.key"
+      - "AUTHELIA_SESSION_SECRET_FILE=/config/session_secret.key"
+    labels:
+      - "traefik.docker.network=traefik_default"
+      - "traefik.enable=true"
+      - "traefik.http.routers.authelia.rule=PathPrefix(`/authelia`)"
+      - "traefik.http.routers.authelia.tls=true"
+      - "traefik.http.services.authelia.loadbalancer.server.port=9091"
+    user: "1000:1000"
+    volumes:
+      - "./authelia:/config:rw"
 
   docker_sock:
     image: "tecnativa/docker-socket-proxy"

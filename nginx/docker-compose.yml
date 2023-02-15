@@ -64,6 +64,7 @@ services:
     image: "containous/whoami"
     labels:
       - "traefik.enable=true"
+      - "traefik.http.routers.whoami.middlewares=authelia@docker"
       - "traefik.http.routers.whoami.rule=PathPrefix(`/whoami`)"
       - "traefik.http.routers.whoami.tls=true"
       - "traefik.http.services.whoami.loadbalancer.server.port=80"
