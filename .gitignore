@@ -1,5 +1,7 @@
 #
 
+*.key
+
 /.git
 
 .cache

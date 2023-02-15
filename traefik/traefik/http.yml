@@ -4,8 +4,10 @@ http:
   middlewares:
     auth:
       basicauth:
-       users:
        # `htpasswd -nb -B username password | cut -d ":" -f 2`
+#       users:
+       usersFile: "/etc/traefik/users.key"
+
   routers:
     test-router:
       rule: "Host(`test.{{env "DOMAIN"}}`)"

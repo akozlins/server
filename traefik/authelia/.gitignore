@@ -1,6 +1,5 @@
 #
 
-*.key
 *.sqlite3
 
 notifier.txt
