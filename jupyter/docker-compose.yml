@@ -12,7 +12,7 @@ x-service:
 services:
   jupyter:
     << : *service
-    image: "jupyter/scipy-notebook"
+    build: { context: ".", dockerfile: "Dockerfile" }
     command: [ "start-notebook.sh", "--NotebookApp.base_url=/jupyter", "--NotebookApp.token=" ]
     environment:
       - "NB_GID=1000"

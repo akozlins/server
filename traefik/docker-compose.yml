@@ -44,7 +44,7 @@ services:
       - "traefik.http.routers.api.rule=Host(`traefik.${DOMAIN:?}`)"
       - "traefik.http.routers.api.service=api@internal"
       - "traefik.http.routers.api.tls=true"
-    networks: [ "default", "traefik", "traefik_jenkins", "traefik_jupyter", "traefik_portainer", "traefik_upkuma" ]
+    networks: [ "default", "traefik", "traefik_jenkins", "traefik_jupyter", "traefik_mailu", "traefik_portainer", "traefik_upkuma" ]
     ports:
       - "0.0.0.0:80:80"
       - "0.0.0.0:443:443"

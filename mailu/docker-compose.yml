@@ -31,6 +31,7 @@ services:
       - "/etc/letsencrypt:/etc/letsencrypt:ro"
     logging: { driver: "journald", options: { tag: "mailu-front" } }
     labels:
+      - "traefik.docker.network=traefik_mailu"
       - "traefik.enable=true"
       - "traefik.http.routers.mailu.rule=Host(`mail.${DOMAIN:?}`) && PathPrefix(`/mailu`, `/sso`, `/static`)"
       - "traefik.http.routers.mailu.tls=true"

@@ -2,8 +2,8 @@
 
 tls:
   certificates:
-    - certFile: /etc/letsencrypt/live/example.com/fullchain.pem
-      keyFile: /etc/letsencrypt/live/example.com/privkey.pem
+    - certFile: "/etc/letsencrypt/live/{{env "DOMAIN"}}/fullchain.pem"
+      keyFile: "/etc/letsencrypt/live/{{env "DOMAIN"}}/privkey.pem"
   options:
     default:
       alpnProtocols: [ "h2", "http/1.1", "acme-tls/1", "dot" ]
