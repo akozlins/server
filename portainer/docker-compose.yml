@@ -4,9 +4,7 @@
 
 version: "3.9"
 
-x-service:
-  &service
-  env_file: ".env"
+x-service: &service
   logging: { options: { max-size: "1m" } }
   restart: "always"
   stop_grace_period: "5s"
@@ -15,8 +13,9 @@ services:
   portainer:
     << : *service
     image: "portainer/portainer-ce:latest"
-    command: >
-      --admin-password-file /tmp/portainer_password
+    command: [
+      "--admin-password-file", "/tmp/root_password.key"
+    ]
     labels:
       - "traefik.docker.network=traefik_portainer"
       - "traefik.enable=true"

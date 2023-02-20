@@ -2,9 +2,7 @@
 
 version: "3.9"
 
-x-service:
-  &service
-  env_file: .env
+x-service: &service
   logging: { options: { max-size: "1m" } }
   restart: "always"
   stop_grace_period: "5s"
@@ -16,7 +14,7 @@ services:
     build: { context: ".", dockerfile: "Dockerfile" }
     networks: [ "traefik" ]
     ports:
-      - "0.0.0.0:8080:8080"
+      - "127.0.0.1:8080:8080"
     volumes:
       - "./.cache:/1000/proj_dir"
       - "./lighttpd.conf:/1000/lighttpd.conf:ro"

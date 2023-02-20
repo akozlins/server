@@ -2,8 +2,7 @@
 
 version: '3.9'
 
-x-service:
-  &service
+x-service: &service
   env_file: ".env"
   logging: { options: { max-size: "1m" } }
   restart: "always"
@@ -28,7 +27,7 @@ services:
     volumes:
       - "./certs:/certs"
       - "./overrides/nginx:/overrides:ro"
-      - "/etc/letsencrypt:/etc/letsencrypt:ro"
+      - "../letsencrypt:/etc/letsencrypt:ro"
     logging: { driver: "journald", options: { tag: "mailu-front" } }
     labels:
       - "traefik.docker.network=traefik_mailu"

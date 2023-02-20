@@ -2,6 +2,8 @@
 
 *.key
 
+.cache
+
 /.git
 
-.cache
+letsencrypt

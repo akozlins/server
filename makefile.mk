@@ -1,5 +1,7 @@
 #
 
+all :
+
 build :
 	sudo docker-compose build
 

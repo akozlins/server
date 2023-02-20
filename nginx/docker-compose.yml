@@ -2,9 +2,7 @@
 
 version: "3.9"
 
-x-service:
-  &service
-  env_file: ".env"
+x-service: &service
   logging: { options: { max-size: "1m" } }
   restart: "always"
   stop_grace_period: "5s"
@@ -14,6 +12,8 @@ services:
   nginx:
     << : *service
     image: "nginx:alpine"
+    environment:
+      - "DOMAIN=${DOMAIN:?}"
     healthcheck:
       test: "curl --fail http://127.0.0.1/index.html || exit 1"
     networks: [ "default", "traefik" ]
@@ -22,7 +22,7 @@ services:
     volumes:
       - "./nginx/templates:/etc/nginx/templates:ro"
       - "./nginx/nginx.conf:/etc/nginx/nginx.conf:ro"
-      - "./letsencrypt/live:/etc/letsencrypt/live:ro"
+      - "../letsencrypt:/etc/letsencrypt:ro"
       - "/opt/html:/opt/html:ro"
       - "socat:/run/socat:rw"
     labels:

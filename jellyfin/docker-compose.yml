@@ -2,9 +2,7 @@
 
 version: "3.9"
 
-x-service:
-  &service
-  env_file: .env
+x-service: &service
   logging: { options: { max-size: "1m" } }
   restart: "always"
   stop_grace_period: "5s"
@@ -13,22 +11,21 @@ services:
   jellyfin:
     << : *service
     image: "jellyfin/jellyfin"
-    ports:
-      - "127.0.0.1:8096:8096"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.jellyfin.rule=PathPrefix(`/jellyfin`)"
+      - "traefik.http.services.jellyfin.loadbalancer.server.port=8096"
+    networks: [ "traefik" ]
+#    ports:
+#      - "127.0.0.1:8096:8096"
     user: "1000:1000"
     volumes:
       - "cache:/cache"
       - "./.cache/config:/config"
       - "./.cache/media:/media:ro"
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.jellyfin.rule=PathPrefix(`/jellyfin`)"
-      - "traefik.http.services.jellyfin.loadbalancer.server.port=8096"
 
 volumes:
   cache:
 
 networks:
-  default:
-    name: server
-    external: true
+  traefik: { external: true }
