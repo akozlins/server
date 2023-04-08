@@ -1,0 +1,41 @@
+#
+
+x-service: &service
+  cap_drop: [ "ALL" ]
+  logging: { options: { max-size: "1m" } }
+  read_only: true
+  restart: "always"
+  security_opt: [ "no-new-privileges:true" ]
+  stop_grace_period: "5s"
+
+services:
+  v2ray:
+    << : *service
+    build: { context: ".", dockerfile: "Dockerfile", }
+    environment:
+      - V2RAY_CLIENT_ID=${V2RAY_CLIENT_ID:?}
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.v2ray.rule=PathPrefix(`/v2ray`)"
+      - "traefik.http.routers.v2ray.tls=true"
+      - "traefik.http.services.v2ray.loadbalancer.server.port=9000"
+    networks: [ "traefik" ]
+#    ports:
+#      - "127.0.0.1:9000:9000"
+    volumes:
+      - "./server.json:/etc/v2ray/config.json"
+
+  client:
+    << : *service
+    build: { context: ".", dockerfile: "Dockerfile", }
+    environment:
+      - V2RAY_ADDRESS=${V2RAY_ADDRESS}
+      - V2RAY_USER_ID=${V2RAY_CLIENT_ID:?}
+    ports:
+      - "127.0.0.1:1080:1080"
+    volumes:
+      - "./client.json:/etc/v2ray/config.json"
+    profiles: [ "TEST" ]
+
+networks:
+  traefik: { external: true }
