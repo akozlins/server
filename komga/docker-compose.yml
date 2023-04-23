@@ -10,9 +10,11 @@ x-service: &service
 services:
   komga:
     << : *service
-    image: gotson/komga
+    image: "gotson/komga"
     environment:
-      - SERVER_SERVLET_CONTEXT_PATH=/komga/
+      - "SERVER_SERVLET_CONTEXT_PATH=/komga/"
+      - "KOMGA_REMEMBERME_VALIDITY=14d"
+      - "KOMGA_SESSIONTIMEOUT=7d"
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.komga.rule=PathPrefix(`/komga`)"
@@ -21,14 +23,11 @@ services:
     networks: [ "traefik" ]
 #    ports:
 #      - "127.0.0.1:8080:8080"
+    tmpfs: [ "/tmp:mode=777,exec" ]
     user: "1000:1000"
     volumes:
       - "./.cache/config:/config"
       - "./.cache/data:/data"
-      - "tmp:/tmp"
-
-volumes:
-  tmp:
 
 networks:
   traefik: { external: true }

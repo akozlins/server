@@ -18,6 +18,6 @@ EXPOSE 8053
 
 COPY --from=build /src/doh-server/doh-server /doh-server
 
-USER nobody
+USER 1000
 
 CMD [ "/doh-server", "-conf", "/doh-server.conf" ]

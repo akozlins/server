@@ -26,15 +26,8 @@ services:
 #    ports:
 #      - "127.0.0.1:8080:8080"
     volumes:
-      - ".cache:/etc/searx"
-      - ".cache:/etc/searxng"
-      - "uwsgi:/var/log/uwsgi:rw"
-
-volumes:
-  uwsgi:
-    driver_opts:
-      type: tmpfs
-      device: tmpfs
+      - "./.cache:/etc/searx"
+      - "./.cache:/etc/searxng"
 
 networks:
   traefik: { external: true }

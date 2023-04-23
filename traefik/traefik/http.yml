@@ -15,7 +15,7 @@ http:
       tls: true
   serversTransports:
     test-transport:
-      serverName: "test.example.com"
+      serverName: "test.{{env "DOMAIN"}}"
   services:
     test-service:
       loadBalancer:

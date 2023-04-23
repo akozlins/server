@@ -23,7 +23,7 @@ services:
     networks: [ "traefik" ]
 #    ports:
 #      - 127.0.0.1:8080:8080
-    tmpfs: [ "/tmp", ]
+    tmpfs: [ "/tmp:mode=777", ]
     user: "1000:1000"
     volumes:
       - ./.cache:/home/coder

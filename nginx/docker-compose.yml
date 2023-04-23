@@ -18,7 +18,7 @@ services:
       test: "curl --fail http://127.0.0.1/index.html || exit 1"
     networks: [ "default", "traefik" ]
 #    ports:
-#      - "0.0.0.0:80:80"
+#      - "0.0.0.0:80:8080"
     volumes:
       - "./nginx/templates:/etc/nginx/templates:ro"
       - "./nginx/nginx.conf:/etc/nginx/nginx.conf:ro"
@@ -27,8 +27,8 @@ services:
       - "socat:/run/socat:rw"
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.nginx.rule=PathPrefix(`/`)"
-      - "traefik.http.services.nginx.loadbalancer.server.port=80"
+      - "traefik.http.routers.nginx.rule=PathPrefix(`/`) || Host(`nginx.${DOMAIN:?}`)"
+      - "traefik.http.services.nginx.loadbalancer.server.port=8080"
 
   socat:
     << : *service

@@ -1,26 +1,28 @@
 #
 
+SUDO := sudo
+
 all :
 
 build :
-	sudo docker-compose build
+	$(SUDO) docker-compose build
 
 down :
-	sudo docker-compose down
+	$(SUDO) docker-compose down
 
 logs :
-	sudo docker-compose logs -f
+	$(SUDO) docker-compose logs -f
 
 ps :
-	sudo docker-compose ps
+	$(SUDO) docker-compose ps
 
 pull :
-	sudo docker-compose pull
+	$(SUDO) docker-compose pull
 
 restart : | stop start
 
 sh :
-	sudo docker-compose exec $(shell basename -- $(shell pwd)) sh
+	$(SUDO) docker-compose exec $(shell basename -- $(shell pwd)) sh
 
 up :
-	sudo docker-compose up -d
+	$(SUDO) docker-compose up -d

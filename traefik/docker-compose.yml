@@ -58,6 +58,7 @@ services:
     image: "authelia/authelia"
     environment:
       - "AUTHELIA_LOG_LEVEL=debug"
+      - "AUTHELIA_SERVER_DISABLE_HEALTHCHECK=true"
       - "AUTHELIA_SERVER_PATH=authelia"
       - "AUTHELIA_SESSION_DOMAIN=${DOMAIN}"
       - "AUTHELIA_JWT_SECRET_FILE=/config/jwt_secret.key"
@@ -78,6 +79,7 @@ services:
     image: "tecnativa/docker-socket-proxy"
     environment:
       - "CONTAINERS=1"
+    tmpfs: [ "/run" ]
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock"
 
