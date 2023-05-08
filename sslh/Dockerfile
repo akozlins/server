@@ -20,4 +20,5 @@ RUN apk add --no-cache libconfig pcre2
 
 USER nobody
 
+#ENTRYPOINT [ "/usr/bin/dumb-init", "--" ]
 CMD [ "sslh", "-f", "--listen=0.0.0.0:443", "--anyprot=0.0.0.0:443", "--on-timeout=anyprot" ]

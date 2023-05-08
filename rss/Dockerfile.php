@@ -21,9 +21,11 @@ RUN apk add --no-cache \
         /etc/php8/php-fpm.conf
 
 RUN apk add --no-cache \
-    git postgresql-client
+    dumb-init git postgresql-client
 
 RUN addgroup -g 1000 -S php && \
     adduser -u 1000 -S php -G php
 
 USER 1000
+
+ENTRYPOINT [ "/usr/bin/dumb-init", "--" ]

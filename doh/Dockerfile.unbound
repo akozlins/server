@@ -6,10 +6,11 @@ EXPOSE 53/tcp
 EXPOSE 53/udp
 
 RUN apk add --no-cache \
-    bind-tools gettext openssl unbound
+    bind-tools dumb-init gettext openssl unbound
 
 WORKDIR /etc/unbound
 
 RUN echo 'include: "/etc/unbound/conf.d/*.conf"' >> unbound.conf
 
+ENTRYPOINT [ "/usr/bin/dumb-init", "--" ]
 CMD [ "unbound", "-d" ]

@@ -3,6 +3,8 @@
 FROM alpine
 
 RUN apk add --no-cache \
-    bash socat
+    bash dumb-init socat
 
 WORKDIR /run/socat
+
+ENTRYPOINT [ "/usr/bin/dumb-init", "--" ]
