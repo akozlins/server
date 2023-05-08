@@ -23,7 +23,7 @@ services:
       - --global.checknewversion=false
       - --global.sendanonymoususage=false
       - --log.level=WARN
-      - --ping
+#      - --ping
       - --providers.docker=true
       - --providers.docker.endpoint=tcp://docker_sock:2375
       - --providers.docker.exposedbydefault=false
@@ -32,8 +32,8 @@ services:
     depends_on: [ "docker_sock" ]
     environment:
       - "DOMAIN=${DOMAIN:?}"
-    healthcheck:
-      test: "traefik healthcheck --ping || exit 1"
+#    healthcheck:
+#      test: "traefik healthcheck --ping || exit 1"
     labels:
       - "traefik.enable=true"
 #      - "traefik.http.middlewares.authelia.forwardAuth.address=http://authelia:9091/authelia/api/verify?rd=https://${DOMAIN:?}/authelia/#/"
@@ -41,7 +41,7 @@ services:
       - "traefik.http.middlewares.authelia.forwardAuth.authResponseHeaders=Remote-User,Remote-Groups,Remote-Name,Remote-Email"
       - "traefik.http.middlewares.authelia.forwardAuth.trustForwardHeader=true"
       - "traefik.http.routers.api.middlewares=auth@file"
-      - "traefik.http.routers.api.rule=Host(`traefik.${DOMAIN:?}`)"
+      - "traefik.http.routers.api.rule=HostRegexp(`traefik.{host:.+}`)"
       - "traefik.http.routers.api.service=api@internal"
       - "traefik.http.routers.api.tls=true"
     networks: [ "default", "traefik", "traefik_jenkins", "traefik_jupyter", "traefik_mailu", "traefik_portainer", "traefik_upkuma" ]

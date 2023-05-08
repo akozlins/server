@@ -18,7 +18,7 @@ services:
     labels:
       - "traefik.docker.network=traefik_jenkins"
       - "traefik.enable=true"
-      - "traefik.http.routers.jenkins.middlewares=auth@file"
+      - "traefik.http.routers.jenkins.middlewares=authelia@docker"
       - "traefik.http.routers.jenkins.rule=PathPrefix(`/jenkins`)"
       - "traefik.http.routers.jenkins.tls=true"
       - "traefik.http.services.jenkins.loadbalancer.server.port=8080"
