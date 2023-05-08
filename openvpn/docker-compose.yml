@@ -18,7 +18,7 @@ services:
       - "/dev/net/tun"
     labels:
       - "traefik.enable=true"
-      - "traefik.tcp.routers.openvpn.rule=HostSNI(`vpn.${DOMAIN:?}`)"
+      - "traefik.tcp.routers.openvpn.rule=HostSNIRegexp(`vpn.{host:.+}`)"
       - "traefik.tcp.routers.openvpn.tls=true"
       - "traefik.tcp.services.openvpn.loadbalancer.server.port=1194"
     networks: [ "traefik" ]

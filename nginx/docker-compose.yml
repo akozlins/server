@@ -27,7 +27,7 @@ services:
       - "socat:/run/socat:rw"
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.nginx.rule=PathPrefix(`/`) || Host(`nginx.${DOMAIN:?}`)"
+      - "traefik.http.routers.nginx.rule=PathPrefix(`/`) || HostRegexp(`nginx.{host:.+}`)"
       - "traefik.http.services.nginx.loadbalancer.server.port=8080"
 
   socat:

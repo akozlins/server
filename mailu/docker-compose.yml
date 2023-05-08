@@ -30,7 +30,7 @@ services:
     labels:
       - "traefik.docker.network=traefik_mailu"
       - "traefik.enable=true"
-      - "traefik.http.routers.mailu.rule=Host(`mail.${DOMAIN:?}`) && PathPrefix(`/mailu`, `/sso`, `/static`)"
+      - "traefik.http.routers.mailu.rule=HostRegexp(`mail.{host:.+}`) && PathPrefix(`/mailu`, `/sso`, `/static`)"
       - "traefik.http.routers.mailu.tls=true"
       - "traefik.http.services.mailu.loadbalancer.server.port=80"
 

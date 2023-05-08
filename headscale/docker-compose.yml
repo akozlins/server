@@ -15,7 +15,7 @@ services:
     command: headscale serve
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.mailu.rule=Host(`tailscale.${DOMAIN:?}`)"
+      - "traefik.http.routers.mailu.rule=HostRegexp(`tailscale.{host:.+}`)"
       - "traefik.http.routers.headscale.tls=true"
       - "traefik.http.services.headscale.loadbalancer.server.port=8080"
     networks: [ "traefik" ]
