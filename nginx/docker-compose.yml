@@ -46,18 +46,13 @@ services:
     build: "../sslh"
     command: [ "sslh", "-f",
       "--verbose=1",
-      "--listen=0.0.0.0:443",
-      "--tls=nginx:443",
-      "--anyprot=nginx:443",
+      "--listen=0.0.0.0:8080",
+      "--anyprot=nginx:8080",
       "--on-timeout=anyprot"
     ]
     depends_on: [ "nginx" ]
-    labels:
-      - "traefik.enable=true"
-      - "traefik.tcp.routers.sslh.rule=HostSNI(`tls.${DOMAIN:?}`)"
-      - "traefik.tcp.routers.sslh.tls.passthrough=true"
-      - "traefik.tcp.services.sslh.loadbalancer.server.port=443"
-    profiles: [ "TEST" ]
+    ports: [ "0.0.0.0:80:8080" ]
+#    profiles: [ "TEST" ]
 
   whoami:
     << : *service
