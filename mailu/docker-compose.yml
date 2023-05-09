@@ -10,12 +10,12 @@ services:
 
   front:
     << : *service
-    image: "${DOCKER_ORG:-mailu}/${DOCKER_PREFIX:-}nginx:${MAILU_VERSION:?}"
+    image: "${DOCKER_ORG:-ghcr.io/mailu}/${DOCKER_PREFIX:-}nginx:${MAILU_VERSION:-2.0}"
     depends_on: [ "resolver" ]
     dns: "${DNS:?}"
     networks: [ "default", "traefik_mailu" ]
     ports:
-#      - "127.0.0.1:2580:80"
+#      - "127.0.0.1:80:80"
       - "${IP4:?}:25:25"
       - "${IP4:?}:465:465"
       - "${IP4:?}:993:993"
@@ -36,7 +36,7 @@ services:
 
   admin:
     << : *service
-    image: "${DOCKER_ORG:-mailu}/${DOCKER_PREFIX:-}admin:${MAILU_VERSION:?}"
+    image: "${DOCKER_ORG:-ghcr.io/mailu}/${DOCKER_PREFIX:-}admin:${MAILU_VERSION:-2.0}"
     depends_on: [ "resolver", "redis" ]
     dns: ${DNS:?}
     volumes:
@@ -45,7 +45,7 @@ services:
 
   smtp:
     << : *service
-    image: "${DOCKER_ORG:-mailu}/${DOCKER_PREFIX:-}postfix:${MAILU_VERSION:?}"
+    image: "${DOCKER_ORG:-ghcr.io/mailu}/${DOCKER_PREFIX:-}postfix:${MAILU_VERSION:-2.0}"
     depends_on: [ "resolver", "front" ]
     dns: "${DNS:?}"
     volumes:
@@ -54,7 +54,7 @@ services:
 
   imap:
     << : *service
-    image: "${DOCKER_ORG:-mailu}/${DOCKER_PREFIX:-}dovecot:${MAILU_VERSION:?}"
+    image: "${DOCKER_ORG:-ghcr.io/mailu}/${DOCKER_PREFIX:-}dovecot:${MAILU_VERSION:-2.0}"
     depends_on: [ "resolver", "front" ]
     dns: "${DNS:?}"
     volumes:
@@ -63,24 +63,25 @@ services:
 
   antispam:
     << : *service
-    image: "${DOCKER_ORG:-mailu}/${DOCKER_PREFIX:-}rspamd:${MAILU_VERSION:?}"
-    depends_on: [ "resolver", "front" ]
+    image: "${DOCKER_ORG:-ghcr.io/mailu}/${DOCKER_PREFIX:-}rspamd:${MAILU_VERSION:-2.0}"
+    depends_on: [ "resolver", "front", "redis" ]
     dns: "${DNS:?}"
     volumes:
       - "./filter:/var/lib/rspamd"
-      - "./overrides/rspamd:/etc/rspamd/override.d:ro"
+      - "./overrides/rspamd:/overrides:ro"
 
   redis:
     << : *service
     image: "redis:alpine"
     depends_on: [ "resolver" ]
     dns: "${DNS:?}"
+    env_file: ""
     volumes:
       - "./redis:/data"
 
   resolver:
     << : *service
-    image: "${DOCKER_ORG:-mailu}/${DOCKER_PREFIX:-}unbound:${MAILU_VERSION:?}"
+    image: "${DOCKER_ORG:-ghcr.io/mailu}/${DOCKER_PREFIX:-}unbound:${MAILU_VERSION:-2.0}"
     networks: { default: { ipv4_address: "${DNS:?}" } }
 
 networks:
