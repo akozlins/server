@@ -75,7 +75,6 @@ services:
     image: "redis:alpine"
     depends_on: [ "resolver" ]
     dns: "${DNS:?}"
-    env_file: ""
     volumes:
       - "./redis:/data"
 

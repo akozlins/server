@@ -3,11 +3,11 @@
 tcp:
   routers:
     ssh-router:
-      rule: "HostSNI(`ssh.{{env "DOMAIN"}}`)"
+      rule: "HostSNIRegexp(`ssh.{host:.+}`)"
       service: "ssh-service"
       tls: true
     vpn-router:
-      rule: "HostSNI(`vpn.{{env "DOMAIN"}}`)"
+      rule: "HostSNIRegexp(`vpn.{host:.+}`)"
       service: "vpn-service"
       tls: true
   services:

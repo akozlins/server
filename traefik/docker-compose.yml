@@ -15,9 +15,9 @@ services:
     command:
       - --accesslog=true
       - --api.dashboard=true
-      - --entrypoints.http.address=:80
-      - --entrypoints.http.http.redirections.entrypoint.to=https
-      - --entrypoints.http.http.redirections.entrypoint.scheme=https
+#      - --entrypoints.http.address=:80
+#      - --entrypoints.http.http.redirections.entrypoint.to=https
+#      - --entrypoints.http.http.redirections.entrypoint.scheme=https
       - --entrypoints.https.address=:443
       - --entrypoints.https.http.tls=true
       - --global.checknewversion=false

@@ -12,8 +12,6 @@ services:
   unbound:
     << : *service
     build: { context: ".", dockerfile: "./Dockerfile.unbound" }
-#    healthcheck:
-#      test: "dig @127.0.0.1 ${DOMAIN:?} || exit 1"
     labels:
       - "traefik.enable=true"
       - "traefik.tcp.routers.unbound.rule=HostSNIRegexp(`dot.{host:.+}`)"

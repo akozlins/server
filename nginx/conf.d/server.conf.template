@@ -1,5 +1,7 @@
 #
 
+## locations
+
 location / {
     return 444;
 }
@@ -15,9 +17,7 @@ location = / { access_log off; }
 location = /favicon.ico {}
 location /.well-known/ {}
 
-
-
-# headers
+## headers
 
 # https://owasp.org/www-project-secure-headers/
 #add_header Strict-Transport-Security "max-age=31536000; includeSubDomains; preload" always;
@@ -35,9 +35,7 @@ add_header Cross-Origin-Resource-Policy "same-origin" always;
 
 #add_header Strict-Transport-Security $sts_header;
 
-
-
-# default content
+## default content
 
 location = /index.html {
     access_log off;
