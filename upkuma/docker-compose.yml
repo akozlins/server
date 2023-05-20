@@ -19,11 +19,9 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.upkuma.middlewares=authelia@docker"
       - "traefik.http.routers.upkuma.rule=PathPrefix(`/upkuma`)"
-      - "traefik.http.routers.upkuma.tls=true"
       - "traefik.http.services.upkuma.loadbalancer.server.port=3001"
     networks: [ "traefik_upkuma" ]
-#    ports:
-#      - "127.0.0.1:3001:3001"
+#    ports: [ "127.0.0.1:3001:3001" ]
     volumes:
       - "./.cache:/app/data"
 

@@ -17,8 +17,7 @@ services:
       - "traefik.http.routers.elixir.rule=PathPrefix(`/elixir`)"
       - "traefik.http.services.elixir.loadbalancer.server.port=8080"
     networks: [ "traefik" ]
-    ports:
-      - "127.0.0.1:8080:8080"
+    ports: [ "127.0.0.1:8080:8080" ]
     tmpfs: [ "/tmp:mode=777" ]
     volumes:
       - "./.cache:/1000/proj_dir"

@@ -20,11 +20,9 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.searx.middlewares=authelia@docker"
       - "traefik.http.routers.searx.rule=PathPrefix(`/searx`)"
-      - "traefik.http.routers.searx.tls=true"
       - "traefik.http.services.searx.loadbalancer.server.port=8080"
     networks: [ "traefik" ]
-#    ports:
-#      - "127.0.0.1:8080:8080"
+#    ports: [ "127.0.0.1:8080:8080" ]
     volumes:
       - "./.cache:/etc/searx"
       - "./.cache:/etc/searxng"

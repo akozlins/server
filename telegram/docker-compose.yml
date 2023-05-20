@@ -19,7 +19,6 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.flask.rule=PathPrefix(`/telegram`)"
-      - "traefik.http.routers.flask.tls=true"
       - "traefik.http.services.flask.loadbalancer.server.port=8080"
     networks: [ "traefik" ]
     volumes:

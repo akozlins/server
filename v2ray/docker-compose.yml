@@ -17,11 +17,9 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.v2ray.rule=PathPrefix(`/v2ray`)"
-      - "traefik.http.routers.v2ray.tls=true"
       - "traefik.http.services.v2ray.loadbalancer.server.port=9000"
     networks: [ "traefik" ]
-#    ports:
-#      - "127.0.0.1:9000:9000"
+#    ports: [ "127.0.0.1:9000:9000" ]
     volumes:
       - "./server.json:/etc/v2ray/config.json"
 
@@ -31,8 +29,7 @@ services:
     environment:
       - V2RAY_ADDRESS=${V2RAY_ADDRESS}
       - V2RAY_USER_ID=${V2RAY_CLIENT_ID:?}
-    ports:
-      - "127.0.0.1:1080:1080"
+    ports: [ "127.0.0.1:1080:1080" ]
     volumes:
       - "./client.json:/etc/v2ray/config.json"
     profiles: [ "TEST" ]

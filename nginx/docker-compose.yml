@@ -14,8 +14,6 @@ services:
     image: "nginx:alpine"
     environment:
       - "DOMAIN=${DOMAIN:?}"
-    healthcheck:
-      test: "curl --fail http://127.0.0.1:8080/index.html || exit 1"
     networks: [ "default", "traefik" ]
 #    ports: [ "0.0.0.0:8080:8080" ]
     volumes:
@@ -48,11 +46,11 @@ services:
       "--verbose=1",
       "--listen=0.0.0.0:8080",
       "--anyprot=nginx:8080",
+      "--openvpn=127.0.0.1:1194",
       "--on-timeout=anyprot"
     ]
     depends_on: [ "nginx" ]
     ports: [ "0.0.0.0:80:8080" ]
-#    profiles: [ "TEST" ]
 
   whoami:
     << : *service
@@ -61,7 +59,6 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.whoami.middlewares=authelia@docker"
       - "traefik.http.routers.whoami.rule=PathPrefix(`/whoami`)"
-      - "traefik.http.routers.whoami.tls=true"
       - "traefik.http.services.whoami.loadbalancer.server.port=80"
     networks: [ "default", "traefik" ]
 

@@ -20,6 +20,7 @@ services:
 #      - --entrypoints.http.http.redirections.entrypoint.scheme=https
       - --entrypoints.https.address=:443
       - --entrypoints.https.http.tls=true
+#      - --entryPoints.https.forwardedHeaders.trustedIPs=127.0.0.1/32,192.168.0.1/16
       - --global.checknewversion=false
       - --global.sendanonymoususage=false
       - --log.level=WARN
@@ -43,7 +44,6 @@ services:
       - "traefik.http.routers.api.middlewares=auth@file"
       - "traefik.http.routers.api.rule=HostRegexp(`traefik.{host:.+}`)"
       - "traefik.http.routers.api.service=api@internal"
-      - "traefik.http.routers.api.tls=true"
     networks: [ "default", "traefik", "traefik_jenkins", "traefik_jupyter", "traefik_mailu", "traefik_portainer", "traefik_upkuma" ]
     ports:
 #      - "0.0.0.0:80:80"
@@ -68,7 +68,6 @@ services:
       - "traefik.docker.network=traefik_default"
       - "traefik.enable=true"
       - "traefik.http.routers.authelia.rule=PathPrefix(`/authelia`)"
-      - "traefik.http.routers.authelia.tls=true"
       - "traefik.http.services.authelia.loadbalancer.server.port=9091"
     user: "1000:1000"
     volumes:
@@ -79,6 +78,7 @@ services:
     image: "tecnativa/docker-socket-proxy"
     environment:
       - "CONTAINERS=1"
+#    ports: [ "127.0.0.1:2375:2375" ]
     tmpfs: [ "/run" ]
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock"

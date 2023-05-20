@@ -12,15 +12,11 @@ services:
   cyberchef:
     << : *service
     build: { context: ".", dockerfile: "Dockerfile", args: [ "TAG=v9.55.0" ] }
-    healthcheck:
-      test: "curl --fail http://127.0.0.1/cyberchef/ || exit 1"
     networks: [ "traefik" ]
-#    ports:
-#      - "127.0.0.1:8080:80"
+#    ports: [ "127.0.0.1:80:80" ]
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.cyberchef.rule=PathPrefix(`/cyberchef`)"
-      - "traefik.http.routers.cyberchef.tls=true"
       - "traefik.http.services.cyberchef.loadbalancer.server.port=80"
 
 networks:

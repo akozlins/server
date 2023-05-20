@@ -18,11 +18,9 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.komga.rule=PathPrefix(`/komga`)"
-      - "traefik.http.routers.komga.tls=true"
       - "traefik.http.services.komga.loadbalancer.server.port=8080"
     networks: [ "traefik" ]
-#    ports:
-#      - "127.0.0.1:8080:8080"
+#    ports: [ "127.0.0.1:8080:8080" ]
     tmpfs: [ "/tmp:mode=777,exec" ]
     user: "1000:1000"
     volumes:

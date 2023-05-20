@@ -15,11 +15,9 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.tcp.routers.unbound.rule=HostSNIRegexp(`dot.{host:.+}`)"
-      - "traefik.tcp.routers.unbound.tls=true"
       - "traefik.tcp.services.unbound.loadbalancer.server.port=53"
     networks: [ "traefik" ]
-#    ports:
-#      - 127.0.0.1:53:53
+#    ports: [ "127.0.0.1:53:53" ]
     volumes:
       - "./unbound.conf:/etc/unbound/conf.d/unbound.conf:ro"
 
@@ -30,11 +28,9 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.doh.rule=PathPrefix(`/doh`)"
-      - "traefik.http.routers.doh.tls=true"
       - "traefik.http.services.doh.loadbalancer.server.port=8053"
     networks: [ "traefik" ]
-#    ports:
-#      - 127.0.0.1:8053:8053
+#    ports: [ "127.0.0.1:8053:8053" ]
     volumes:
       - "./doh-server.conf:/doh-server.conf:ro"
 

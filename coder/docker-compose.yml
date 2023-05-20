@@ -18,11 +18,9 @@ services:
       - "traefik.http.middlewares.coder.stripprefix.prefixes=/coder"
       - "traefik.http.routers.coder.middlewares=authelia@docker,coder"
       - "traefik.http.routers.coder.rule=PathPrefix(`/coder`)"
-      - "traefik.http.routers.coder.tls=true"
       - "traefik.http.services.coder.loadbalancer.server.port=8080"
     networks: [ "traefik" ]
-#    ports:
-#      - 127.0.0.1:8080:8080
+#    ports: [ "127.0.0.1:8080:8080" ]
     tmpfs: [ "/tmp:mode=777", ]
     user: "1000:1000"
     volumes:
