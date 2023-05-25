@@ -1,5 +1,9 @@
 #
 
+.ONESHELL :
+SHELL := bash
+.SHELLFLAGS := -euf -c
+
 SUDO := $(shell [[ " $$(id --groups --name) " =~ " docker " ]] || echo sudo)
 
 all :

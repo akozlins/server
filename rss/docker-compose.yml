@@ -1,7 +1,5 @@
 #
 
-version: "3.9"
-
 x-service: &service
   logging: { options: { max-size: "1m" } }
   restart: "always"
@@ -14,8 +12,8 @@ services:
     image: "postgres:alpine"
     environment:
       - POSTGRES_DB=db_name
-      - POSTGRES_PASSWORD=db_password
-      - POSTGRES_USER=db_user
+      - POSTGRES_PASSWORD=${DB_PASSWORD:?}
+      - POSTGRES_USER=${DB_USER:?}
     healthcheck:
       test: "/backup/backup.sh || exit 1"
       interval: 30s
@@ -32,8 +30,8 @@ services:
     environment:
       - TTRSS_DB_HOST=rss_db
       - TTRSS_DB_NAME=db_name
-      - TTRSS_DB_PASS=db_password
-      - TTRSS_DB_USER=db_user
+      - TTRSS_DB_PASS=${DB_PASSWORD:?}
+      - TTRSS_DB_USER=${DB_USER:?}
       - TTRSS_PHP_EXECUTABLE=/usr/bin/php8
       - TTRSS_PLUGINS=auth_internal
       - TTRSS_SELF_URL_PATH=/rss
@@ -60,7 +58,6 @@ services:
     volumes:
       - "./nginx.conf:/etc/nginx/nginx.conf:ro"
       - "./.cache/tt-rss:/var/www/html/rss"
-
 
 volumes:
   db:

@@ -22,7 +22,7 @@ location /.well-known/ {}
 ## headers
 
 # https://owasp.org/www-project-secure-headers/
-#add_header Strict-Transport-Security "max-age=31536000; includeSubDomains; preload" always;
+add_header Strict-Transport-Security "max-age=31536000; includeSubDomains; preload" always;
 #add_header X-Frame-Options "deny" always;
 add_header X-Content-Type-Options "nosniff" always;
 #add_header Content-Security-Policy "default-src 'self'; object-src 'none'; child-src 'self'; frame-ancestors 'none'; upgrade-insecure-requests; block-all-mixed-content" always;

@@ -1,7 +1,5 @@
 #
 
-version: '3.9'
-
 x-service: &service
   logging: { options: { max-size: "1m" } }
   restart: "always"

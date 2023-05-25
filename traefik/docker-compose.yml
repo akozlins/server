@@ -1,7 +1,5 @@
 #
 
-version: "3.9"
-
 x-service: &service
   logging: { options: { max-size: "1m" } }
   restart: "always"
@@ -30,6 +28,7 @@ services:
       - --providers.docker.exposedbydefault=false
       - --providers.docker.network=traefik
       - --providers.file.directory=/etc/traefik
+      - --providers.file.watch=true
     depends_on: [ "docker_sock" ]
     environment:
       - "DOMAIN=${DOMAIN:?}"

@@ -1,7 +1,5 @@
 #
 
-version: '3.9'
-
 x-service:
   &service
   cap_drop: [ "ALL" ]

@@ -2,8 +2,6 @@
 
 # <https://docs.portainer.io/v/ce-2.11/advanced/reverse-proxy/nginx>
 
-version: "3.9"
-
 x-service: &service
   logging: { options: { max-size: "1m" } }
   restart: "always"
