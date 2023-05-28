@@ -1,26 +1,23 @@
 diff --git a/classes/config.php b/classes/config.php
-index 6ebe31e..0cc17fa 100644
+index afdb7b8ef..fbde7bad5 100644
 --- a/classes/config.php
 +++ b/classes/config.php
-@@ -464,6 +464,8 @@ class Config {
+@@ -486,6 +486,8 @@ class Config {
  
  	/** generates reference self_url_path (no trailing slash) */
  	static function make_self_url() : string {
 +		return self::get_self_url();
 +
  		$proto = self::is_server_https() ? 'https' : 'http';
- 		$self_url_path = $proto . '://' . $_SERVER["HTTP_HOST"] . $_SERVER["REQUEST_URI"];
  
+ 		$self_url_path = $proto . '://' . $_SERVER["HTTP_HOST"] . parse_url($_SERVER["REQUEST_URI"], PHP_URL_PATH);
 diff --git a/classes/rpc.php b/classes/rpc.php
-index dbb54ce..bc86e09 100755
+index afd3c0c79..a4b2bd5f9 100755
 --- a/classes/rpc.php
 +++ b/classes/rpc.php
-@@ -186,7 +186,7 @@ class RPC extends Handler_Protected {
+@@ -185,4 +185,5 @@ class RPC extends Handler_Protected {
+ 		$client_scheme = parse_url($client_location, PHP_URL_SCHEME);
+ 		$server_scheme = parse_url(Config::get_self_url(), PHP_URL_SCHEME);
++		$server_scheme ??= $client_scheme;
  
  		if (Config::is_migration_needed()) {
- 			$error = Errors::E_SCHEMA_MISMATCH;
--		} else if ($client_scheme != $server_scheme) {
-+		} else if ($server_scheme && $client_scheme != $server_scheme) {
- 			$error = Errors::E_URL_SCHEME_MISMATCH;
- 			$error_params["client_scheme"] = $client_scheme;
- 			$error_params["server_scheme"] = $server_scheme;
