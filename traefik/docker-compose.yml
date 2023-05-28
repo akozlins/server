@@ -80,6 +80,25 @@ services:
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock"
 
+  dozzle:
+    << : *service
+    image: "amir20/dozzle"
+    depends_on: [ "docker_sock", ]
+    environment:
+      - "DOZZLE_BASE=/dozzle"
+      - "DOZZLE_NO_ANALYTICS=true"
+      - "DOCKER_HOST=tcp://docker_sock:2375"
+    labels:
+      - "traefik.docker.network=traefik_default"
+      - "traefik.enable=true"
+      - "traefik.http.routers.dozzle.middlewares=authelia@docker"
+      - "traefik.http.routers.dozzle.rule=PathPrefix(`/dozzle`)"
+      - "traefik.http.services.dozzle.loadbalancer.server.port=8080"
+#    ports: [ "127.0.0.1:8080:8080", ]
+#    profiles: [ "TEST", ]
+#    volumes:
+#      - "/var/run/docker.sock:/var/run/docker.sock"
+
 networks:
   default:
   traefik: { external: true }
