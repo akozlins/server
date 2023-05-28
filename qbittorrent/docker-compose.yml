@@ -1,8 +1,7 @@
 #
 
 x-service: &service
-  logging:
-    { options: { max-size: "1m" } }
+  logging: { options: { max-size: "1m" } }
   restart: "always"
   stop_grace_period: "5s"
 
@@ -10,9 +9,20 @@ services:
 
   qbittorrent:
     << : *service
-    build: { context: ".", dockerfile: "Dockerfile" }
-    ports: [ "127.0.0.1:8080:8080" ]
+    build: { context: ".", dockerfile: "./Dockerfile" }
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.middlewares.qbittorrent.stripprefix.prefixes=/qbittorrent"
+      - "traefik.http.routers.qbittorrent.middlewares=authelia@docker,qbittorrent"
+      - "traefik.http.routers.qbittorrent.rule=PathPrefix(`/qbittorrent`) "
+      - "traefik.http.services.qbittorrent.loadbalancer.server.port=8080"
+    networks: [ "default", "traefik", ]
+#    ports: [ "127.0.0.1:8080:8080", ]
     volumes:
-      - "./.cache/downloads:/qbittorrent/downloads"
+      - "./.cache/Downloads:/qbittorrent/Downloads"
       - "./.cache/qBittorrent:/qbittorrent/qBittorrent"
 #      - "./qBittorrent.conf:/qbittorrent/qBittorrent/qBittorrent.conf"
+
+networks:
+  default:
+  traefik: { external: true }

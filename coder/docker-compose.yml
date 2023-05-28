@@ -1,26 +1,23 @@
 #
 
 x-service: &service
-#  cap_drop: [ "ALL" ]
   logging: { options: { max-size: "1m" } }
-#  read_only: true
   restart: "always"
-#  security_opt: [ "no-new-privileges:true" ]
   stop_grace_period: "5s"
 
 services:
   coder:
     << : *service
 #    image: codercom/code-server
-    build: { context: ".", dockerfile: "./Dockerfile", }
+    build: { context: ".", dockerfile: "./Dockerfile" }
     labels:
       - "traefik.enable=true"
       - "traefik.http.middlewares.coder.stripprefix.prefixes=/coder"
       - "traefik.http.routers.coder.middlewares=authelia@docker,coder"
       - "traefik.http.routers.coder.rule=PathPrefix(`/coder`)"
       - "traefik.http.services.coder.loadbalancer.server.port=8080"
-    networks: [ "traefik" ]
-#    ports: [ "127.0.0.1:8080:8080" ]
+    networks: [ "traefik", ]
+#    ports: [ "127.0.0.1:8080:8080", ]
     tmpfs: [ "/tmp:mode=777", ]
     user: "1000:1000"
     volumes:

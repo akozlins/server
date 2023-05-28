@@ -18,8 +18,8 @@ services:
       - "traefik.enable=true"
       - "traefik.tcp.routers.openvpn.rule=HostSNIRegexp(`vpn.{host:.+}`)"
       - "traefik.tcp.services.openvpn.loadbalancer.server.port=1194"
-    networks: [ "traefik" ]
-#    ports: [ "127.0.0.1:1194:1194" ]
+    networks: [ "traefik", ]
+#    ports: [ "127.0.0.1:1194:1194", ]
     volumes:
       - "./server:/etc/openvpn/server:rw"
       - "./.cache:/run/openvpn:rw"

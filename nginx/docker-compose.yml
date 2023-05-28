@@ -12,12 +12,12 @@ services:
     image: "nginx:alpine"
     environment:
       - "DOMAIN=${DOMAIN:?}"
-    networks: [ "default", "traefik" ]
-#    ports: [ "0.0.0.0:8080:8080" ]
+    networks: [ "default", "traefik", ]
+#    ports: [ "0.0.0.0:8080:8080", ]
     volumes:
       - "./conf.d:/etc/nginx/templates:ro"
       - "./nginx.conf:/etc/nginx/nginx.conf:ro"
-      - "../letsencrypt:/etc/letsencrypt:ro"
+      - "../etc/letsencrypt:/etc/letsencrypt:ro"
       - "/opt/html:/opt/html:ro"
       - "socat:/run/socat:rw"
     labels:
@@ -36,7 +36,7 @@ services:
     network_mode: "host"
     volumes:
       - "socat:/run/socat:rw"
-      - "../socat:/etc/socat:ro"
+      - "./socat:/etc/socat:ro"
 
   sslh:
     << : *service
@@ -48,8 +48,8 @@ services:
       "--openvpn=127.0.0.1:1194",
       "--on-timeout=anyprot"
     ]
-    depends_on: [ "nginx" ]
-    ports: [ "0.0.0.0:80:8080" ]
+    depends_on: [ "nginx", ]
+    ports: [ "0.0.0.0:80:8080", ]
 
   whoami:
     << : *service
@@ -59,7 +59,7 @@ services:
       - "traefik.http.routers.whoami.middlewares=authelia@docker"
       - "traefik.http.routers.whoami.rule=PathPrefix(`/whoami`)"
       - "traefik.http.services.whoami.loadbalancer.server.port=80"
-    networks: [ "default", "traefik" ]
+    networks: [ "default", "traefik", ]
 
 volumes:
   socat:

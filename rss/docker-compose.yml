@@ -24,9 +24,9 @@ services:
 
   rss_php:
     << : *service
-    build: { context: ".", dockerfile: "Dockerfile.php" }
-    command: [ "/run.sh" ]
-    depends_on: [ "rss_db" ]
+    build: { context: ".", dockerfile: "./Dockerfile.php" }
+    command: [ "/run.sh", ]
+    depends_on: [ "rss_db", ]
     environment:
       - TTRSS_DB_HOST=rss_db
       - TTRSS_DB_NAME=db_name
@@ -45,14 +45,12 @@ services:
   rss:
     << : *service
     image: "nginx:alpine"
-    depends_on: [ "rss_php" ]
-    healthcheck:
-      test: "curl --fail http://127.0.0.1/rss/index.php || exit 1"
+    depends_on: [ "rss_php", ]
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.rss.rule=PathPrefix(`/rss`)"
       - "traefik.http.services.rss.loadbalancer.server.port=80"
-    networks: [ "default", "traefik" ]
+    networks: [ "default", "traefik", ]
 #    ports:
 #      - "127.0.0.1:80:80"
     volumes:
@@ -63,4 +61,5 @@ volumes:
   db:
 
 networks:
+  default:
   traefik: { external: true }

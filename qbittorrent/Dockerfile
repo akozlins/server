@@ -18,4 +18,6 @@ ENV XDG_CONFIG_HOME="$HOME"
 ENV XDG_DATA_HOME="$HOME"
 ENV XDG_CACHE_HOME="$HOME"
 
+RUN mkdir -p "/qbittorrent/qBittorrent"
+
 CMD qbittorrent-nox

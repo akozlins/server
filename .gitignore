@@ -1,11 +1,11 @@
 #
 
-.cache
-
-/.git
+.env
+.git
 
 letsencrypt
 
+*.cache
 *.crt
 *.key
 *.pem

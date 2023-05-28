@@ -29,11 +29,9 @@ services:
       - --providers.docker.network=traefik
       - --providers.file.directory=/etc/traefik
       - --providers.file.watch=true
-    depends_on: [ "docker_sock" ]
+    depends_on: [ "docker_sock", ]
     environment:
       - "DOMAIN=${DOMAIN:?}"
-#    healthcheck:
-#      test: "traefik healthcheck --ping || exit 1"
     labels:
       - "traefik.enable=true"
 #      - "traefik.http.middlewares.authelia.forwardAuth.address=http://authelia:9091/authelia/api/verify?rd=https://${DOMAIN:?}/authelia/#/"
@@ -43,14 +41,14 @@ services:
       - "traefik.http.routers.api.middlewares=auth@file"
       - "traefik.http.routers.api.rule=HostRegexp(`traefik.{host:.+}`)"
       - "traefik.http.routers.api.service=api@internal"
-    networks: [ "default", "traefik", "traefik_jenkins", "traefik_jupyter", "traefik_mailu", "traefik_portainer", "traefik_upkuma" ]
+    networks: [ "default", "traefik", "traefik_jenkins", "traefik_jupyter", "traefik_mailu", "traefik_portainer", "traefik_upkuma", ]
     ports:
 #      - "0.0.0.0:80:80"
       - "0.0.0.0:443:443"
 #      - "127.0.0.1:8080:8080"
     volumes:
       - "./traefik:/etc/traefik"
-      - "../letsencrypt/live:/etc/letsencrypt/live:ro"
+      - "../etc/letsencrypt/live:/etc/letsencrypt/live:ro"
 
   authelia:
     << : *service
@@ -77,8 +75,8 @@ services:
     image: "tecnativa/docker-socket-proxy"
     environment:
       - "CONTAINERS=1"
-#    ports: [ "127.0.0.1:2375:2375" ]
-    tmpfs: [ "/run" ]
+#    ports: [ "127.0.0.1:2375:2375", ]
+    tmpfs: [ "/run", ]
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock"
 

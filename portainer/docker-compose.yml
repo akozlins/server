@@ -21,8 +21,8 @@ services:
       - "traefik.http.routers.portainer.middlewares=portainer"
       - "traefik.http.routers.portainer.rule=HostRegexp(`traefik.{host:.+}`) && PathPrefix(`/portainer`) "
       - "traefik.http.services.portainer.loadbalancer.server.port=9000"
-    networks: [ "traefik_portainer" ]
-#    ports: [ "127.0.0.1:9000:9000" ]
+    networks: [ "traefik_portainer", ]
+#    ports: [ "127.0.0.1:9000:9000", ]
     volumes:
       - "data:/data"
       - "../root_password.key:/tmp/root_password.key:ro"
