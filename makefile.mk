@@ -17,6 +17,15 @@ down :
 logs :
 	$(SUDO) docker-compose logs -f
 
+networks :
+	fq_expr=".networks | select(. != null) | to_entries[] | select(.value.external == true) | .key"
+	networks=(
+	    $$(comm -2 -3 <(fq --raw-output -- "$$fq_expr" docker-compose.yml | sort | uniq) <($(SUDO) docker network ls --format='{{.Name}}' | sort | uniq))
+	)
+	for network in "$${networks[@]}" ; do
+	    $(SUDO) docker network create --internal "$$network"
+	done
+
 ps :
 	$(SUDO) docker-compose ps
 
@@ -28,5 +37,5 @@ restart : | stop start
 sh :
 	$(SUDO) docker-compose exec $(shell basename -- $(shell pwd)) sh
 
-up :
+up : networks
 	$(SUDO) docker-compose up -d
