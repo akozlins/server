@@ -6,8 +6,8 @@ RUN apk add --no-cache \
     git
 
 USER 1000
-ENV HOME=/home/1000
 WORKDIR /home/1000
+ENV HOME="/home/1000"
 
 RUN git clone https://github.com/v2fly/v2ray-core .
 RUN CGO_ENABLED=0 go build -o ./v2ray -trimpath -ldflags "-s -w -buildid=" ./main

@@ -1,23 +1,16 @@
 #
 
-FROM alpine:edge
+FROM alpine
 
-EXPOSE 8080
-
-RUN mkdir -p -- "/qbittorrent" && \
-    addgroup -g 1000 -S qbittorrent && \
-    adduser -u 1000 -S qbittorrent -G qbittorrent && \
-    chown -R 1000:1000 -- "/qbittorrent"
-
-RUN apk add --no-cache qbittorrent-nox
+RUN apk add --no-cache \
+    dumb-init qbittorrent-nox
 
 USER 1000
-
-ENV HOME="/qbittorrent"
+WORKDIR /home/1000
+ENV HOME="/home/1000"
 ENV XDG_CONFIG_HOME="$HOME"
 ENV XDG_DATA_HOME="$HOME"
 ENV XDG_CACHE_HOME="$HOME"
 
-RUN mkdir -p "/qbittorrent/qBittorrent"
-
-CMD qbittorrent-nox
+ENTRYPOINT [ "/usr/bin/dumb-init", "--" ]
+CMD [ "qbittorrent-nox" ]

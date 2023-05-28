@@ -12,8 +12,6 @@ services:
     environment:
       - "BASE_URL=/searx/"
       - "SEARXNG_BASE_URL=/searx/"
-    healthcheck:
-      test: "wget -q --spider http://127.0.0.1:8080/searx/ || exit 1"
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.searx.middlewares=authelia@docker"
@@ -22,7 +20,6 @@ services:
     networks: [ "traefik", ]
 #    ports: [ "127.0.0.1:8080:8080", ]
     volumes:
-      - "./.cache:/etc/searx"
       - "./.cache:/etc/searxng"
 
 networks:

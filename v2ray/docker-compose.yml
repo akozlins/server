@@ -27,7 +27,7 @@ services:
     << : *service
     build: { context: ".", dockerfile: "./Dockerfile" }
     environment:
-      - V2RAY_ADDRESS=${V2RAY_ADDRESS:?}
+      - V2RAY_ADDRESS=${DOMAIN:?}
       - V2RAY_USER_ID=${V2RAY_CLIENT_ID:?}
     ports: [ "127.0.0.1:1080:1080", ]
     volumes:

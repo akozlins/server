@@ -21,7 +21,6 @@ RUN npm ci --omit=dev
 RUN npm install vite vite-plugin-legacy
 RUN npx vite build --config ./config/vite.config.js
 
-EXPOSE 3001
 VOLUME [ "/app/data" ]
 ENTRYPOINT [ "/usr/bin/dumb-init", "--" ]
 CMD [ "node", "server/server.js" ]

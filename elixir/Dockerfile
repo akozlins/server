@@ -7,8 +7,8 @@ RUN apt-get install -y lighttpd
 RUN apt-get install -y python3-bsddb3 python3-jinja2
 
 USER 1000
-WORKDIR /1000
-ENV HOME=/1000
+WORKDIR /home/1000
+ENV HOME="/home/1000"
 
 RUN git clone https://github.com/bootlin/elixir.git
 

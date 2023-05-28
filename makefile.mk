@@ -15,7 +15,7 @@ down :
 	$(SUDO) docker-compose down
 
 logs :
-	$(SUDO) docker-compose logs -f
+	$(SUDO) docker-compose logs --follow
 
 networks :
 	fq_expr=".networks | select(. != null) | to_entries[] | select(.value.external == true) | .key"
