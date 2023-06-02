@@ -13,7 +13,7 @@ services:
     image: "${DOCKER_ORG:-ghcr.io/mailu}/${DOCKER_PREFIX:-}nginx:${MAILU_VERSION:-2.0}"
     depends_on: [ "resolver", ]
     dns: "${DNS:?}"
-    networks: [ "default", "traefik_mailu", ]
+    networks: [ "default", "traefik", ]
     ports:
 #      - "127.0.0.1:80:80"
       - "${IP4:?}:25:25"
@@ -28,7 +28,6 @@ services:
       - "../etc/letsencrypt:/etc/letsencrypt:ro"
     logging: { driver: "journald", options: { tag: "mailu-front" } }
     labels:
-      - "traefik.docker.network=traefik_mailu"
       - "traefik.enable=true"
       - "traefik.http.routers.mailu.rule=HostRegexp(`mail.{host:.+}`) && PathPrefix(`/mailu`, `/sso`, `/static`)"
       - "traefik.http.services.mailu.loadbalancer.server.port=80"
@@ -89,4 +88,4 @@ networks:
       driver: "default"
       config:
         - subnet: "${SUBNET:?}"
-  traefik_mailu: { external: true }
+  traefik: { external: true }

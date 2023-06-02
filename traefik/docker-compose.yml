@@ -41,7 +41,7 @@ services:
       - "traefik.http.routers.api.middlewares=auth@file"
       - "traefik.http.routers.api.rule=HostRegexp(`traefik.{host:.+}`)"
       - "traefik.http.routers.api.service=api@internal"
-    networks: [ "default", "traefik", "traefik_jenkins", "traefik_jupyter", "traefik_mailu", "traefik_portainer", "traefik_upkuma", ]
+    networks: { "default", "inet", "traefik" : { ipv4_address: 172.31.255.254 } }
     ports:
 #      - "0.0.0.0:80:80"
       - "0.0.0.0:443:443"
@@ -100,10 +100,6 @@ services:
 #      - "/var/run/docker.sock:/var/run/docker.sock"
 
 networks:
-  default:
+  default: { internal: true }
+  inet:
   traefik: { external: true }
-  traefik_jenkins: { external: true }
-  traefik_jupyter: { external: true }
-  traefik_mailu: { external: true }
-  traefik_portainer: { external: true }
-  traefik_upkuma: { external: true }

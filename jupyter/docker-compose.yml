@@ -15,15 +15,15 @@ services:
       - "NB_UID=1000"
     healthcheck: { test: "true" }
     labels:
-      - "traefik.docker.network=traefik_jupyter"
       - "traefik.enable=true"
       - "traefik.http.routers.jupyter.middlewares=authelia@docker"
       - "traefik.http.routers.jupyter.rule=PathPrefix(`/jupyter`)"
       - "traefik.http.services.jupyter.loadbalancer.server.port=8888"
-    networks: [ "traefik_jupyter", ]
+    networks: [ "inet", "traefik", ]
 #    ports: [ "127.0.0.1:8888:8888", ]
     volumes:
       - "./.cache:/home/jovyan"
 
 networks:
-  traefik_jupyter: { external: true }
+  inet:
+  traefik: { external: true }

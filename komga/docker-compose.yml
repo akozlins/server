@@ -26,5 +26,4 @@ services:
       - "./.cache/data:/data"
 
 networks:
-  default:
   traefik: { external: true }

@@ -17,6 +17,15 @@ down :
 logs :
 	$(SUDO) docker-compose logs --follow
 
+br-traefik :
+	$(SUDO) docker network create \
+	    --internal \
+	    --opt "com.docker.network.bridge.name=br-traefik" \
+	    --subnet="172.31.255.0/24" \
+	    traefik
+	# allow connection only from traefik container in traefik network
+	sudo iptables -I DOCKER-USER -i br-traefik -o br-traefik ! -s 172.31.255.254 -m conntrack --ctstate NEW -j REJECT
+
 networks :
 	fq_expr=".networks | select(. != null) | to_entries[] | select(.value.external == true) | .key"
 	networks=(

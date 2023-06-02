@@ -18,9 +18,10 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.flask.rule=PathPrefix(`/telegram`)"
       - "traefik.http.services.flask.loadbalancer.server.port=8080"
-    networks: [ "traefik", ]
+    networks: [ "inet", "traefik", ]
     volumes:
       - "./:/home/1000/:ro"
 
 networks:
+  inet:
   traefik: { external: true }
