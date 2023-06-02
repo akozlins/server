@@ -12,10 +12,6 @@ tcp:
       tls: true
   services:
     ssh-service:
-      loadBalancer:
-        servers:
-          - address: "{{env "DOMAIN"}}:22"
+      loadBalancer: { servers: [ address: "{{env "DOMAIN"}}:22", ] }
     vpn-service:
-      loadBalancer:
-        servers:
-          - address: "{{env "DOMAIN"}}:1194"
+      loadBalancer: { servers: [ address: "{{env "DOMAIN"}}:1194", ] }

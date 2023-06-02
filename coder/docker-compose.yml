@@ -18,7 +18,7 @@ services:
       - "traefik.http.services.coder.loadbalancer.server.port=8080"
     networks: [ "inet", "traefik", ]
 #    ports: [ "127.0.0.1:8080:8080", ]
-    tmpfs: [ "/tmp:mode=777", ]
+    tmpfs: [ "/tmp:mode=777,exec", ]
     user: "1000:1000"
     volumes:
       - ./.cache:/home/coder

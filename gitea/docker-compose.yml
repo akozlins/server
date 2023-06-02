@@ -19,6 +19,7 @@ services:
       - "traefik.http.routers.gitea.middlewares=gitea"
       - "traefik.http.routers.gitea.rule=PathPrefix(`/gitea`)"
       - "traefik.http.services.gitea.loadbalancer.server.port=3000"
+    networks: [ "traefik", ]
 #    ports:
 #      - "127.0.0.1:22:22"
 #      - "127.0.0.1:3000:3000"

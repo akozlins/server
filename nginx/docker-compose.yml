@@ -41,8 +41,7 @@ services:
   sslh:
     << : *service
     build: "./sslh"
-    command: [ "sslh", "-f",
-      "--verbose=1",
+    command: [ "sslh", "--foreground", "--numeric", "--verbose=0",
       "--listen=0.0.0.0:8080",
       "--anyprot=nginx:8080",
       "--openvpn=127.0.0.1:1194",
@@ -54,11 +53,13 @@ services:
   whoami:
     << : *service
     image: "containous/whoami"
+    environment:
+      - "WHOAMI_PORT_NUMBER=8080"
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.whoami.middlewares=authelia@docker"
       - "traefik.http.routers.whoami.rule=PathPrefix(`/whoami`)"
-      - "traefik.http.services.whoami.loadbalancer.server.port=80"
+      - "traefik.http.services.whoami.loadbalancer.server.port=8080"
     networks: [ "default", "traefik", ]
 
 volumes:

@@ -4,9 +4,8 @@ http:
   middlewares:
     auth:
       basicauth:
-       # `htpasswd -nb -B username password | cut -d ":" -f 2`
-#       users:
-       usersFile: "/etc/traefik/users.key"
+        # `htpasswd -nb -B username password | cut -d ":" -f 2`
+        usersFile: "/etc/traefik/users.key"
 
   routers:
     test-router:
@@ -19,6 +18,5 @@ http:
   services:
     test-service:
       loadBalancer:
-        servers:
-        - url: "https://10.8.0.1"
+        servers: [ url: "https://10.8.0.1", ]
         serversTransport: "test-transport"

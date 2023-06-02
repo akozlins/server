@@ -8,7 +8,7 @@ tls:
     default:
       alpnProtocols: [ "h2", "http/1.1", "acme-tls/1", "dot", ]
       minVersion: VersionTLS13
-      sniStrict: false
+      sniStrict: true
   stores:
     default:
       defaultCertificate:

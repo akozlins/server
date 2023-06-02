@@ -13,7 +13,6 @@ services:
     environment:
       - "NB_GID=1000"
       - "NB_UID=1000"
-    healthcheck: { test: "true" }
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.jupyter.middlewares=authelia@docker"
