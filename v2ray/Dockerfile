@@ -18,8 +18,8 @@ RUN apk add --no-cache \
     dumb-init entr gettext
 
 USER 1000
-ENV HOME=/home/1000
 WORKDIR /home/1000
+ENV HOME="/home/1000"
 
 COPY --from=build /home/1000/v2ray .
 

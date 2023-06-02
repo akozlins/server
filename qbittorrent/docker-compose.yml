@@ -10,6 +10,7 @@ services:
   qbittorrent:
     << : *service
     build: { context: ".", dockerfile: "./Dockerfile" }
+    depends_on: [ "socks", ]
     labels:
       - "traefik.enable=true"
       - "traefik.http.middlewares.qbittorrent.stripprefix.prefixes=/qbittorrent"
@@ -23,6 +24,19 @@ services:
       - "./.cache/qBittorrent:/home/1000/qBittorrent"
 #      - "./qBittorrent.conf:/qbittorrent/qBittorrent/qBittorrent.conf"
 
+  socks:
+    << : *service
+    build: { context: ".", dockerfile: "../v2ray/Dockerfile" }
+    environment:
+      - "SOCKS_ADDRESS=${SOCKS_ADDRESS:?}"
+      - "SOCKS_PASSWORD=${SOCKS_PASSWORD:?}"
+      - "SOCKS_USER=${SOCKS_USER:?}"
+    networks: [ "default", "inet", ]
+#    ports: [ "127.0.0.1:1080:1080", ]
+    volumes:
+      - "./v2ray.json:/etc/v2ray/config.json:ro"
+
 networks:
-  default:
+  default: { internal: true }
+  inet:
   traefik: { external: true }
