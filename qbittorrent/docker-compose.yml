@@ -20,9 +20,9 @@ services:
     networks: [ "default", "traefik", ]
 #    ports: [ "127.0.0.1:8080:8080", ]
     volumes:
-      - "./.cache/Downloads:/home/1000/Downloads"
-      - "./.cache/qBittorrent:/home/1000/qBittorrent"
-#      - "./qBittorrent.conf:/qbittorrent/qBittorrent/qBittorrent.conf"
+      - "${HOME:?}/Downloads:/home/1000/Downloads"
+      - "./.local:/home/1000/.local/share/qBittorrent"
+      - "./.local:/home/1000/.config/qBittorrent"
 
   socks:
     << : *service

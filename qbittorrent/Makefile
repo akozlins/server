@@ -2,7 +2,6 @@
 
 include ../makefile.mk
 
-up : init
-
 init ::
-	mkdir -p -- ./.cache
+	mkdir -p -- .local/logs && cd .local || exit 1
+	[ -L logs/qbittorrent.log ] || ln -s -T /dev/stdout logs/qbittorrent.log
