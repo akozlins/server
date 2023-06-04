@@ -42,17 +42,17 @@ add_header Cross-Origin-Resource-Policy "same-origin" always;
 location = /index.html {
     access_log off;
     default_type text/html;
-    return 200 "<html><head><title></title></head><body></body></html>";
+    return 200 "<html><head><title></title></head><body></body></html>\n";
 }
 
 location = /404.html {
     default_type text/html;
-    return 404 "<html><head><title>404 Not Found</title></head><body><h1>404 Not Found</h1></body></html>";
+    return 404 "<html><head><title>404 Not Found</title></head><body><h1>404 Not Found</h1></body></html>\n";
 }
 
 location = /50x.html {
     default_type text/html;
-    return 500 "<html><head><title>50x</title></head><body><h1>50x</h1></body></html>";
+    return 500 "<html><head><title>50x</title></head><body><h1>50x</h1></body></html>\n";
 }
 
 location = /robots.txt {
@@ -62,7 +62,7 @@ location = /robots.txt {
 
 location = /.well-known/mta-sts.txt {
     default_type text/plain;
-    return 200 "version: STSv1\nmode: enforce\nmax_age: 86400\nmx: mail.$DOMAIN\n";
+    return 200 "version: STSv1\r\nmode: enforce\r\nmax_age: 86400\r\nmx: mail.$DOMAIN\r\n";
 }
 
 location = /.well-known/security.txt {
