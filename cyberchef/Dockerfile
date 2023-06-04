@@ -2,8 +2,8 @@
 
 FROM node:19 AS build
 
-USER 1000
-WORKDIR /tmp/1000
+USER 1000:1000
+WORKDIR /home/1000
 
 ARG TAG
 RUN git clone -b "$TAG" --depth=1 https://github.com/gchq/CyberChef.git .
@@ -16,4 +16,4 @@ RUN npm exec -- grunt prod
 FROM nginx:alpine
 EXPOSE 80
 
-COPY --from=build /tmp/1000/build/prod /usr/share/nginx/html/cyberchef
+COPY --from=build /home/1000/build/prod /usr/share/nginx/html/cyberchef

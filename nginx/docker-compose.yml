@@ -48,6 +48,7 @@ services:
       "--on-timeout=anyprot"
     ]
     depends_on: [ "nginx", ]
+    networks: [ "default", "inet", ]
     ports: [ "0.0.0.0:80:8080", ]
 
   whoami:
@@ -69,5 +70,6 @@ volumes:
       device: tmpfs
 
 networks:
-  default:
+  default: { internal: true }
+  inet:
   traefik: { external: true }

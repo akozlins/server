@@ -17,10 +17,11 @@ services:
       - "traefik.http.routers.searx.middlewares=authelia@docker"
       - "traefik.http.routers.searx.rule=PathPrefix(`/searx`)"
       - "traefik.http.services.searx.loadbalancer.server.port=8080"
-    networks: [ "traefik", ]
+    networks: [ "inet", "traefik", ]
 #    ports: [ "127.0.0.1:8080:8080", ]
     volumes:
       - "./.cache:/etc/searxng"
 
 networks:
+  inet:
   traefik: { external: true }

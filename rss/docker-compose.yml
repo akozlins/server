@@ -18,6 +18,7 @@ services:
       test: "/backup/backup.sh || exit 1"
       interval: 30s
       start_period: 30s
+    networks: [ "default", ]
     volumes:
       - "db:/var/lib/postgresql/data"
       - "./backup:/backup:rw"
@@ -38,6 +39,7 @@ services:
       # default lifetime of a session cookie in seconds
       # (0 means cookie will be deleted when browser closes)
       - TTRSS_SESSION_COOKIE_LIFETIME=31415927
+    networks: [ "default", "inet", ]
     volumes:
       - "./run.sh:/run.sh:ro"
       - "./.cache/tt-rss:/var/www/html/rss"
@@ -60,5 +62,6 @@ volumes:
   db:
 
 networks:
-  default:
+  default: { internal: true }
+  inet:
   traefik: { external: true }

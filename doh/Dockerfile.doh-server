@@ -21,7 +21,7 @@ RUN apk add --no-cache \
 
 COPY --from=build /src/doh-server/doh-server /doh-server
 
-USER 1000
+USER 1000:1000
 
 ENTRYPOINT [ "/usr/bin/dumb-init", "--" ]
 CMD [ "/doh-server", "-conf", "/doh-server.conf" ]

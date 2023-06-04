@@ -1,11 +1,12 @@
 #
 
-.env
-.git
-
-letsencrypt
-
 *.cache
 *.crt
 *.key
 *.pem
+
+.env
+.git
+.local
+
+letsencrypt

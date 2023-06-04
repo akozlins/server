@@ -10,7 +10,7 @@ RUN apt update && apt install -y \
 
 RUN pip3 install flask requests
 
-USER 1000
+USER 1000:1000
 WORKDIR /home/1000
 
 ENTRYPOINT [ "/usr/bin/dumb-init", "--" ]

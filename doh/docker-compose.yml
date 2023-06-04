@@ -14,7 +14,7 @@ services:
       - "traefik.enable=true"
       - "traefik.tcp.routers.unbound.rule=HostSNIRegexp(`dot.{host:.+}`)"
       - "traefik.tcp.services.unbound.loadbalancer.server.port=53"
-    networks: [ "traefik", ]
+    networks: [ "inet", "traefik", ]
 #    ports: [ "127.0.0.1:53:53", ]
     volumes:
       - "./unbound.conf:/etc/unbound/conf.d/unbound.conf:ro"
@@ -33,4 +33,5 @@ services:
       - "./doh-server.conf:/doh-server.conf:ro"
 
 networks:
+  inet:
   traefik: { external: true }

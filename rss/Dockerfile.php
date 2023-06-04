@@ -26,6 +26,6 @@ RUN apk add --no-cache \
 RUN addgroup -g 1000 -S php && \
     adduser -u 1000 -S php -G php
 
-USER 1000
+USER 1000:1000
 
 ENTRYPOINT [ "/usr/bin/dumb-init", "--" ]

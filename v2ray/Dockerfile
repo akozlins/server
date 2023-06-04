@@ -5,7 +5,7 @@ FROM golang:alpine AS build
 RUN apk add --no-cache \
     git
 
-USER 1000
+USER 1000:1000
 WORKDIR /home/1000
 ENV HOME="/home/1000"
 
@@ -17,7 +17,7 @@ FROM alpine
 RUN apk add --no-cache \
     dumb-init entr gettext
 
-USER 1000
+USER 1000:1000
 WORKDIR /home/1000
 ENV HOME="/home/1000"
 

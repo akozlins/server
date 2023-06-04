@@ -8,7 +8,7 @@ RUN apk add --no-cache \
     iputils setpriv dumb-init python3 py3-cryptography py3-pip py3-six py3-yaml py3-click py3-markdown py3-requests py3-requests-oauthlib
 RUN pip3 --no-cache-dir install apprise==1.2.1
 
-USER 1000
+USER 1000:1000
 WORKDIR /app
 
 RUN git clone -b "1.18.5" --depth=1 https://github.com/louislam/uptime-kuma.git .

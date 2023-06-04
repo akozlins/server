@@ -53,7 +53,7 @@ services:
     << : *service
     image: "authelia/authelia"
     environment:
-      - "AUTHELIA_LOG_LEVEL=debug"
+      - "AUTHELIA_LOG_LEVEL=info"
       - "AUTHELIA_SERVER_DISABLE_HEALTHCHECK=true"
       - "AUTHELIA_SERVER_PATH=authelia"
       - "AUTHELIA_SESSION_DOMAIN=${DOMAIN}"
