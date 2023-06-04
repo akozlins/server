@@ -1,7 +1,19 @@
 #
 
+{{define "port-router"}}
+    p{{.}}:
+      rule: "HostSNIRegexp(`p{{.}}.{host:.+}`)"
+      service: "p{{.}}"
+      tls: true
+{{end}}
+{{define "port-service"}}
+    p{{.}}:
+      loadBalancer: { servers: [ address: "{{env "DOMAIN"}}:{{.}}", ] }
+{{end}}
+
 tcp:
   routers:
+    {{template "port-router" 1022}}
     ssh-router:
       rule: "HostSNIRegexp(`ssh.{host:.+}`)"
       service: "ssh-service"
@@ -11,6 +23,7 @@ tcp:
       service: "vpn-service"
       tls: true
   services:
+    {{template "port-service" 1022}}
     ssh-service:
       loadBalancer: { servers: [ address: "{{env "DOMAIN"}}:22", ] }
     vpn-service:
