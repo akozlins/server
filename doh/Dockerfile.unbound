@@ -2,9 +2,6 @@
 
 FROM alpine
 
-EXPOSE 53/tcp
-EXPOSE 53/udp
-
 RUN apk add --no-cache \
     bind-tools dumb-init gettext openssl unbound
 

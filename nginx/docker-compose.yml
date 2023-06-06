@@ -12,6 +12,12 @@ services:
     image: "nginx:alpine"
     environment:
       - "DOMAIN=${DOMAIN:?}"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.nginx1.priority=1"
+      - "traefik.http.routers.nginx1.rule=PathPrefix(`/`)"
+      - "traefik.http.routers.nginx.rule=HostRegexp(`nginx.{host:.+}`)"
+      - "traefik.http.services.nginx.loadbalancer.server.port=8080"
     networks: [ "default", "traefik", ]
 #    ports: [ "0.0.0.0:8080:8080", ]
     volumes:
@@ -20,12 +26,6 @@ services:
       - "../etc/letsencrypt:/etc/letsencrypt:ro"
       - "/opt/html:/opt/html:ro"
       - "socat:/run/socat:rw"
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.nginx1.priority=1"
-      - "traefik.http.routers.nginx1.rule=PathPrefix(`/`)"
-      - "traefik.http.routers.nginx.rule=HostRegexp(`nginx.{host:.+}`)"
-      - "traefik.http.services.nginx.loadbalancer.server.port=8080"
 
   socat:
     << : *service

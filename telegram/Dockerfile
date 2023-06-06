@@ -2,8 +2,6 @@
 
 FROM python:latest
 
-EXPOSE 8080/tcp
-
 RUN apt update && apt install -y \
     dumb-init \
     && rm -rf /var/lib/apt/lists/*

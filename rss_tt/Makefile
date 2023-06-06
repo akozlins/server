@@ -3,6 +3,8 @@
 include ../makefile.mk
 
 init ::
-	mkdir -p ./.cache
-	git clone https://git.tt-rss.org/fox/tt-rss ./.cache/tt-rss
-	( cd .cache/tt-rss && patch -p1 < ../../tt-rss.patch )
+	mkdir -p .local && cd .local || exit 1
+	if [ ! -d tt-rss/.git ] ; then
+	    git clone https://git.tt-rss.org/fox/tt-rss
+	    patch --directory=tt-rss -p1 < ../tt-rss.patch
+	fi

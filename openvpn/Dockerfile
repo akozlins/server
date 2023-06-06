@@ -2,8 +2,6 @@
 
 FROM alpine
 
-EXPOSE 1194/tcp
-
 RUN apk add --no-cache openssl openvpn
 
 WORKDIR /etc/openvpn/server

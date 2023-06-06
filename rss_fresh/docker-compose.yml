@@ -8,7 +8,7 @@ x-service: &service
 services:
   php:
     << : *service
-    build: { context: ".", dockerfile: "../rss/Dockerfile.php" }
+    build: { context: ".", dockerfile: "../rss_tt/Dockerfile.php" }
     command: [ "/run.sh", ]
     environment:
       - "FRESHRSS_BASE_URL=https://${DOMAIN:?}/fresh"
