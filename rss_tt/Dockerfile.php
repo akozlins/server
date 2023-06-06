@@ -5,8 +5,8 @@ FROM alpine
 EXPOSE 9000/tcp
 
 RUN apk add --no-cache \
-        php8 php8-curl php8-dom php8-fileinfo php8-fpm php8-json php8-iconv \
-        php8-intl php8-mbstring php8-pcntl php8-pdo_pgsql php8-posix \
+        php8 php8-ctype php8-curl php8-dom php8-fileinfo php8-fpm php8-json php8-iconv \
+        php8-intl php8-mbstring php8-pcntl php-pdo_mysql php8-pdo_pgsql php-pdo_sqlite php8-posix \
         php8-session php8-xml php8-zip && \
     sed -i \
         -e 's/^\(user\|group\) = .*/\1 = php/i' \

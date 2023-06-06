@@ -23,7 +23,7 @@ services:
       - "db:/var/lib/postgresql/data"
       - "./backup:/backup:rw"
 
-  rss_php:
+  php:
     << : *service
     build: { context: ".", dockerfile: "./Dockerfile.php" }
     command: [ "/run.sh", ]
@@ -44,16 +44,16 @@ services:
       - "./run.sh:/run.sh:ro"
       - "./.cache/tt-rss:/var/www/html/rss"
 
-  rss:
+  nginx:
     << : *service
     image: "nginx:alpine"
-    depends_on: [ "rss_php", ]
+    depends_on: [ "php", ]
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.rss.rule=PathPrefix(`/rss`)"
-      - "traefik.http.services.rss.loadbalancer.server.port=80"
+      - "traefik.http.services.rss.loadbalancer.server.port=8080"
     networks: [ "default", "traefik", ]
-#    ports:[ "127.0.0.1:80:80", ]
+#    ports:[ "127.0.0.1:8080:8080", ]
     volumes:
       - "./nginx.conf:/etc/nginx/nginx.conf:ro"
       - "./.cache/tt-rss:/var/www/html/rss"
