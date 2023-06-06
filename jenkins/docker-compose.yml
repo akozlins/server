@@ -16,7 +16,7 @@ services:
       - "traefik.http.routers.jenkins.middlewares=authelia@docker"
       - "traefik.http.routers.jenkins.rule=PathPrefix(`/jenkins`)"
       - "traefik.http.services.jenkins.loadbalancer.server.port=8080"
-    networks: [ "default", "inet", "traefik", ]
+    networks: [ "inet", "traefik", ]
 #    ports: [ "127.0.0.1:8080:8080", ]
     tmpfs: [ "/tmp:mode=777,exec", ]
     volumes:
@@ -25,12 +25,11 @@ services:
   jenkins-node:
     << : *service
     build: { context: ".", dockerfile: "./Dockerfile.node" }
-    networks: [ "default", "inet" ]
+    networks: [ "inet", ]
     profiles: [ "TEST", ]
     volumes:
       - "./.cache/node:/home/jenkins"
 
 networks:
-  default: { internal: true }
   inet:
   traefik: { external: true }

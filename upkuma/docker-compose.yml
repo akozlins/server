@@ -11,8 +11,6 @@ services:
 #    image: "louislam/uptime-kuma"
     build: { context: ".", dockerfile: "./Dockerfile" }
     environment:
-      - "PGID=1000"
-      - "PUID=1000"
       - "UPTIME_KUMA_BASE_PATH=/upkuma/"
     labels:
       - "traefik.enable=true"
@@ -22,8 +20,8 @@ services:
     networks: [ "inet", "traefik", ]
 #    ports: [ "127.0.0.1:3001:3001", ]
     volumes:
-      - "./.cache:/app/data"
+      - "./.local/data:/home/1000/data"
 
 networks:
-  inet:
+  inet: { external: true }
   traefik: { external: true }

@@ -9,7 +9,7 @@ RUN apk add --no-cache \
 RUN pip3 --no-cache-dir install apprise==1.2.1
 
 USER 1000:1000
-WORKDIR /app
+WORKDIR /home/1000
 
 RUN git clone -b "1.18.5" --depth=1 https://github.com/louislam/uptime-kuma.git .
 # <https://github.com/louislam/uptime-kuma/pull/1092>
@@ -21,6 +21,5 @@ RUN npm ci --omit=dev
 RUN npm install vite vite-plugin-legacy
 RUN npx vite build --config ./config/vite.config.js
 
-VOLUME [ "/app/data" ]
 ENTRYPOINT [ "/usr/bin/dumb-init", "--" ]
 CMD [ "node", "server/server.js" ]

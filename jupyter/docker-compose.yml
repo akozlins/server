@@ -21,7 +21,7 @@ services:
     networks: [ "inet", "traefik", ]
 #    ports: [ "127.0.0.1:8888:8888", ]
     volumes:
-      - "./.cache:/home/jovyan"
+      - "./home:/home/jovyan"
 
 networks:
   inet:

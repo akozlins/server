@@ -22,8 +22,8 @@ services:
     tmpfs: [ "/tmp:mode=777,exec", ]
     user: "1000:1000"
     volumes:
-      - "./.cache/config:/config"
-      - "./.cache/data:/data"
+      - "./.local/config:/config"
+      - "./.local/data:/data"
 
 networks:
   traefik: { external: true }

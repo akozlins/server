@@ -1,6 +1,4 @@
 #
 
-*.sqlite3
-
 notifier.txt
 users.yml

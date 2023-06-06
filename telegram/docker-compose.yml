@@ -23,5 +23,5 @@ services:
       - "./:/home/1000/:ro"
 
 networks:
-  inet:
+  inet: { external: true }
   traefik: { external: true }

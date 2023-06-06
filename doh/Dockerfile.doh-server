@@ -2,7 +2,7 @@
 
 FROM golang:alpine AS build
 
-WORKDIR /src
+WORKDIR /build
 
 RUN apk add --no-cache \
     git make
@@ -17,7 +17,7 @@ FROM alpine
 RUN apk add --no-cache \
     dumb-init
 
-COPY --from=build /src/doh-server/doh-server /doh-server
+COPY --from=build /build/doh-server/doh-server /doh-server
 
 USER 1000:1000
 

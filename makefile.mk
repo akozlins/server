@@ -17,7 +17,10 @@ down :
 logs :
 	$(SUDO) docker-compose logs --follow
 
+# traefik bridge network
 br-traefik :
+	networks=($$($(SUDO) docker network ls --format='{{.Name}}'))
+	[[ " $${networks[@]} " == *" traefik "* ]] || \
 	$(SUDO) docker network create \
 	    --internal \
 	    --subnet="172.31.255.0/24" \
@@ -28,6 +31,7 @@ br-traefik :
 	RULE="DOCKER-USER -i br-traefik -o br-traefik -s 172.31.255.254 -m conntrack --ctstate NEW -j ACCEPT"
 	sudo iptables -C $$RULE || sudo iptables -I $$RULE
 
+# internet bridge network
 br-inet :
 	networks=($$($(SUDO) docker network ls --format='{{.Name}}'))
 	[[ " $${networks[@]} " == *" inet "* ]] || \
@@ -36,11 +40,13 @@ br-inet :
 	    --opt "com.docker.network.bridge.enable_icc=false" \
 	    inet
 
-networks :
+networks : br-traefik br-inet
 	fq_expr=".networks | select(. != null) | to_entries[] | select(.value.external == true) | .key"
-	networks=(
-	    $$(comm -2 -3 <(fq --raw-output -- "$$fq_expr" docker-compose.yml | sort | uniq) <($(SUDO) docker network ls --format='{{.Name}}' | sort | uniq))
-	)
+	networks=($$(
+	    comm -2 -3 \
+	    <(fq --raw-output -- "$$fq_expr" docker-compose.yml | sort | uniq) \
+	    <($(SUDO) docker network ls --format='{{.Name}}' | sort | uniq)
+	))
 	for network in "$${networks[@]}" ; do
 	    $(SUDO) docker network create --internal "$$network"
 	done

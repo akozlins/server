@@ -38,5 +38,5 @@ services:
 
 networks:
   default: { internal: true }
-  inet:
+  inet: { external: true }
   traefik: { external: true }

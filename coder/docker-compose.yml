@@ -21,8 +21,8 @@ services:
     tmpfs: [ "/tmp:mode=777,exec", ]
     user: "1000:1000"
     volumes:
-      - ./.cache:/home/coder
+      - ./home:/home/coder
 
 networks:
-  inet:
+  inet: { external: true }
   traefik: { external: true }

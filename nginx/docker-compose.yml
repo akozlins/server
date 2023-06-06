@@ -25,7 +25,7 @@ services:
       - "./nginx.conf:/etc/nginx/nginx.conf:ro"
       - "../etc/letsencrypt:/etc/letsencrypt:ro"
       - "/opt/html:/opt/html:ro"
-      - "socat:/run/socat:rw"
+      - "./.cache/run/socat:/run/socat:rw"
 
   socat:
     << : *service
@@ -35,8 +35,8 @@ services:
       - "syncthing:127.0.0.1:8384"
     network_mode: "host"
     volumes:
-      - "socat:/run/socat:rw"
       - "./socat:/etc/socat:ro"
+      - "./.cache/run/socat:/run/socat:rw"
 
   sslh:
     << : *service
@@ -63,13 +63,7 @@ services:
       - "traefik.http.services.whoami.loadbalancer.server.port=8080"
     networks: [ "default", "traefik", ]
 
-volumes:
-  socat:
-    driver_opts:
-      type: tmpfs
-      device: tmpfs
-
 networks:
   default: { internal: true }
-  inet:
+  inet:  { external: true }
   traefik: { external: true }
