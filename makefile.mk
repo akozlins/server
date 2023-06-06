@@ -22,9 +22,19 @@ br-traefik :
 	    --internal \
 	    --subnet="172.31.255.0/24" \
 	    --opt "com.docker.network.bridge.name=br-traefik" \
+	    --opt "com.docker.network.bridge.enable_icc=false" \
 	    traefik
-	# allow connection only from traefik container in traefik network
-	sudo iptables -I DOCKER-USER -i br-traefik -o br-traefik ! -s 172.31.255.254 -m conntrack --ctstate NEW -j REJECT
+	# allow connections only from traefik container in traefik network
+	RULE="DOCKER-USER -i br-traefik -o br-traefik -s 172.31.255.254 -m conntrack --ctstate NEW -j ACCEPT"
+	sudo iptables -C $$RULE || sudo iptables -I $$RULE
+
+br-inet :
+	networks=($$($(SUDO) docker network ls --format='{{.Name}}'))
+	[[ " $${networks[@]} " == *" inet "* ]] || \
+	$(SUDO) docker network create \
+	    --opt "com.docker.network.bridge.name=br-inet" \
+	    --opt "com.docker.network.bridge.enable_icc=false" \
+	    inet
 
 networks :
 	fq_expr=".networks | select(. != null) | to_entries[] | select(.value.external == true) | .key"
