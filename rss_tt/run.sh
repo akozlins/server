@@ -12,7 +12,7 @@ psql $PGOPTS -c "create extension if not exists pg_trgm"
 PIDS=""
 
 # run php-fpm server (0.0.0.0:9000)
-php-fpm8 --nodaemonize --force-stderr &
+php-fpm81 --nodaemonize --force-stderr &
 PIDS="$PIDS $!"
 
 # run update job

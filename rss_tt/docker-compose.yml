@@ -33,7 +33,7 @@ services:
       - "TTRSS_DB_NAME=db_name"
       - "TTRSS_DB_PASS=${DB_PASSWORD:?}"
       - "TTRSS_DB_USER=${DB_USER:?}"
-      - "TTRSS_PHP_EXECUTABLE=/usr/bin/php8"
+      - "TTRSS_PHP_EXECUTABLE=/usr/bin/php"
       - "TTRSS_PLUGINS=auth_internal"
       - "TTRSS_SELF_URL_PATH=/rss"
       # default lifetime of a session cookie in seconds
