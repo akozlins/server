@@ -10,6 +10,7 @@ services:
     << : *service
     image: "jenkins/jenkins:lts-jdk11"
     environment:
+      - "JAVA_OPTS=-Xmx1g"
       - "JENKINS_OPTS=--prefix=/jenkins"
     labels:
       - "traefik.enable=true"

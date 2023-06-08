@@ -23,5 +23,5 @@ services:
       - "./data:/etc/searxng"
 
 networks:
-  inet:
+  inet: { external: true }
   traefik: { external: true }

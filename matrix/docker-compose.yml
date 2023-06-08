@@ -22,5 +22,5 @@ services:
       - "./data:/data:rw"
 
 networks:
-  inet:
+  inet: { external: true }
   traefik: { external: true }

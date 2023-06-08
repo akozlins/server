@@ -45,7 +45,7 @@ services:
       "--listen=0.0.0.0:8080",
       "--anyprot=nginx:8080",
       "--openvpn=127.0.0.1:1194",
-      "--on-timeout=anyprot"
+      "--on-timeout=anyprot",
     ]
     depends_on: [ "nginx", ]
     networks: [ "default", "inet", ]
