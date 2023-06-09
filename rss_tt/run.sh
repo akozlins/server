@@ -1,7 +1,7 @@
 #!/bin/sh
 set -euf
 
-cd /var/www/html/$ROUTE || exit 1
+cd /var/www/tt-rss || exit 1
 
 export PGPASSWORD=$TTRSS_DB_PASS
 PGOPTS="--host=$TTRSS_DB_HOST --dbname=$TTRSS_DB_NAME --username=$TTRSS_DB_USER"

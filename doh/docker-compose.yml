@@ -33,5 +33,5 @@ services:
       - "./doh-server.conf:/doh-server.conf:ro"
 
 networks:
-  inet:
+  inet: { external: true }
   traefik: { external: true }

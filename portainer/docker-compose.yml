@@ -15,7 +15,8 @@ services:
     << : *service
     image: "portainer/portainer-ce:latest"
     command: [
-      "--admin-password-file", "/data/admin_password.key"
+#      "--admin-password", "${ADMIN_PASSWORD:?}",
+      "--admin-password-file", "/admin_password.key",
     ]
     labels:
       - "traefik.enable=true"
@@ -26,11 +27,9 @@ services:
     networks: [ "traefik", ]
 #    ports: [ "127.0.0.1:9000:9000", ]
     volumes:
+      - "./.local/admin_password.key:/admin_password.key"
       - "./.local/data:/data"
       - "/var/run/docker.sock:/var/run/docker.sock"
-
-volumes:
-  data:
 
 networks:
   traefik: { external: true }

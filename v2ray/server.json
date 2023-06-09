@@ -12,7 +12,7 @@
       "settings": {
         "clients": [
           {
-            "id": "${V2RAY_CLIENT_ID}",
+            "id": "${V2RAY_ID}",
             "alterId": 64
           }
         ]

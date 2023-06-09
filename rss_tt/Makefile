@@ -14,3 +14,4 @@ init ::
 	    git clone https://git.tt-rss.org/fox/tt-rss
 	    patch --directory=tt-rss -p1 < ../tt-rss.patch
 	fi
+	[ -L "html/$$ROUTE" ] || ( mkdir -p html && ln -s -T ../tt-rss "html/$$ROUTE" )

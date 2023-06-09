@@ -14,6 +14,7 @@ services:
     image: "gotson/komga"
     environment:
       - "SERVER_SERVLET_CONTEXT_PATH=/komga/"
+      - "KOMGA_REMEMBERME_KEY=${KOMGA_REMEMBERME_KEY:?}"
       - "KOMGA_REMEMBERME_VALIDITY=14d"
       - "KOMGA_SESSIONTIMEOUT=7d"
     labels:

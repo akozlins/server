@@ -29,7 +29,7 @@
             "port": 443,
             "users": [
               {
-                "id": "${V2RAY_USER_ID}",
+                "id": "${V2RAY_ID}",
                 "alterId": 0
               }
             ]

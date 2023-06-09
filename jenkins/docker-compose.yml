@@ -32,5 +32,5 @@ services:
       - "./.cache/node:/home/jenkins"
 
 networks:
-  inet:
+  inet: { external: true }
   traefik: { external: true }
