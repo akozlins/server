@@ -20,6 +20,7 @@ services:
       - "traefik.http.services.nginx.loadbalancer.server.port=8080"
     networks: [ "default", "traefik", ]
 #    ports: [ "0.0.0.0:8080:8080", ]
+    tmpfs: [ "/tmp:mode=777", ]
     volumes:
       - "./conf.d:/etc/nginx/templates:ro"
       - "./nginx.conf:/etc/nginx/nginx.conf:ro"
