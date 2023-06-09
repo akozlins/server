@@ -6,7 +6,7 @@ cd /var/www/FreshRSS || exit 1
 # make needed dirs in ./data
 ./cli/prepare.php
 # init
-./cli/reconfigure.php --auth_type none --default_user default --db-type sqlite --base_url "$FRESHRSS_BASE_URL" || true
+./cli/reconfigure.php --auth_type none --default_user default --db-type sqlite
 # create user
 ./cli/user-info.php --user default || ./cli/create-user.php --user default
 
