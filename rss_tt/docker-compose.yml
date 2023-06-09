@@ -11,7 +11,7 @@ services:
     << : *service
     image: "postgres:alpine"
     environment:
-      - "POSTGRES_DB=db_name"
+      - "POSTGRES_DB=db"
       - "POSTGRES_PASSWORD=${DB_PASSWORD:?}"
       - "POSTGRES_USER=${DB_USER:?}"
     healthcheck:
@@ -30,19 +30,19 @@ services:
     depends_on: [ "db", ]
     environment:
       - "TTRSS_DB_HOST=db"
-      - "TTRSS_DB_NAME=db_name"
+      - "TTRSS_DB_NAME=db"
       - "TTRSS_DB_PASS=${DB_PASSWORD:?}"
       - "TTRSS_DB_USER=${DB_USER:?}"
       - "TTRSS_PHP_EXECUTABLE=/usr/bin/php"
       - "TTRSS_PLUGINS=auth_internal"
-      - "TTRSS_SELF_URL_PATH=/rss"
+      - "TTRSS_SELF_URL_PATH=/${ROUTE:?}"
       # default lifetime of a session cookie in seconds
       # (0 means cookie will be deleted when browser closes)
       - "TTRSS_SESSION_COOKIE_LIFETIME=31415927"
     networks: [ "default", "inet", ]
     volumes:
       - "./run.sh:/run.sh:ro"
-      - "./.local/tt-rss:/var/www/html/rss"
+      - "./.local/tt-rss:/var/www/html/${ROUTE:?}"
 
   nginx:
     << : *service
@@ -50,8 +50,8 @@ services:
     depends_on: [ "php", ]
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.rss.rule=PathPrefix(`/rss`)"
-      - "traefik.http.services.rss.loadbalancer.server.port=8080"
+      - "traefik.http.routers.${ROUTE:?}.rule=PathPrefix(`/${ROUTE:?}`)"
+      - "traefik.http.services.${ROUTE:?}.loadbalancer.server.port=8080"
     networks: [ "default", "traefik", ]
 #    ports:[ "127.0.0.1:8080:8080", ]
     volumes:

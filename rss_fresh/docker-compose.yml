@@ -21,9 +21,9 @@ services:
     depends_on: [ "php", ]
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.fresh_nginx.middlewares=authelia@docker"
-      - "traefik.http.routers.fresh_nginx.rule=PathPrefix(`/fresh`)"
-      - "traefik.http.services.fresh_nginx.loadbalancer.server.port=8080"
+      - "traefik.http.routers.${ROUTE:?}.middlewares=authelia@docker"
+      - "traefik.http.routers.${ROUTE:?}.rule=PathPrefix(`/${ROUTE:?}`)"
+      - "traefik.http.services.${ROUTE:?}.loadbalancer.server.port=8080"
     networks: [ "default", "traefik", ]
 #    ports:[ "127.0.0.1:8080:8080", ]
     volumes:
