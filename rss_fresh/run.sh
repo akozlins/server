@@ -13,7 +13,7 @@ cd /var/www/FreshRSS || exit 1
 PIDS=""
 
 # run php-fpm server (0.0.0.0:9000)
-php-fpm81 --nodaemonize --force-stderr &
+php-fpm --nodaemonize --force-stderr &
 PIDS="$PIDS $!"
 
 # run update job
