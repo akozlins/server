@@ -23,14 +23,14 @@ services:
     volumes:
       - "./.cache/jenkins_home:/var/jenkins_home"
 
-  jenkins-node:
+  node0:
     << : *service
     build: { context: ".", dockerfile: "./Dockerfile.node" }
     networks: [ "inet", ]
-    profiles: [ "TEST", ]
     volumes:
       - "./.cache/node:/home/jenkins"
+    profiles: [ "NODE", ]
 
 networks:
-  inet: { external: true }
+  inet:
   traefik: { external: true }
