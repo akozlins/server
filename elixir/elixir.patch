@@ -1,0 +1,13 @@
+diff --git a/lib.py b/lib.py
+index 43ff082..0a76c59 100755
+--- a/lib.py
++++ b/lib.py
+@@ -204,7 +204,7 @@ def validFamily(family):
+ def getFileFamily(filename):
+     name, ext = os.path.splitext(filename)
+ 
+-    if ext.lower() in ['.c', '.cc', '.cpp', '.c++', '.cxx', '.h', '.s'] :
++    if ext.lower() in ['.c', '.cc', '.cpp', '.c++', '.cxx', '.h', '.hh', '.s'] :
+         return 'C' # C file family and ASM
+     elif ext.lower() in ['.dts', '.dtsi'] :
+         return 'D' # Devicetree files
