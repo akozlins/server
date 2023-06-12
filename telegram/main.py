@@ -38,9 +38,7 @@ def webhook_post() :
     if chat_id not in config.CHATS :
         return flask.Response('post-ok', status=200)
 
-    sendMessage(
-        text = f'chat_id = {chat_id}'
-    )
+    sendMessage(chat_id, f'chat_id = {chat_id}')
 
     return flask.Response('post-ok', status=200)
 

@@ -29,11 +29,6 @@ for spec in "$@" ; do
         name="$port"
     fi
 
-    if [[ $name != /* ]] ; then
-        # set default path
-        name="/run/socat/$name.sock"
-    fi
-
     [ -w "$name" ] && rm -- "$name" || true
     echo "I [$0] '$name' -> $host:$port"
     socat -d "UNIX-LISTEN:$name,fork,mode=666" "TCP:$host:$port" &

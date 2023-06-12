@@ -94,9 +94,6 @@ services:
       - "traefik.http.routers.dozzle.rule=PathPrefix(`/dozzle`)"
       - "traefik.http.services.dozzle.loadbalancer.server.port=8080"
 #    ports: [ "127.0.0.1:8080:8080", ]
-#    profiles: [ "TEST", ]
-#    volumes:
-#      - "/var/run/docker.sock:/var/run/docker.sock"
 
 networks:
   default: { internal: true }

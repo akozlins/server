@@ -11,13 +11,13 @@ x-service:
 
 services:
 
-  flask:
+  telegram:
     << : *service
     build: { context: ".", dockerfile: "./Dockerfile" }
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.flask.rule=PathPrefix(`/telegram`)"
-      - "traefik.http.services.flask.loadbalancer.server.port=8080"
+      - "traefik.http.routers.telegram.rule=PathPrefix(`/telegram`)"
+      - "traefik.http.services.telegram.loadbalancer.server.port=8080"
     networks: [ "inet", "traefik", ]
     volumes:
       - "./:/home/1000/:ro"
