@@ -14,15 +14,18 @@ services:
       - "NET_ADMIN"
     devices:
       - "/dev/net/tun"
-    labels:
-      - "traefik.enable=true"
-      - "traefik.tcp.routers.openvpn.rule=HostSNIRegexp(`vpn.{host:.+}`)"
-      - "traefik.tcp.services.openvpn.loadbalancer.server.port=1194"
-    networks: [ "traefik", ]
+    networks: [ "inet", "traefik", ]
 #    ports: [ "127.0.0.1:1194:1194", ]
+    tmpfs: [ "/tmp", ]
     volumes:
-      - "./server:/etc/openvpn/server:rw"
       - "./.cache:/run/openvpn:rw"
+      - "./server.conf:/etc/openvpn/config.conf:ro"
+      - "../etc/easy-rsa/openvpn/server.key:/etc/openvpn/server.key:ro"
+      - "../etc/easy-rsa/openvpn/server.crt:/etc/openvpn/server.crt:ro"
+      - "../etc/easy-rsa/pki/ca.crt:/etc/openvpn/ca.crt:ro"
+      - "../etc/easy-rsa/pki/dh.pem:/etc/openvpn/dh.pem:ro"
+      - "../etc/easy-rsa/pki/ta.key:/etc/openvpn/ta.key:ro"
 
 networks:
+  inet: { external: true }
   traefik: { external: true }
