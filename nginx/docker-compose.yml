@@ -33,7 +33,7 @@ services:
     build: "./socat"
     command:
       - "/etc/socat/run.sh"
-      - "syncthing:127.0.0.1:8384"
+      - "syncthing.sock:127.0.0.1:8384"
     network_mode: "host"
     volumes:
       - "./socat:/etc/socat:ro"
@@ -43,14 +43,14 @@ services:
     << : *service
     build: "./sslh"
     command: [ "sslh", "--foreground", "--numeric", "--verbose=0",
-      "--listen=0.0.0.0:8080",
-      "--anyprot=nginx:8080",
+      "--listen=0.0.0.0:80",
+      "--anyprot=nginx:80",
       "--openvpn=127.0.0.1:1194",
       "--on-timeout=anyprot",
     ]
     depends_on: [ "nginx", ]
     networks: [ "default", "inet", ]
-    ports: [ "0.0.0.0:80:8080", ]
+    ports: [ "0.0.0.0:80:80", ]
 
   whoami:
     << : *service

@@ -3,11 +3,12 @@
 include ../makefile.mk
 
 init ::
+	# init envs
 	[ -f .env ] && source .env
 	[ -z "$${ROUTE:+x}" ] && echo "ROUTE=tt" >> .env
 	[ -z "$${DB_PASSWORD:+x}" ] && echo "DB_PASSWORD=$$(cat /proc/sys/kernel/random/uuid)" >> .env
 	[ -z "$${DB_USER:+x}" ] && echo "DB_UESR=db_user" >> .env
-	
+	# init files
 	source .env
 	mkdir -p .local && cd .local || exit 1
 	if [ ! -d tt-rss/.git ] ; then

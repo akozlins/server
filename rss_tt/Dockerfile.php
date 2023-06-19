@@ -3,7 +3,7 @@
 FROM alpine
 
 RUN apk add --no-cache \
-    dumb-init postgresql-client
+    dumb-init git postgresql-client
 
 RUN apk add --no-cache \
     php php-fpm \

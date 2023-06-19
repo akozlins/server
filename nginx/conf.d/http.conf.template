@@ -17,6 +17,12 @@ server_tokens off;
 proxy_intercept_errors on;
 
 server {
+    listen 0.0.0.0:80;
+
+    include conf.d/server.conf;
+}
+
+server {
     listen 0.0.0.0:8080;
 
     include conf.d/server.conf;
