@@ -23,9 +23,9 @@ services:
 #      - "[${IP6:?}]:465:465"
 #      - "[${IP6:?}]:993:993"
     volumes:
-      - "./certs:/certs"
-      - "./overrides/nginx:/overrides:ro"
-      - "../etc/letsencrypt:/etc/letsencrypt:ro"
+      - "./data/certs:/certs"
+      - "../etc/letsencrypt/live/${DOMAIN:?}:/etc/letsencrypt/live/example.com:ro"
+#      - "./overrides/nginx:/overrides:ro"
     logging: { driver: "journald", options: { tag: "mailu-front" } }
     labels:
       - "traefik.enable=true"
@@ -38,8 +38,8 @@ services:
     depends_on: [ "resolver", "redis", ]
     dns: ${DNS:?}
     volumes:
-      - "./data:/data"
-      - "./dkim:/dkim"
+      - "./data/admin:/data"
+      - "./data/dkim:/dkim"
 
   smtp:
     << : *service
@@ -47,8 +47,8 @@ services:
     depends_on: [ "resolver", "front", ]
     dns: "${DNS:?}"
     volumes:
-      - "./mailqueue:/queue"
-      - "./overrides/postfix:/overrides:ro"
+      - "./data/smtp:/queue"
+#      - "./overrides/postfix:/overrides:ro"
 
   imap:
     << : *service
@@ -56,8 +56,8 @@ services:
     depends_on: [ "resolver", "front", ]
     dns: "${DNS:?}"
     volumes:
-      - "./mail:/mail"
-      - "./overrides/dovecot:/overrides:ro"
+      - "./data/imap:/mail"
+#      - "./overrides/dovecot:/overrides:ro"
 
   antispam:
     << : *service
@@ -65,8 +65,8 @@ services:
     depends_on: [ "resolver", "front", "redis", ]
     dns: "${DNS:?}"
     volumes:
-      - "./filter:/var/lib/rspamd"
-      - "./overrides/rspamd:/overrides:ro"
+      - "./data/rsapmd:/var/lib/rspamd"
+#      - "./overrides/rspamd:/overrides:ro"
 
   redis:
     << : *service
@@ -74,7 +74,7 @@ services:
     depends_on: [ "resolver", ]
     dns: "${DNS:?}"
     volumes:
-      - "./redis:/data"
+      - "./data/redis:/data"
 
   resolver:
     << : *service
