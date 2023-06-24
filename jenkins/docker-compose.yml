@@ -11,6 +11,7 @@ services:
     image: "jenkins/jenkins:lts-jdk11"
     environment:
       - "JAVA_OPTS=-Xmx1g"
+      - "JENKINS_HOME=/home/jenkins"
       - "JENKINS_OPTS=--prefix=/jenkins"
     labels:
       - "traefik.enable=true"
@@ -21,7 +22,7 @@ services:
 #    ports: [ "127.0.0.1:8080:8080", ]
     tmpfs: [ "/tmp:mode=777,exec", ]
     volumes:
-      - "./.cache/jenkins_home:/var/jenkins_home"
+      - "./.cache/jenkins:/home/jenkins"
 
   node0:
     << : *service
