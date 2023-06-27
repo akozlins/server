@@ -4,7 +4,7 @@ include ../makefile.mk
 
 init ::
 	[ -f .env ] && source .env
-	[ -z "$${ROUTE:+x}" ] && echo "ROUTE=fresh" >> .env
+	[ -n "$${ROUTE:+x}" ] || echo "ROUTE=fresh" >> .env
 	
 	source .env
 	mkdir -p .local && cd .local || exit 1

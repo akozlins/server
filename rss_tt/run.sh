@@ -19,5 +19,5 @@ PIDS="$PIDS $!"
 $TTRSS_PHP_EXECUTABLE ./update_daemon2.php &
 PIDS="$PIDS $!"
 
-trap "kill --timeout 1000 TERM --signal KILL $PIDS" TERM
+trap "kill -s TERM --timeout 1000 KILL -- $PIDS" SIGHUP SIGINT SIGTERM
 wait

@@ -65,7 +65,7 @@ services:
     depends_on: [ "resolver", "front", "redis", ]
     dns: "${DNS:?}"
     volumes:
-      - "./data/rsapmd:/var/lib/rspamd"
+      - "./data/rspamd:/var/lib/rspamd"
 #      - "./overrides/rspamd:/overrides:ro"
 
   redis:
