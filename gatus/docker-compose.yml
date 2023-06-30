@@ -1,0 +1,31 @@
+#
+
+x-service: &service
+  logging: { options: { max-size: "1m" } }
+  restart: "always"
+  stop_grace_period: "5s"
+  cap_drop: [ "ALL", ]
+  read_only: true
+  security_opt: [ "no-new-privileges:true", ]
+
+services:
+  gatus:
+    << : *service
+    image: "twinproduction/gatus"
+    environment:
+      - "GATUS_CONFIG_PATH=/config"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.middlewares.gatus.stripprefix.prefixes=/gatus"
+      - "traefik.http.routers.gatus.middlewares=authelia@docker,gatus"
+      - "traefik.http.routers.gatus.rule=HostRegexp(`gatus{host:(-[0-9a-z]+)?[.].+}`) && PathPrefix(`/`)"
+      - "traefik.http.services.gatus.loadbalancer.server.port=8080"
+    networks: [ "inet", "traefik", ]
+#    ports: [ "127.0.0.1:8080:8080", ]
+    user: "1000:1000"
+    volumes:
+      - "./config:/config"
+
+networks:
+  inet: { external: true }
+  traefik: { external: true }

@@ -1,0 +1,5 @@
+#
+
+storage:
+  type: "sqlite"
+  path: "/config/.cache/storage.db"
