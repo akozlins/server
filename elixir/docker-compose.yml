@@ -16,7 +16,6 @@ services:
       - "traefik.http.services.elixir.loadbalancer.server.port=8080"
     networks: [ "traefik", ]
     ports: [ "127.0.0.1:8080:8080", ]
-    tmpfs: [ "/tmp:mode=777", ]
     volumes:
       - "./.local:/1000/proj_dir"
       - "./lighttpd.conf:/1000/lighttpd.conf:ro"

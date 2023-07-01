@@ -3,4 +3,4 @@
 include ../makefile.mk
 
 init ::
-	mkdir -p -- "./authelia/.cache"
+	mkdir -p -- ./authelia/.cache

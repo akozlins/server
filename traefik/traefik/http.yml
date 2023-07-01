@@ -13,10 +13,9 @@ http:
       service: "test-service"
       tls: true
   serversTransports:
-    test-transport:
-      serverName: "test.{{env "DOMAIN"}}"
+    default-transport: { serverName: "{{env "DOMAIN"}}" }
   services:
     test-service:
       loadBalancer:
         servers: [ url: "https://10.8.0.1", ]
-        serversTransport: "test-transport"
+        serversTransport: "default-transport"

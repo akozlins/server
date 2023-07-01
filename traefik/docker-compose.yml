@@ -45,6 +45,7 @@ services:
     ports:
 #      - "0.0.0.0:80:80"
       - "0.0.0.0:443:443"
+    user: "1000:1000"
     volumes:
       - "./traefik:/etc/traefik"
       - "../etc/letsencrypt/live:/etc/letsencrypt/live:ro"
