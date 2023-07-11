@@ -25,7 +25,7 @@ services:
       - "./conf.d:/etc/nginx/templates:ro"
       - "./nginx.conf:/etc/nginx/nginx.conf:ro"
       - "../etc/letsencrypt:/etc/letsencrypt:ro"
-      - "/opt/html:/opt/html:ro"
+      - "./.cache/opt/html:/opt/html:ro"
       - "./.cache/run/socat:/run/socat:rw"
 
   socat:
@@ -45,7 +45,8 @@ services:
     command: [ "sslh", "--foreground", "--numeric", "--verbose=0",
       "--listen=0.0.0.0:80",
       "--anyprot=nginx:80",
-      "--openvpn=127.0.0.1:1194",
+      "--openvpn=${DOMAIN:?}:1194",
+      "--ssh=${DOMAIN:?}:22",
       "--on-timeout=anyprot",
     ]
     depends_on: [ "nginx", ]

@@ -9,7 +9,7 @@ SUDO := $(shell [[ " $$(id --groups --name) " =~ " docker " ]] || echo sudo)
 all :
 
 build :
-	$(SUDO) docker-compose build
+	$(SUDO) docker-compose build --progress plain
 
 down :
 	$(SUDO) docker-compose down

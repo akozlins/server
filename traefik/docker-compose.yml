@@ -39,7 +39,7 @@ services:
       - "traefik.http.middlewares.authelia.forwardAuth.authResponseHeaders=Remote-User,Remote-Groups,Remote-Name,Remote-Email"
       - "traefik.http.middlewares.authelia.forwardAuth.trustForwardHeader=true"
       - "traefik.http.routers.api.middlewares=auth@file"
-      - "traefik.http.routers.api.rule=HostRegexp(`traefik.{host:.+}`)"
+      - "traefik.http.routers.api.rule=HostRegexp(`traefik{host:(-[0-9a-z]+)?[.].+}`) && PathPrefix(`/`)"
       - "traefik.http.routers.api.service=api@internal"
     networks: { "default", "inet", "traefik" : { ipv4_address: 172.31.255.254 } }
     ports:
@@ -70,16 +70,6 @@ services:
     volumes:
       - "./authelia:/config:rw"
 
-  docker_sock:
-    << : *service
-    image: "tecnativa/docker-socket-proxy"
-    environment:
-      - "CONTAINERS=1"
-#    ports: [ "127.0.0.1:2375:2375", ]
-    tmpfs: [ "/run", ]
-    volumes:
-      - "/var/run/docker.sock:/var/run/docker.sock"
-
   dozzle:
     << : *service
     image: "amir20/dozzle"
@@ -95,6 +85,16 @@ services:
       - "traefik.http.routers.dozzle.rule=PathPrefix(`/dozzle`)"
       - "traefik.http.services.dozzle.loadbalancer.server.port=8080"
 #    ports: [ "127.0.0.1:8080:8080", ]
+
+  docker_sock:
+    << : *service
+    image: "tecnativa/docker-socket-proxy"
+    environment:
+      - "CONTAINERS=1"
+#    ports: [ "127.0.0.1:2375:2375", ]
+    tmpfs: [ "/run", ]
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
 
 networks:
   default: { internal: true }
