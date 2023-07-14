@@ -88,12 +88,10 @@ services:
 
   docker_sock:
     << : *service
-    image: "tecnativa/docker-socket-proxy"
-    environment:
-      - "CONTAINERS=1"
-#    ports: [ "127.0.0.1:2375:2375", ]
-    tmpfs: [ "/run", ]
+    image: "haproxy:alpine"
+    user: "1000:${DOCKER_GID:?}"
     volumes:
+      - "./haproxy.docker_sock.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro"
       - "/var/run/docker.sock:/var/run/docker.sock"
 
 networks:
