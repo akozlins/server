@@ -9,5 +9,7 @@ WORKDIR /etc/unbound
 
 RUN echo 'include: "/etc/unbound/conf.d/*.conf"' >> unbound.conf
 
+USER 1000:1000
+
 ENTRYPOINT [ "/usr/bin/dumb-init", "--" ]
 CMD [ "unbound", "-d" ]
