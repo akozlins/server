@@ -18,7 +18,7 @@ services:
       - "traefik.enable=true"
       - "traefik.http.middlewares.qbittorrent.stripprefix.prefixes=/qbittorrent"
       - "traefik.http.routers.qbittorrent.middlewares=authelia@docker,qbittorrent"
-      - "traefik.http.routers.qbittorrent.rule=PathPrefix(`/qbittorrent`) "
+      - "traefik.http.routers.qbittorrent.rule=PathPrefix(`/qbittorrent`)"
       - "traefik.http.services.qbittorrent.loadbalancer.server.port=8080"
     networks: [ "default", "traefik", ]
 #    ports: [ "127.0.0.1:8080:8080", ]
@@ -30,16 +30,27 @@ services:
   socks:
     << : *service
     build: { context: ".", dockerfile: "../v2ray/Dockerfile" }
+    depends_on: [ "unbound", ]
+    dns: "${SUBNET:?}.254"
     environment:
       - "SOCKS_ADDRESS=${SOCKS_ADDRESS:?}"
       - "SOCKS_PASSWORD=${SOCKS_PASSWORD:?}"
       - "SOCKS_USER=${SOCKS_USER:?}"
     networks: [ "default", "inet", ]
-#    ports: [ "127.0.0.1:1080:1080", ]
+    ports: [ "127.0.0.1:1080:1080", ]
     volumes:
       - "./v2ray.json:/etc/v2ray/config.json:ro"
 
+  unbound:
+    << : *service
+    build: { context: ".", dockerfile: "../doh/Dockerfile.unbound" }
+    networks:
+      default: { aliases: [ "unbound_default" ], ipv4_address: "${SUBNET:?}.254" }
+      inet:
+    volumes:
+      - "../doh/unbound.conf:/etc/unbound/conf.d/unbound.conf:ro"
+
 networks:
-  default: { internal: true }
+  default: { internal: true, ipam: { config: [ subnet: "${SUBNET:?}.0/24" ] } }
   inet: { external: true }
   traefik: { external: true }
