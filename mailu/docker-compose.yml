@@ -82,10 +82,5 @@ services:
     networks: { default: { ipv4_address: "${DNS:?}" } }
 
 networks:
-  default:
-    driver: "bridge"
-    ipam:
-      driver: "default"
-      config:
-        - subnet: "${SUBNET:?}"
+  default: { ipam: { config: [ subnet: "${SUBNET:?}" ] } }
   traefik: { external: true }

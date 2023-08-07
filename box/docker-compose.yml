@@ -36,7 +36,9 @@ services:
       - "SOCKS_ADDRESS=${SOCKS_ADDRESS:?}"
       - "SOCKS_PASSWORD=${SOCKS_PASSWORD:?}"
       - "SOCKS_USER=${SOCKS_USER:?}"
-    networks: [ "default", "inet", ]
+    networks:
+      default: { aliases: [ "socks_default" ] }
+      inet:
     ports: [ "127.0.0.1:1080:1080", ]
     volumes:
       - "./v2ray.json:/etc/v2ray/config.json:ro"

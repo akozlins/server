@@ -19,8 +19,7 @@ logs :
 
 # traefik bridge network
 br-traefik :
-	networks=($$($(SUDO) docker network ls --format='{{.Name}}'))
-	[[ " $${networks[@]} " == *" traefik "* ]] || \
+	docker network ls | grep -w traefik || \
 	$(SUDO) docker network create \
 	    --internal \
 	    --subnet="172.31.255.0/24" \
@@ -33,8 +32,7 @@ br-traefik :
 
 # internet bridge network
 br-inet :
-	networks=($$($(SUDO) docker network ls --format='{{.Name}}'))
-	[[ " $${networks[@]} " == *" inet "* ]] || \
+	docker network ls | grep -w inet || \
 	$(SUDO) docker network create \
 	    --opt "com.docker.network.bridge.name=br-inet" \
 	    --opt "com.docker.network.bridge.enable_icc=false" \

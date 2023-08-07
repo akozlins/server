@@ -13,7 +13,7 @@ services:
     << : *service
     build: { context: ".", dockerfile: "./Dockerfile" }
     environment:
-      - V2RAY_CLIENT_ID=${V2RAY_CLIENT_ID:?}
+      - "V2RAY_ID=${V2RAY_ID:?}"
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.v2ray.rule=PathPrefix(`/v2ray`)"
@@ -21,18 +21,18 @@ services:
     networks: [ "inet", "traefik", ]
 #    ports: [ "127.0.0.1:9000:9000", ]
     volumes:
-      - "./server.json:/etc/v2ray/config.json"
+      - "./server.json:/etc/v2ray/config.json:ro"
 
   client:
     << : *service
     build: { context: ".", dockerfile: "./Dockerfile" }
     environment:
-      - V2RAY_ADDRESS=${V2RAY_ADDRESS:?}
-      - V2RAY_USER_ID=${V2RAY_CLIENT_ID:?}
+      - "V2RAY_ADDRESS=${V2RAY_ADDRESS:?}"
+      - "V2RAY_ID=${V2RAY_ID:?}"
     networks: [ "inet" ]
     ports: [ "127.0.0.1:1080:1080", ]
     volumes:
-      - "./client.json:/etc/v2ray/config.json"
+      - "./client.json:/etc/v2ray/config.json:ro"
     profiles: [ "TEST", ]
 
 networks:

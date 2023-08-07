@@ -2,7 +2,7 @@
     "log": {
         "access": "",
         "error": "",
-        "loglevel": "warning"
+        "loglevel": "error"
     },
     "routing": {
         "domainStrategy": "AsIs",
