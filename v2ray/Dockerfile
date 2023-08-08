@@ -1,9 +1,10 @@
 #
 
-FROM golang:alpine AS build
+FROM golang AS build
 
-RUN apk add --no-cache \
-    git
+RUN apt-get update && apt-get --yes --no-install-recommends install \
+    git \
+    && rm -rf /var/lib/apt/lists/*
 
 USER 1000:1000
 WORKDIR /home/1000
@@ -12,10 +13,11 @@ ENV HOME="/home/1000"
 RUN git clone https://github.com/v2fly/v2ray-core .
 RUN CGO_ENABLED=0 go build -o ./v2ray -trimpath -ldflags "-s -w -buildid=" ./main
 
-FROM alpine
+FROM debian
 
-RUN apk add --no-cache \
-    dumb-init entr gettext
+RUN apt-get update && apt-get --yes --no-install-recommends install \
+    dumb-init entr gettext \
+    && rm -rf /var/lib/apt/lists/*
 
 USER 1000:1000
 WORKDIR /home/1000
