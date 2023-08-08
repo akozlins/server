@@ -9,7 +9,7 @@ services:
 
   nginx:
     << : *service
-    image: "nginx:alpine"
+    image: "nginx"
     environment:
       - "DOMAIN=${DOMAIN:?}"
     labels:
@@ -42,7 +42,7 @@ services:
   sslh:
     << : *service
     build: "./sslh"
-    command: [ "sslh", "--foreground", "--numeric", "--verbose=0",
+    command: [ "sslh", "--foreground", "--numeric",
       "--listen=0.0.0.0:80",
       "--anyprot=nginx:80",
       "--openvpn=${DOMAIN:?}:1194",

@@ -1,9 +1,10 @@
 #
 
-FROM alpine
+FROM debian
 
-RUN apk add --no-cache \
-    bash dumb-init socat
+RUN apt-get update && apt-get --yes --no-install-recommends install \
+    dumb-init socat \
+    && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /run/socat
 
