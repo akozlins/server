@@ -1,12 +1,15 @@
 #
 
-FROM node:19-alpine
+FROM node:19 AS build
 
-# <https://github.com/louislam/uptime-kuma/blob/master/docker/alpine-base.dockerfile>
-RUN apk add --no-cache \
-    git \
-    iputils setpriv dumb-init python3 py3-cryptography py3-pip py3-six py3-yaml py3-click py3-markdown py3-requests py3-requests-oauthlib
-RUN pip3 --no-cache-dir install apprise==1.2.1
+# <https://github.com/louislam/uptime-kuma/blob/master/docker/>
+RUN apt-get update && apt-get --yes --no-install-recommends install \
+    dumb-init \
+    python3 python3-pip \
+    python3-click python3-markdown python3-requests-oauthlib python3-yaml \
+    && rm -rf /var/lib/apt/lists/*
+RUN pip3 --no-cache-dir install \
+    apprise==1.2.1
 
 USER 1000:1000
 WORKDIR /home/1000
