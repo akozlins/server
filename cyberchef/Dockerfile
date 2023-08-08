@@ -14,6 +14,6 @@ ENV NODE_OPTIONS=--max_old_space_size=2048
 RUN npm exec -- grunt prod
 
 # nginx server
-FROM nginx:alpine
+FROM nginx
 
 COPY --from=build /home/1000/build/prod /usr/share/nginx/html/cyberchef

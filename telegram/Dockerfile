@@ -1,12 +1,12 @@
 #
 
-FROM python:latest
+FROM python
 
-RUN apt update && apt install -y \
+RUN apt-get update && apt-get --yes --no-install-recommends install \
     dumb-init \
     && rm -rf /var/lib/apt/lists/*
 
-RUN pip3 install \
+RUN pip3 --no-cache-dir install \
     flask requests waitress
 
 USER 1000:1000

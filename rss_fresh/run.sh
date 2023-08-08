@@ -23,5 +23,5 @@ PIDS="$PIDS $!"
 done ) &
 PIDS="$PIDS $!"
 
-trap "kill --timeout 1000 TERM --signal KILL $PIDS" TERM
+trap "kill -s TERM --timeout 1000 KILL -- $PIDS" EXIT HUP INT TERM
 wait

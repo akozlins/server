@@ -8,12 +8,21 @@ x-service: &service
   read_only: true
   security_opt: [ "no-new-privileges:true", ]
 
+x-lsio: &lsio
+  logging: { options: { max-size: "1m" } }
+  restart: "always"
+  stop_grace_period: "5s"
+#  cap_drop: [ "ALL", ]
+#  read_only: true
+  security_opt: [ "no-new-privileges:true", ]
+
 services:
 
   qbittorrent:
     << : *service
     build: { context: ".", dockerfile: "./Dockerfile" }
-    depends_on: [ "socks", ]
+    depends_on: [ "unbound", "socks", ]
+    dns: "${SUBNET:?}.254"
     labels:
       - "traefik.enable=true"
       - "traefik.http.middlewares.qbittorrent.stripprefix.prefixes=/qbittorrent"

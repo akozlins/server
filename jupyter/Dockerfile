@@ -4,7 +4,7 @@ FROM jupyter/scipy-notebook
 
 user root
 
-RUN apt-get update && apt-get install -y \
+RUN apt-get update && apt-get --yes --no-install-recommends install \
     && rm -rf /var/lib/apt/lists/*
 
 # grant sudo

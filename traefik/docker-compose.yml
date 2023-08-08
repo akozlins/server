@@ -9,7 +9,7 @@ services:
 
   traefik:
     << : *service
-    image: "traefik:latest"
+    image: "traefik"
     command:
       - --accesslog=true
       - --api.dashboard=true
@@ -88,7 +88,7 @@ services:
 
   docker_sock:
     << : *service
-    image: "haproxy:alpine"
+    image: "haproxy"
     user: "1000:${DOCKER_GID:?}"
     volumes:
       - "./haproxy.docker_sock.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro"

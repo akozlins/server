@@ -1,6 +1,6 @@
 #
 
-FROM archlinux:latest
+FROM archlinux
 
 RUN pacman -Sy
 RUN pacman -S --noconfirm \

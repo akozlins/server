@@ -8,10 +8,10 @@ x-service: &service
 services:
   matrix:
     << : *service
-    image: matrixdotorg/synapse:latest
+    image: "matrixdotorg/synapse"
     environment:
-      - GID=1000
-      - UID=1000
+      - "GID=1000"
+      - "UID=1000"
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.matrix.rule=PathPrefix(`/_matrix`, `/_synapse/client`)"

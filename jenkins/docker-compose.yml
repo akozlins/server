@@ -8,7 +8,7 @@ x-service: &service
 services:
   jenkins:
     << : *service
-    image: "jenkins/jenkins:lts-jdk11"
+    image: "jenkins/jenkins"
     environment:
       - "JAVA_OPTS=-Xmx1g"
       - "JENKINS_OPTS=--prefix=/jenkins"

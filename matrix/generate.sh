@@ -9,6 +9,6 @@ docker run -it --rm \
     -e SYNAPSE_REPORT_STATS=no \
     -e UID=1000 \
     -e GID=1000 \
-    matrixdotorg/synapse:latest generate
+    matrixdotorg/synapse generate
 
 # register_new_matrix_user http://127.0.0.1:8008 -c /data/homeserver.yaml

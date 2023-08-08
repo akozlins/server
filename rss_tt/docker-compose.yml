@@ -7,9 +7,9 @@ x-service: &service
 
 services:
 
-  db:
+  postgres:
     << : *service
-    image: "postgres:alpine"
+    image: "postgres"
     environment:
       - "POSTGRES_DB=db"
       - "POSTGRES_PASSWORD=${DB_PASSWORD:?}"
@@ -29,7 +29,7 @@ services:
     command: [ "/run.sh", ]
     depends_on: [ "db", ]
     environment:
-      - "TTRSS_DB_HOST=db"
+      - "TTRSS_DB_HOST=postgres"
       - "TTRSS_DB_NAME=db"
       - "TTRSS_DB_PASS=${DB_PASSWORD:?}"
       - "TTRSS_DB_USER=${DB_USER:?}"
