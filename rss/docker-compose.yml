@@ -19,8 +19,9 @@ services:
       interval: 30s
       start_period: 30s
     networks: [ "default", ]
+    user: "1000:1000"
     volumes:
-      - "db:/var/lib/postgresql/data"
+      - "./.local/postgres:/var/lib/postgresql/data"
       - "./backup:/backup:rw"
 
   php:
@@ -58,9 +59,6 @@ services:
     volumes:
       - "./nginx.conf:/etc/nginx/nginx.conf:ro"
       - "./.local:/var/www"
-
-volumes:
-  db:
 
 networks:
   default: { internal: true }
