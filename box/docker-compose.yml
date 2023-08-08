@@ -50,7 +50,7 @@ services:
       default: { aliases: [ "unbound_default" ], ipv4_address: "${SUBNET:?}.254" }
       inet:
     volumes:
-      - "../doh/unbound.conf:/etc/unbound/conf.d/unbound.conf:ro"
+      - "../doh/unbound.conf:/etc/unbound/unbound.conf.d/unbound.conf:ro"
 
 networks:
   default: { internal: true, ipam: { config: [ subnet: "${SUBNET:?}.0/24" ] } }

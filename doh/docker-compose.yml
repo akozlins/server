@@ -20,7 +20,7 @@ services:
     networks: [ "inet", "traefik", ]
 #    ports: [ "127.0.0.1:53:53", ]
     volumes:
-      - "./unbound.conf:/etc/unbound/conf.d/unbound.conf:ro"
+      - "./unbound.conf:/etc/unbound/unbound.conf.d/unbound.conf:ro"
 
   doh:
     << : *service

@@ -1,13 +1,12 @@
 #
 
-FROM alpine
+FROM debian
 
-RUN apk add --no-cache \
-    bind-tools dumb-init gettext openssl unbound
+RUN apt-get update && apt-get --yes --no-install-recommends install \
+    dumb-init ca-certificates unbound \
+    && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /etc/unbound
-
-RUN echo 'include: "/etc/unbound/conf.d/*.conf"' >> unbound.conf
 
 USER 1000:1000
 

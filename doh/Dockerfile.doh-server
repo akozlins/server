@@ -1,21 +1,23 @@
 #
 
-FROM golang:alpine AS build
+FROM golang AS build
 
 WORKDIR /build
 
-RUN apk add --no-cache \
-    git make
+RUN apt-get update && apt-get --yes --no-install-recommends install \
+    git make \
+    && rm -rf /var/lib/apt/lists/*
 
 RUN git clone https://github.com/m13253/dns-over-https .
 RUN make doh-server/doh-server
 
 #
 
-FROM alpine
+FROM debian
 
-RUN apk add --no-cache \
-    dumb-init
+RUN apt-get update && apt-get --yes --no-install-recommends install \
+    dumb-init \
+    && rm -rf /var/lib/apt/lists/*
 
 COPY --from=build /build/doh-server/doh-server /doh-server
 
