@@ -1,18 +1,14 @@
 #
 
-FROM alpine
+FROM php:8.2-fpm
 
-RUN apk add --no-cache \
-    dumb-init git postgresql-client
+RUN apt-get update && apt-get --yes --no-install-recommends install \
+    dumb-init git postgresql-client \
+    libicu-dev libpq-dev \
+    && rm -rf /var/lib/apt/lists/*
 
-RUN apk add --no-cache \
-    php php-fpm \
-    php-ctype php-curl php-dom php-fileinfo php-json php-iconv \
-    php-intl php-mbstring php-pcntl php-pdo_mysql php-pdo_pgsql php-pdo_sqlite \
-    php-posix php-session php-xml php-zip
-
-RUN ln -s -T php81 /etc/php
-RUN ln -s -T php-fpm81 /usr/sbin/php-fpm
+RUN docker-php-ext-install \
+    pcntl intl pdo_pgsql
 
 RUN sed -i \
     -e 's/^\(user\|group\) = .*/\1 = 1000/i' \
@@ -21,13 +17,14 @@ RUN sed -i \
     -e 's/;\(clear_env\) = .*/\1 = no/i' \
     -e 's/;\(php_admin_value\[error_log\]\) = .*/\1 = \/dev\/stderr/' \
     -e 's/;\(php_admin_flag\[log_errors\]\) = .*/\1 = on/' \
-    /etc/php/php-fpm.d/www.conf
+    /usr/local/etc/php-fpm.d/www.conf
 
 RUN sed -i \
     -e 's/;\(error_log\) = .*/\1 = \/dev\/stderr/' \
-    /etc/php/php-fpm.conf
+    /usr/local/etc/php-fpm.conf
 
 USER 1000:1000
+env PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
 
 ENTRYPOINT [ "/usr/bin/dumb-init", "--" ]
 CMD [ "php-fpm", "--nodaemonize", "--force-stderr" ]

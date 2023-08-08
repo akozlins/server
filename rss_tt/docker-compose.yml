@@ -33,7 +33,7 @@ services:
       - "TTRSS_DB_NAME=db"
       - "TTRSS_DB_PASS=${DB_PASSWORD:?}"
       - "TTRSS_DB_USER=${DB_USER:?}"
-      - "TTRSS_PHP_EXECUTABLE=/usr/bin/php"
+      - "TTRSS_PHP_EXECUTABLE=php"
       - "TTRSS_PLUGINS=auth_internal"
       - "TTRSS_SELF_URL_PATH=/${ROUTE:?}"
       # default lifetime of a session cookie in seconds
@@ -46,7 +46,7 @@ services:
 
   nginx:
     << : *service
-    image: "nginx:alpine"
+    image: "nginx"
     depends_on: [ "php", ]
     labels:
       - "traefik.enable=true"
