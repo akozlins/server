@@ -27,7 +27,7 @@ services:
     << : *service
     build: { context: ".", dockerfile: "./Dockerfile.php" }
     command: [ "/run.sh", ]
-    depends_on: [ "db", ]
+    depends_on: [ "postgres", ]
     environment:
       - "TTRSS_DB_HOST=postgres"
       - "TTRSS_DB_NAME=db"
@@ -35,13 +35,13 @@ services:
       - "TTRSS_DB_USER=${DB_USER:?}"
       - "TTRSS_PHP_EXECUTABLE=php"
       - "TTRSS_PLUGINS=auth_internal"
-      - "TTRSS_SELF_URL_PATH=/${ROUTE:?}"
+      - "TTRSS_SELF_URL_PATH=/tt"
       # default lifetime of a session cookie in seconds
       # (0 means cookie will be deleted when browser closes)
       - "TTRSS_SESSION_COOKIE_LIFETIME=31415927"
     networks: [ "default", "inet", ]
     volumes:
-      - "./run.sh:/run.sh:ro"
+      - "./run-tt.sh:/run.sh:ro"
       - "./.local:/var/www"
 
   nginx:
@@ -50,8 +50,9 @@ services:
     depends_on: [ "php", ]
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.${ROUTE:?}.rule=PathPrefix(`/${ROUTE:?}`)"
-      - "traefik.http.services.${ROUTE:?}.loadbalancer.server.port=8080"
+      - "traefik.http.routers.rss.middlewares=authelia@docker"
+      - "traefik.http.routers.rss.rule=HostRegexp(`rss{host:(-[0-9a-z]+)?[.].+}`) && PathPrefix(`/tt`,`/fresh`)"
+      - "traefik.http.services.rss.loadbalancer.server.port=8080"
     networks: [ "default", "traefik", ]
 #    ports:[ "127.0.0.1:8080:8080", ]
     volumes:

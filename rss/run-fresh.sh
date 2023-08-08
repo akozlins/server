@@ -1,7 +1,7 @@
 #!/bin/sh
 set -euf
 
-cd /var/www/FreshRSS || exit 1
+cd /var/www/fresh || exit 1
 
 # make needed dirs in ./data
 ./cli/prepare.php
@@ -18,7 +18,7 @@ PIDS="$PIDS $!"
 
 # run update job
 ( while true ; do
-    php /var/www/FreshRSS/app/actualize_script.php
+    php ./app/actualize_script.php
     sleep 1801
 done ) &
 PIDS="$PIDS $!"
