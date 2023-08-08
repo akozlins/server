@@ -24,8 +24,72 @@ services:
 #    ports: [ "127.0.0.1:8080:8080", ]
     volumes:
       - "${HOME:?}/Downloads:/home/1000/Downloads"
-      - "./.local:/home/1000/.local/share/qBittorrent"
-      - "./.local:/home/1000/.config/qBittorrent"
+      - "./.local/qbittorrent:/home/1000/.local/share/qBittorrent"
+      - "./.local/qbittorrent:/home/1000/.config/qBittorrent"
+
+  jackett:
+    << : *lsio
+    image: "lscr.io/linuxserver/jackett"
+    depends_on: [ "unbound", "socks", ]
+    dns: "${SUBNET:?}.254"
+    environment:
+      - "PUID=1000"
+      - "PGID=1000"
+      - "AUTO_UPDATE=false"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.jackett.middlewares=authelia@docker"
+      - "traefik.http.routers.jackett.rule=PathPrefix(`/jackett`)"
+      - "traefik.http.services.jackett.loadbalancer.server.port=9117"
+    networks:
+      default: { aliases: [ "jackett_default" ] }
+      inet:
+      traefik:
+#    ports: [ "127.0.0.1:9117:9117" ]
+    volumes:
+      - "./.local/jackett:/config"
+      - "./.local/jackett:/downloads"
+
+  sonarr:
+    << : *lsio
+    image: "lscr.io/linuxserver/sonarr"
+    depends_on: [ "unbound", "socks", "sabnzbd", ]
+    dns: "${SUBNET:?}.254"
+    environment:
+      - "PUID=1000"
+      - "PGID=1000"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.sonarr.middlewares=authelia@docker"
+      - "traefik.http.routers.sonarr.rule=PathPrefix(`/sonarr`)"
+      - "traefik.http.services.sonarr.loadbalancer.server.port=8989"
+    networks: [ "default", "inet", "traefik", ]
+#    ports: [ "127.0.0.1:8989:8989" ]
+    volumes:
+      - "./.local/sonarr:/config"
+      - "./.local/data:/data"
+
+  sabnzbd:
+    << : *lsio
+    image: "lscr.io/linuxserver/sabnzbd"
+    depends_on: [ "unbound", "socks", ]
+    dns: "${SUBNET:?}.254"
+    environment:
+      - "PUID=1000"
+      - "PGID=1000"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.sabnzbd.middlewares=authelia@docker"
+      - "traefik.http.routers.sabnzbd.rule=PathPrefix(`/sabnzbd`)"
+      - "traefik.http.services.sabnzbd.loadbalancer.server.port=8080"
+    networks:
+      default: { aliases: [ "sabnzbd_default" ] }
+      inet:
+      traefik:
+#    ports: [ "127.0.0.1:8080:8080" ]
+    volumes:
+      - "./.local/sabnzbd:/config"
+      - "./.local/data:/data"
 
   socks:
     << : *service
