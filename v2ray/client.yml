@@ -1,0 +1,34 @@
+#
+
+log:
+  access: ''
+  error: ''
+  loglevel: debug
+
+inbounds:
+- port: 1080
+  listen: 0.0.0.0
+  protocol: socks
+  sniffing:
+    enabled: true
+    destOverride:
+    - http
+    - tls
+  settings:
+    auth: noauth
+    udp: false
+
+outbounds:
+- protocol: vmess
+  settings:
+    vnext:
+    - address: ${V2RAY_ADDRESS}
+      port: 443
+      users:
+      - id: ${V2RAY_ID}
+        alterId: 0
+  streamSettings:
+    network: ws
+    security: tls
+    wsSettings:
+      path: /vmess

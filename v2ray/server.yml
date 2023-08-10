@@ -1,0 +1,23 @@
+#
+
+log:
+  access: ''
+  error: ''
+  loglevel: debug
+
+inbounds:
+- port: 9000
+  listen: 0.0.0.0
+  protocol: vmess
+  settings:
+    clients:
+    - id: ${V2RAY_ID}
+      alterId: 64
+  streamSettings:
+    network: ws
+    wsSettings:
+      path: /vmess
+
+outbounds:
+- protocol: freedom
+  settings: {}

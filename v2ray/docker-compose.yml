@@ -21,7 +21,7 @@ services:
     networks: [ "inet", "traefik", ]
 #    ports: [ "127.0.0.1:9000:9000", ]
     volumes:
-      - "./server.json:/etc/v2ray/config.json:ro"
+      - "./server.yml:/etc/v2ray/config.json:ro"
 
   client:
     << : *service
@@ -32,7 +32,7 @@ services:
     networks: [ "inet" ]
     ports: [ "127.0.0.1:1080:1080", ]
     volumes:
-      - "./client.json:/etc/v2ray/config.json:ro"
+      - "./client.yml:/etc/v2ray/config.json:ro"
     profiles: [ "TEST", ]
 
 networks:
