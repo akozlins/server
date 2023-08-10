@@ -1,9 +1,10 @@
 #
 
-FROM alpine
+FROM debian
 
-RUN apk add --no-cache \
-    dumb-init qbittorrent-nox
+RUN apt-get update && apt-get --yes --no-install-recommends install \
+    dumb-init qbittorrent-nox \
+    && rm -rf /var/lib/apt/lists/*
 
 USER 1000:1000
 WORKDIR /home/1000
