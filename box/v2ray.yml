@@ -1,0 +1,33 @@
+#
+
+log:
+  access: ''
+  error: ''
+  loglevel: error
+
+routing:
+  domainStrategy: AsI
+  rules:
+  - domain: [ regexp:.*_default$, ]
+    outboundTag: direct
+    type: field
+
+inbounds:
+- port: 1080
+  listen: 0.0.0.0
+  protocol: socks
+  settings:
+    auth: noauth
+    udp: true
+
+outbounds:
+- protocol: socks
+  settings:
+    servers:
+    - address: $SOCKS_ADDRESS
+      port: 1080
+      users:
+      - user: $SOCKS_USER
+        pass: $SOCKS_PASSWORD
+- protocol: freedom
+  tag: direct
