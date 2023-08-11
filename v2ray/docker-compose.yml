@@ -9,15 +9,20 @@ x-service: &service
   security_opt: [ "no-new-privileges:true", ]
 
 services:
-  v2ray:
+
+  server:
     << : *service
     build: { context: ".", dockerfile: "./Dockerfile" }
     environment:
       - "V2RAY_ID=${V2RAY_ID:?}"
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.v2ray.rule=PathPrefix(`/v2ray`)"
-      - "traefik.http.services.v2ray.loadbalancer.server.port=9000"
+      - "traefik.http.routers.v2ray-vmess.rule=PathPrefix(`/v2ray/vmess`)"
+      - "traefik.http.routers.v2ray-vmess.service=v2ray-vmess"
+      - "traefik.http.services.v2ray-vmess.loadbalancer.server.port=9000"
+      - "traefik.http.routers.v2ray-vless.rule=PathPrefix(`/v2ray/vless`)"
+      - "traefik.http.routers.v2ray-vless.service=v2ray-vless"
+      - "traefik.http.services.v2ray-vless.loadbalancer.server.port=9001"
     networks: [ "inet", "traefik", ]
 #    ports: [ "127.0.0.1:9000:9000", ]
     volumes:

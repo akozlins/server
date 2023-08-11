@@ -18,8 +18,18 @@ inbounds:
     auth: noauth
     udp: false
 
+routing:
+  domainStrategy: IPOnDemand
+  rules:
+  - type: field
+    domain: [ "regexp:.*", ]
+    outboundTag: vless
+
 outbounds:
+- protocol: blackhole
+  tag: blackhole
 - protocol: vmess
+  tag: vmess
   settings:
     vnext:
     - address: ${V2RAY_ADDRESS}
@@ -31,4 +41,19 @@ outbounds:
     network: ws
     security: tls
     wsSettings:
-      path: /vmess
+      path: /v2ray/vmess
+- protocol: vless
+  tag: vless
+  settings:
+    vnext:
+    - address: ${V2RAY_ADDRESS}
+      port: 443
+      users:
+      - id: ${V2RAY_ID}
+        alterId: 0
+        encryption: none
+  streamSettings:
+    network: ws
+    security: tls
+    wsSettings:
+      path: /v2ray/vless

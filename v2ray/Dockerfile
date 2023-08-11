@@ -16,7 +16,7 @@ RUN CGO_ENABLED=0 go build -o ./v2ray -trimpath -ldflags "-s -w -buildid=" ./mai
 FROM debian
 
 RUN apt-get update && apt-get --yes --no-install-recommends install \
-    dumb-init entr gettext \
+    ca-certificates dumb-init entr gettext \
     && rm -rf /var/lib/apt/lists/*
 
 USER 1000:1000

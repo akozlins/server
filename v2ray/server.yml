@@ -6,9 +6,9 @@ log:
   loglevel: error
 
 inbounds:
-- port: 9000
+- protocol: vmess
   listen: 0.0.0.0
-  protocol: vmess
+  port: 9000
   settings:
     clients:
     - id: ${V2RAY_ID}
@@ -16,8 +16,28 @@ inbounds:
   streamSettings:
     network: ws
     wsSettings:
-      path: /vmess
+      path: /v2ray/vmess
+- protocol: vless
+  listen: 0.0.0.0
+  port: 9001
+  settings:
+    clients:
+    - id: ${V2RAY_ID}
+    decryption: none
+  streamSettings:
+    network: ws
+    wsSettings:
+      path: /v2ray/vless
+
+routing:
+  domainStrategy: IPOnDemand
+  rules:
+  - type: field
+    ip: [ 127.0.0.0/8, 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16, ]
+    outboundTag: blackhole
 
 outbounds:
 - protocol: freedom
   settings: {}
+- protocol: blackhole
+  tag: blackhole
