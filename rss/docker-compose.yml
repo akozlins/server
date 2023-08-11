@@ -41,6 +41,7 @@ services:
       # (0 means cookie will be deleted when browser closes)
       - "TTRSS_SESSION_COOKIE_LIFETIME=31415927"
     networks: [ "default", "inet", ]
+#    ports:[ "127.0.0.1:9000:9000", ]
     volumes:
       - "./run-tt.sh:/run.sh:ro"
       - "./.local:/var/www"

@@ -35,6 +35,6 @@ for spec in "$@" ; do
     PIDS="$PIDS $!"
 done
 
-trap "kill --signal KILL --timeout 1000 TERM -- $PIDS" TERM
+trap "kill -s TERM --timeout 1000 KILL -- $PIDS" EXIT HUP INT TERM
 
 wait

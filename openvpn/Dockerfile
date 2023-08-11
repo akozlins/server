@@ -1,9 +1,10 @@
 #
 
-FROM alpine
+FROM debian
 
-RUN apk add --no-cache \
-    openssl openvpn
+RUN apt-get update && apt-get --yes --no-install-recommends install \
+    openssl openvpn \
+    && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /etc/openvpn
 
