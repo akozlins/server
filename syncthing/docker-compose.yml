@@ -1,0 +1,32 @@
+#
+
+x-service:
+  &service
+  logging: { options: { max-size: "1m" } }
+  restart: "always"
+  stop_grace_period: "5s"
+  cap_drop: [ "ALL", ]
+  read_only: true
+  security_opt: [ "no-new-privileges:true", ]
+
+services:
+
+  syncthing:
+    << : *service
+    build: { context: ".", dockerfile: "../nginx/socat/Dockerfile" }
+    command: [ "/run.sh", "-dd",
+      "TCP-LISTEN:8080,fork", "UNIX-CONNECT:/syncthing.sock",
+    ]
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.middlewares.syncthing.stripprefix.prefixes=/syncthing"
+      - "traefik.http.routers.syncthing.middlewares=authelia@docker,syncthing"
+      - "traefik.http.routers.syncthing.rule=PathPrefix(`/syncthing`)"
+      - "traefik.http.services.syncthing.loadbalancer.server.port=8080"
+    networks: [ "traefik", ]
+    volumes:
+      - "../nginx/socat/run2.sh:/run.sh:ro"
+      - "${XDG_RUNTIME_DIR:?}/syncthing.sock:/syncthing.sock"
+
+networks:
+  traefik: { external: true }

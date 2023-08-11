@@ -1,0 +1,25 @@
+#!/bin/bash
+set -euf
+
+if [[ $# < 2 ]] ; then
+    echo "Usage:"
+    echo "  $0 [options] [<address> <address>]..."
+    exit 1
+fi
+
+OPTS=()
+while [[ "${1:-}" = -* ]] ; do
+    OPTS+=("$1")
+    shift 1
+done
+
+PIDS=""
+while [ $# -ge 2 ] ; do
+    socat "${OPTS[@]}" "$1" "$2" &
+    PIDS="$PIDS $!"
+    shift 2
+done
+
+trap "kill -s TERM --timeout 1000 KILL -- $PIDS" EXIT HUP INT TERM
+
+wait
