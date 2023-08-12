@@ -3,7 +3,7 @@
 FROM debian
 
 RUN apt-get update && apt-get --yes --no-install-recommends install \
-    dumb-init ca-certificates unbound \
+    ca-certificates dumb-init entr gettext unbound \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /etc/unbound
@@ -11,4 +11,5 @@ WORKDIR /etc/unbound
 USER 1000:1000
 
 ENTRYPOINT [ "/usr/bin/dumb-init", "--" ]
-CMD [ "unbound", "-d" ]
+#CMD [ "unbound", "-d", "-p" ]
+CMD echo unbound.conf | entr -nrz bash -c "exec unbound -d -p -c <(envsubst < unbound.conf)"
