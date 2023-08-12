@@ -5,20 +5,20 @@ log:
   error: ''
   loglevel: error
 
-routing:
-  domainStrategy: AsI
-  rules:
-  - domain: [ regexp:.*_default$, ]
-    outboundTag: direct
-    type: field
-
 inbounds:
-- port: 1080
+- protocol: socks
   listen: 0.0.0.0
-  protocol: socks
+  port: 1080
   settings:
     auth: noauth
     udp: true
+
+routing:
+  domainStrategy: IPIfNonMatch
+  rules:
+  - type: field
+    ip: [ geoip:private, ]
+    outboundTag: freedom
 
 outbounds:
 - protocol: socks
@@ -30,4 +30,6 @@ outbounds:
       - user: $SOCKS_USER
         pass: $SOCKS_PASSWORD
 - protocol: freedom
-  tag: direct
+  tag: freedom
+- protocol: blackhole
+  tag: blackhole
