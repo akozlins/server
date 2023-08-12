@@ -11,23 +11,25 @@ inbounds:
   protocol: socks
   sniffing:
     enabled: true
-    destOverride:
-    - http
-    - tls
+    destOverride: [ http, tls, ]
   settings:
     auth: noauth
     udp: false
 
 routing:
-  domainStrategy: IPOnDemand
+  domainStrategy: IPIfNonMatch
   rules:
+  - type: field
+    domain: [ "geosite:private", ]
+    outboundTag: blackhole
+  - type: field
+    ip: [ "geoip:private", ]
+    outboundTag: blackhole
   - type: field
     domain: [ "regexp:.*", ]
     outboundTag: vless
 
 outbounds:
-- protocol: blackhole
-  tag: blackhole
 - protocol: vmess
   tag: vmess
   settings:
@@ -57,3 +59,5 @@ outbounds:
     security: tls
     wsSettings:
       path: /v2ray/vless
+- protocol: blackhole
+  tag: blackhole
