@@ -1,0 +1,58 @@
+#
+
+x-service: &service
+  logging: { options: { max-size: "1m" } }
+  restart: "always"
+  stop_grace_period: "5s"
+
+services:
+
+  grafana:
+    << : *service
+    image: "grafana/grafana-oss"
+    environment:
+      - "GF_SERVER_ROOT_URL=/grafana"
+      - "GF_SERVER_SERVE_FROM_SUB_PATH=true"
+      - "GF_AUTH_BASIC_ENABLED=false"
+      - "GF_AUTH_ANONYMOUS_ENABLED=true"
+      - "GF_AUTH_ANONYMOUS_ORG_ROLE=Admin"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.grafana.middlewares=authelia@docker"
+      - "traefik.http.routers.grafana.rule=PathPrefix(`/grafana`)"
+      - "traefik.http.services.grafana.loadbalancer.server.port=3000"
+    networks: [ "default", "traefik", ]
+#    ports: [ "127.0.0.1:3000:3000", ]
+    user: "1000:1000"
+    volumes:
+      - "./.local/grafana:/var/lib/grafana"
+
+  prometheus:
+    << : *service
+    image: "prom/prometheus"
+    command: >
+      "--config.file=/etc/prometheus/prometheus.yml"
+      "--web.listen-address=0.0.0.0:9090"
+      "--web.route-prefix=/prometheus"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.prometheus.middlewares=authelia@docker"
+      - "traefik.http.routers.prometheus.rule=PathPrefix(`/prometheus`)"
+      - "traefik.http.services.prometheus.loadbalancer.server.port=9090"
+    networks: [ "default", "traefik", ]
+#    ports: [ "127.0.0.1:9090:9090", ]
+    user: "1000:1000"
+    volumes:
+      - "./prometheus.yml:/etc/prometheus/prometheus.yml"
+      - "./.local/prometheus:/prometheus"
+
+  # <https://grafana.com/oss/prometheus/exporters/node-exporter/?tab=installation>
+  node:
+    << : *service
+    image: "prom/node-exporter"
+    networks: [ "default", ]
+#    ports: [ "127.0.0.1:9100:9100", ]
+
+networks:
+  default:
+  traefik: { external: true }
