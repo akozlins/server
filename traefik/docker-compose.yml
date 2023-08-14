@@ -44,7 +44,10 @@ services:
     networks: { "default", "inet", "traefik" : { ipv4_address: 172.31.255.254 } }
     ports:
 #      - "0.0.0.0:80:80"
-      - "0.0.0.0:443:443"
+      - "0.0.0.0:443:443/tcp"
+      - "0.0.0.0:443:443/udp"
+      - "[::]:443:443/tcp"
+      - "[::]:443:443/udp"
     user: "1000:1000"
     volumes:
       - "./traefik:/etc/traefik"

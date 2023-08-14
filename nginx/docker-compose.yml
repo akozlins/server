@@ -51,7 +51,9 @@ services:
     ]
     depends_on: [ "nginx", ]
     networks: [ "default", "inet", ]
-    ports: [ "0.0.0.0:80:80", ]
+    ports:
+    - "0.0.0.0:80:80"
+    - "[::]:80:80"
 
   whoami:
     << : *service

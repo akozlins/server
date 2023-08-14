@@ -19,9 +19,9 @@ services:
       - "${IP4:?}:25:25"
       - "${IP4:?}:465:465"
       - "${IP4:?}:993:993"
-#      - "[${IP6:?}]:25:25"
-#      - "[${IP6:?}]:465:465"
-#      - "[${IP6:?}]:993:993"
+      - "[${IP6:?}]:25:25"
+      - "[${IP6:?}]:465:465"
+      - "[${IP6:?}]:993:993"
     volumes:
       - "./data/certs:/certs"
       - "../etc/letsencrypt/live/${DOMAIN:?}:/etc/letsencrypt/live/example.com:ro"
