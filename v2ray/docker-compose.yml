@@ -38,7 +38,7 @@ services:
     ports: [ "127.0.0.1:1080:1080", ]
     volumes:
       - "./client.yml:/etc/v2ray/config.json:ro"
-    profiles: [ "TEST", ]
+#    profiles: [ "TEST", ]
 
 networks:
   inet: { external: true }

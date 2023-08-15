@@ -2,7 +2,10 @@
 
 import config
 import flask
+import os
 import requests
+
+TOKEN = os.environ['TELEGRAM_TOKEN']
 
 app = flask.Flask(__name__)
 
@@ -12,7 +15,7 @@ def exception_handler(error) :
     return '', 500
 
 def sendMessage(chat_id, text) :
-    requests.post(f'https://api.telegram.org/bot{config.TOKEN}/sendMessage', json = {
+    requests.post(f'https://api.telegram.org/bot{TOKEN}/sendMessage', json = {
         'chat_id' : chat_id,
         'text' : text,
     })
@@ -24,7 +27,7 @@ def webhook_get() :
     return "get-ok"
 
 # set web hook address with:
-# `curl "https://api.telegram.org/bot${config.TOKEN}/setWebhook?url=https://${DOMAIN}/${config.PREFIX}/webhook"`
+# `curl "https://api.telegram.org/bot${TOKEN}/setWebhook?url=https://${DOMAIN}/telegram/webhook"`
 @bp.route("/webhook", methods=[ 'POST' ])
 def webhook_post() :
     json = flask.request.get_json()
@@ -42,7 +45,7 @@ def webhook_post() :
 
     return flask.Response('post-ok', status=200)
 
-app.register_blueprint(bp, url_prefix=config.PREFIX)
+app.register_blueprint(bp, url_prefix='/telegram')
 
 if __name__ == "__main__" :
     #import waitress

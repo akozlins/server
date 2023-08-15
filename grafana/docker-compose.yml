@@ -46,13 +46,6 @@ services:
       - "./prometheus.yml:/etc/prometheus/prometheus.yml"
       - "./.local/prometheus:/prometheus"
 
-  # <https://grafana.com/oss/prometheus/exporters/node-exporter/?tab=installation>
-  node:
-    << : *service
-    image: "prom/node-exporter"
-    networks: [ "default", ]
-#    ports: [ "127.0.0.1:9100:9100", ]
-
 networks:
   default:
   traefik: { external: true }
