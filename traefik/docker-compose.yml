@@ -19,6 +19,8 @@ services:
       - --entrypoints.https.address=:443
 #      - --entryPoints.https.forwardedHeaders.trustedIPs=127.0.0.0/8
       - --entrypoints.https.http.tls=true
+      - --entrypoints.https.http3
+      - --experimental.http3=true
       - --global.checknewversion=false
       - --global.sendanonymoususage=false
       - --log.level=WARN
