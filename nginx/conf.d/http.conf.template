@@ -26,11 +26,4 @@ server {
     listen 0.0.0.0:8080;
 
     include conf.d/server.conf;
-
-    location /syncthing/ {
-        proxy_pass http://unix:/run/socat/syncthing.sock:/;
-
-        proxy_read_timeout 60s;
-        proxy_send_timeout 60s;
-    }
 }
