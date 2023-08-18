@@ -14,8 +14,11 @@ services:
       - "GF_SERVER_ROOT_URL=/grafana"
       - "GF_SERVER_SERVE_FROM_SUB_PATH=true"
       - "GF_AUTH_BASIC_ENABLED=false"
-      - "GF_AUTH_ANONYMOUS_ENABLED=true"
-      - "GF_AUTH_ANONYMOUS_ORG_ROLE=Admin"
+      #- "GF_AUTH_ANONYMOUS_ENABLED=true"
+      #- "GF_AUTH_ANONYMOUS_ORG_ROLE=Admin"
+      - "GF_AUTH_PROXY_ENABLED=true"
+      - "GF_AUTH_PROXY_HEADER_NAME=Remote-User"
+      - "GF_AUTH_PROXY_WHITELIST=${TRAEFIK_SUBNET:?}.0/24"
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.grafana.middlewares=authelia@docker"
