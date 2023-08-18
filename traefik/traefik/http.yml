@@ -2,7 +2,7 @@
 
 http:
   middlewares:
-    auth:
+    auth0:
       basicauth:
         # `htpasswd -nb -B username password | cut -d ":" -f 2`
         usersFile: "/etc/traefik/users.key"

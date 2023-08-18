@@ -40,7 +40,7 @@ services:
       - "traefik.http.middlewares.authelia.forwardAuth.address=http://authelia:9091/authelia/api/verify?auth=basic"
       - "traefik.http.middlewares.authelia.forwardAuth.authResponseHeaders=Remote-User,Remote-Groups,Remote-Name,Remote-Email"
       - "traefik.http.middlewares.authelia.forwardAuth.trustForwardHeader=true"
-      - "traefik.http.routers.api.middlewares=auth@file"
+      - "traefik.http.routers.api.middlewares=auth0@file"
       - "traefik.http.routers.api.rule=HostRegexp(`traefik{host:(-[0-9a-z]+)?[.].+}`) && PathPrefix(`/`)"
       - "traefik.http.routers.api.service=api@internal"
     networks: { "default", "inet", "traefik" : { ipv4_address: 172.31.255.254 } }
@@ -90,6 +90,7 @@ services:
       - "traefik.http.routers.dozzle.rule=PathPrefix(`/dozzle`)"
       - "traefik.http.services.dozzle.loadbalancer.server.port=8080"
 #    ports: [ "127.0.0.1:8080:8080", ]
+    user: "1000:1000"
 
   docker_sock:
     << : *service

@@ -42,8 +42,8 @@ services:
     depends_on: [ "unbound", "socks", ]
     dns: "${SUBNET:?}.254"
     environment:
-      - "PUID=1000"
       - "PGID=1000"
+      - "PUID=1000"
       - "AUTO_UPDATE=false"
     labels:
       - "traefik.enable=true"
@@ -65,8 +65,8 @@ services:
     depends_on: [ "unbound", "socks", "sabnzbd", ]
     dns: "${SUBNET:?}.254"
     environment:
-      - "PUID=1000"
       - "PGID=1000"
+      - "PUID=1000"
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.sonarr.middlewares=authelia@docker"
@@ -84,8 +84,8 @@ services:
     depends_on: [ "unbound", "socks", ]
     dns: "${SUBNET:?}.254"
     environment:
-      - "PUID=1000"
       - "PGID=1000"
+      - "PUID=1000"
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.sabnzbd.middlewares=authelia@docker"
