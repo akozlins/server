@@ -25,7 +25,7 @@ services:
     networks: [ "traefik", ]
     volumes:
       - "../nginx/socat/run2.sh:/run.sh:ro"
-      - "${XDG_RUNTIME_DIR:?}/syncthing.sock:/syncthing.sock"
+      - "${XDG_CACHE_HOME:?}/syncthing.sock:/syncthing.sock"
 
 networks:
   traefik: { external: true }

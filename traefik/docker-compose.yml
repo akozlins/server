@@ -43,7 +43,7 @@ services:
       - "traefik.http.routers.api.middlewares=auth0@file"
       - "traefik.http.routers.api.rule=HostRegexp(`traefik{host:(-[0-9a-z]+)?[.].+}`) && PathPrefix(`/`)"
       - "traefik.http.routers.api.service=api@internal"
-    networks: { "default", "inet", "traefik" : { ipv4_address: 172.31.255.254 } }
+    networks: { "default", "inet", "traefik" : { ipv4_address: "${TRAEFIK_SUBNET:?}.254" } }
     ports:
 #      - "0.0.0.0:80:80"
       - "0.0.0.0:443:443/tcp"
@@ -96,6 +96,7 @@ services:
     << : *service
     image: "haproxy"
     user: "1000:${DOCKER_GID:?}"
+#    ports: [ "127.0.0.1:2375:2375", ]
     volumes:
       - "./haproxy.docker_sock.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro"
       - "/var/run/docker.sock:/var/run/docker.sock"

@@ -17,7 +17,7 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.nginx1.priority=1"
       - "traefik.http.routers.nginx1.rule=PathPrefix(`/`)"
-      - "traefik.http.routers.nginx.rule=HostRegexp(`nginx.{host:.+}`)"
+      - "traefik.http.routers.nginx.rule=HostRegexp(`nginx{host:(-[0-9a-z]+)?[.].+}`) && PathPrefix(`/`)"
       - "traefik.http.services.nginx.loadbalancer.server.port=8080"
     networks: [ "default", "traefik", ]
 #    ports: [ "0.0.0.0:8080:8080", ]
@@ -46,6 +46,8 @@ services:
     command: [ "sslh", "--foreground", "--numeric",
       "--listen=0.0.0.0:80",
       "--ssh=${DOMAIN:?}:1022",
+      "--http=nginx:8080",
+      "--tls=${DOMAIN:?}:443",
       "--openvpn=${DOMAIN:?}:1194",
       "--anyprot=nginx:8080",
       "--on-timeout=anyprot",
@@ -65,6 +67,7 @@ services:
       - "traefik.http.routers.whoami.rule=PathPrefix(`/whoami`)"
       - "traefik.http.services.whoami.loadbalancer.server.port=80"
     networks: [ "default", "traefik", ]
+    user: "1000:1000"
 
 networks:
   default: { internal: true }
