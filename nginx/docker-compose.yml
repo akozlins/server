@@ -12,6 +12,7 @@ services:
     image: "nginx"
     environment:
       - "DOMAIN=${DOMAIN:?}"
+      - "TRAEFIK_SUBNET=${TRAEFIK_SUBNET:?}"
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.nginx1.priority=1"
