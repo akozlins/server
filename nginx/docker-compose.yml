@@ -45,9 +45,9 @@ services:
     build: "./sslh"
     command: [ "sslh", "--foreground", "--numeric",
       "--listen=0.0.0.0:80",
-      "--anyprot=nginx:80",
+      "--ssh=${DOMAIN:?}:1022",
       "--openvpn=${DOMAIN:?}:1194",
-      "--ssh=${DOMAIN:?}:22",
+      "--anyprot=nginx:8080",
       "--on-timeout=anyprot",
     ]
     depends_on: [ "nginx", ]
