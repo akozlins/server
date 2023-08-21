@@ -11,14 +11,14 @@ x-service: &service
 services:
   gatus:
     << : *service
-    image: "twinproduction/gatus"
+    build: { dockerfile: "Dockerfile", args: [ "VUE_PUBLIC_PATH=/gatus", ] }
     environment:
       - "GATUS_CONFIG_PATH=/config"
     labels:
       - "traefik.enable=true"
       - "traefik.http.middlewares.gatus.stripprefix.prefixes=/gatus"
       - "traefik.http.routers.gatus.middlewares=authelia@docker,gatus"
-      - "traefik.http.routers.gatus.rule=HostRegexp(`gatus{host:(-[0-9a-z]+)?[.].+}`) && PathPrefix(`/`)"
+      - "traefik.http.routers.gatus.rule=PathPrefix(`/gatus/`)"
       - "traefik.http.services.gatus.loadbalancer.server.port=8080"
     networks: [ "inet", "traefik", ]
 #    ports: [ "127.0.0.1:8080:8080", ]
