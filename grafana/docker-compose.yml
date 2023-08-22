@@ -22,7 +22,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.grafana.middlewares=authelia@docker"
-      - "traefik.http.routers.grafana.rule=PathPrefix(`/grafana`)"
+      - "traefik.http.routers.grafana.rule=PathPrefix(`/grafana/`)"
       - "traefik.http.services.grafana.loadbalancer.server.port=3000"
     networks: [ "default", "traefik", ]
 #    ports: [ "127.0.0.1:3000:3000", ]
@@ -40,7 +40,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.prometheus.middlewares=authelia@docker"
-      - "traefik.http.routers.prometheus.rule=PathPrefix(`/prometheus`)"
+      - "traefik.http.routers.prometheus.rule=PathPrefix(`/prometheus/`)"
       - "traefik.http.services.prometheus.loadbalancer.server.port=9090"
     networks: [ "default", "traefik", ]
 #    ports: [ "127.0.0.1:9090:9090", ]

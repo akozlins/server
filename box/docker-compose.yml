@@ -27,7 +27,7 @@ services:
       - "traefik.enable=true"
       - "traefik.http.middlewares.qbittorrent.stripprefix.prefixes=/qbittorrent"
       - "traefik.http.routers.qbittorrent.middlewares=authelia@docker,qbittorrent"
-      - "traefik.http.routers.qbittorrent.rule=PathPrefix(`/qbittorrent`)"
+      - "traefik.http.routers.qbittorrent.rule=PathPrefix(`/qbittorrent/`)"
       - "traefik.http.services.qbittorrent.loadbalancer.server.port=8080"
     networks: [ "default", "traefik", ]
 #    ports: [ "127.0.0.1:8080:8080", ]
@@ -48,11 +48,10 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.jackett.middlewares=authelia@docker"
-      - "traefik.http.routers.jackett.rule=PathPrefix(`/jackett`)"
+      - "traefik.http.routers.jackett.rule=PathPrefix(`/jackett/`)"
       - "traefik.http.services.jackett.loadbalancer.server.port=9117"
     networks:
       default: { aliases: [ "jackett_default" ] }
-      inet:
       traefik:
 #    ports: [ "127.0.0.1:9117:9117" ]
     volumes:
@@ -70,9 +69,9 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.sonarr.middlewares=authelia@docker"
-      - "traefik.http.routers.sonarr.rule=PathPrefix(`/sonarr`)"
+      - "traefik.http.routers.sonarr.rule=PathPrefix(`/sonarr/`)"
       - "traefik.http.services.sonarr.loadbalancer.server.port=8989"
-    networks: [ "default", "inet", "traefik", ]
+    networks: [ "default", "traefik", ]
 #    ports: [ "127.0.0.1:8989:8989" ]
     volumes:
       - "./.local/sonarr:/config"
@@ -89,11 +88,10 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.sabnzbd.middlewares=authelia@docker"
-      - "traefik.http.routers.sabnzbd.rule=PathPrefix(`/sabnzbd`)"
+      - "traefik.http.routers.sabnzbd.rule=PathPrefix(`/sabnzbd/`)"
       - "traefik.http.services.sabnzbd.loadbalancer.server.port=8080"
     networks:
       default: { aliases: [ "sabnzbd_default" ] }
-      inet:
       traefik:
 #    ports: [ "127.0.0.1:8080:8080" ]
     volumes:

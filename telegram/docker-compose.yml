@@ -17,7 +17,7 @@ services:
       - "TELEGRAM_TOKEN=${TELEGRAM_TOKEN:?}"
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.telegram.rule=PathPrefix(`/telegram`)"
+      - "traefik.http.routers.telegram.rule=PathPrefix(`/telegram/`)"
       - "traefik.http.services.telegram.loadbalancer.server.port=8080"
     networks: [ "inet", "traefik", ]
     volumes:

@@ -4,6 +4,9 @@ x-service: &service
   logging: { options: { max-size: "1m" } }
   restart: "always"
   stop_grace_period: "5s"
+#  cap_drop: [ "ALL", ]
+#  read_only: true
+  security_opt: [ "no-new-privileges:true", ]
 
 services:
   jenkins:
@@ -15,7 +18,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.jenkins.middlewares=authelia@docker"
-      - "traefik.http.routers.jenkins.rule=PathPrefix(`/jenkins`)"
+      - "traefik.http.routers.jenkins.rule=PathPrefix(`/jenkins/`)"
       - "traefik.http.services.jenkins.loadbalancer.server.port=8080"
     networks: [ "inet", "traefik", ]
 #    ports: [ "127.0.0.1:8080:8080", ]

@@ -53,7 +53,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.rss.middlewares=authelia@docker"
-      - "traefik.http.routers.rss.rule=HostRegexp(`rss{host:(-[0-9a-z]+)?[.].+}`) && PathPrefix(`/tt`,`/fresh`)"
+      - "traefik.http.routers.rss.rule=HostRegexp(`rss{host:(-[0-9a-z]+)?[.].+}`) && PathPrefix(`/tt/`,`/fresh/`)"
       - "traefik.http.services.rss.loadbalancer.server.port=8080"
     networks: [ "default", "traefik", ]
 #    ports:[ "127.0.0.1:8080:8080", ]

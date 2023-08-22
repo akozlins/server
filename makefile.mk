@@ -28,7 +28,7 @@ br-traefik :
 	    --opt "com.docker.network.bridge.enable_icc=false" \
 	    traefik
 	# allow connections only from traefik container in traefik network
-	RULE="DOCKER-USER -i br-traefik -o br-traefik -s $$TRAEFIK_SUBNET.254 -m conntrack --ctstate NEW -j ACCEPT"
+	RULE="DOCKER-USER -i br-traefik -o br-traefik -s $$TRAEFIK_SUBNET.254 -d $$TRAEFIK_SUBNET.0/24 -m conntrack --ctstate NEW -j ACCEPT"
 	sudo iptables -C $$RULE || sudo iptables -I $$RULE
 
 # internet bridge network

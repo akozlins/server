@@ -19,7 +19,7 @@ services:
       - "KOMGA_SESSIONTIMEOUT=7d"
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.komga.rule=PathPrefix(`/komga`)"
+      - "traefik.http.routers.komga.rule=PathPrefix(`/komga/`)"
       - "traefik.http.services.komga.loadbalancer.server.port=25600"
     networks: [ "traefik", ]
 #    ports: [ "127.0.0.1:25600:25600", ]

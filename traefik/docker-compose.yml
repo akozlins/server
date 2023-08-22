@@ -87,7 +87,7 @@ services:
       - "traefik.docker.network=traefik_default"
       - "traefik.enable=true"
       - "traefik.http.routers.dozzle.middlewares=authelia@docker"
-      - "traefik.http.routers.dozzle.rule=PathPrefix(`/dozzle`)"
+      - "traefik.http.routers.dozzle.rule=PathPrefix(`/dozzle/`)"
       - "traefik.http.services.dozzle.loadbalancer.server.port=8080"
 #    ports: [ "127.0.0.1:8080:8080", ]
     user: "1000:1000"
