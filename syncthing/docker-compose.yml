@@ -12,20 +12,18 @@ services:
 
   syncthing:
     << : *service
-    build: { dockerfile: "../nginx/socat/Dockerfile" }
-    command: [ "/run.sh", "-dd",
-      "TCP-LISTEN:8384,fork", "UNIX-CONNECT:/syncthing.sock",
-    ]
+    build: { dockerfile: "./Dockerfile" }
     labels:
       - "traefik.enable=true"
       - "traefik.http.middlewares.syncthing.stripprefix.prefixes=/syncthing"
       - "traefik.http.routers.syncthing.middlewares=authelia@docker,syncthing"
       - "traefik.http.routers.syncthing.rule=PathPrefix(`/syncthing/`)"
       - "traefik.http.services.syncthing.loadbalancer.server.port=8384"
-    networks: [ "traefik", ]
+    networks: [ "inet", "traefik", ]
     volumes:
-      - "../nginx/socat/run2.sh:/run.sh:ro"
-      - "${XDG_CACHE_HOME:?}/syncthing.sock:/syncthing.sock"
+      - "./.local/syncthing:/home/1000/.config/syncthing"
+      - "${HOME:?}:${HOME:?}"
 
 networks:
+  inet: { external: true }
   traefik: { external: true }
