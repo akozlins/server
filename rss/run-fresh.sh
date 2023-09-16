@@ -1,8 +1,6 @@
 #!/bin/sh
 set -euf
 
-PIDS=""
-
 cd /var/www/fresh || exit 1
 # make needed dirs in ./data
 ./cli/prepare.php
@@ -14,11 +12,8 @@ cd /var/www/fresh || exit 1
 ( while sleep 1801 ; do
     ./app/actualize_script.php
 done ) &
-PIDS="$PIDS $!"
 
 # run php-fpm server (0.0.0.0:9000)
 php-fpm --nodaemonize --force-stderr &
-PIDS="$PIDS $!"
 
-trap "kill -s TERM --timeout 1000 KILL -- $PIDS" EXIT HUP INT TERM
 wait

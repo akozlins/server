@@ -7,7 +7,6 @@ if [ $# -eq 0 ] ; then
     exit 1
 fi
 
-PIDS=""
 for spec in "$@" ; do
     # number of fields
     nf=$(awk -F: '{print NF}' <<< "$spec")
@@ -32,9 +31,6 @@ for spec in "$@" ; do
     [ -w "$name" ] && rm -- "$name" || true
     echo "I [$0] '$name' -> $host:$port"
     socat -d "UNIX-LISTEN:$name,fork,mode=666" "TCP:$host:$port" &
-    PIDS="$PIDS $!"
 done
-
-trap "kill -s TERM --timeout 1000 KILL -- $PIDS" EXIT HUP INT TERM
 
 wait

@@ -13,13 +13,9 @@ while [[ "${1:-}" = -* ]] ; do
     shift 1
 done
 
-PIDS=""
 while [ $# -ge 2 ] ; do
     socat "${OPTS[@]}" "$1" "$2" &
-    PIDS="$PIDS $!"
     shift 2
 done
-
-trap "kill -s TERM --timeout 1000 KILL -- $PIDS" EXIT HUP INT TERM
 
 wait
