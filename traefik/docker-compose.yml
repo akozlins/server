@@ -95,8 +95,8 @@ services:
   docker_sock:
     << : *service
     image: "haproxy"
-    user: "1000:${DOCKER_GID:?}"
 #    ports: [ "127.0.0.1:2375:2375", ]
+    user: "1000:${DOCKER_GID:?}"
     volumes:
       - "./haproxy.docker_sock.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro"
       - "/var/run/docker.sock:/var/run/docker.sock"

@@ -35,5 +35,5 @@ services:
     profiles: [ "NODE", ]
 
 networks:
-  inet:
+  inet: { external: true }
   traefik: { external: true }

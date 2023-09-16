@@ -3,7 +3,7 @@
 x-service: &service
   logging: { options: { max-size: "1m" } }
   restart: "always"
-  stop_grace_period: "5s"
+  stop_grace_period: "10s"
   cap_drop: [ "ALL", ]
   read_only: true
   security_opt: [ "no-new-privileges:true", ]
@@ -32,7 +32,7 @@ services:
     networks: [ "default", "traefik", ]
 #    ports: [ "127.0.0.1:8080:8080", ]
     volumes:
-      - "${HOME:?}/Downloads:/home/1000/Downloads"
+      - "./.local/downloads:/home/1000/Downloads"
       - "./.local/qbittorrent:/home/1000/.local/share/qBittorrent"
       - "./.local/qbittorrent:/home/1000/.config/qBittorrent"
 
