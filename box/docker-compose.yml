@@ -20,7 +20,7 @@ services:
 
   qbittorrent:
     << : *service
-    build: { context: ".", dockerfile: "./Dockerfile" }
+    build: { context: ".", dockerfile: "./Dockerfile.qb" }
     depends_on: [ "unbound", "socks", ]
     dns: "${SUBNET:?}.254"
     labels:
