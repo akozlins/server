@@ -4,6 +4,8 @@
 # <https://www.authelia.com/configuration/miscellaneous/introduction/>
 
 authentication_backend:
+  password_reset:
+    disable: true
   # <https://www.authelia.com/configuration/first-factor/file/>
   file:
     path: "/config/users.yml"
@@ -11,14 +13,22 @@ authentication_backend:
     search:
       email: true
 
+server:
+  address: "tcp://:9091/authelia"
+  disable_healthcheck: true
+
 # <https://www.authelia.com/configuration/storage/introduction/>
 storage:
+  encryption_key: '{{ secret "/config/storage_encryption_key.key" }}'
   local:
     path: "/config/.cache/storage.sqlite3"
 
 # <https://www.authelia.com/configuration/session/introduction/>
 session:
-  domain: "example.com"
+  cookies:
+  - domain: '{{ env "DOMAIN" }}'
+    authelia_url: 'https://{{ env "DOMAIN" }}/authelia'
+  secret: '{{ secret "/config/session_secret.key" }}'
 
 notifier:
   filesystem:

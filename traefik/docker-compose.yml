@@ -60,12 +60,8 @@ services:
     image: "authelia/authelia"
     environment:
       - "AUTHELIA_LOG_LEVEL=info"
-      - "AUTHELIA_SERVER_DISABLE_HEALTHCHECK=true"
-      - "AUTHELIA_SERVER_PATH=authelia"
-      - "AUTHELIA_SESSION_DOMAIN=${DOMAIN}"
-      - "AUTHELIA_JWT_SECRET_FILE=/config/jwt_secret.key"
-      - "AUTHELIA_STORAGE_ENCRYPTION_KEY_FILE=/config/storage_encryption_key.key"
-      - "AUTHELIA_SESSION_SECRET_FILE=/config/session_secret.key"
+      - "DOMAIN=${DOMAIN:?}"
+      - "X_AUTHELIA_CONFIG_FILTERS=template"
     labels:
       - "traefik.docker.network=traefik_default"
       - "traefik.enable=true"
