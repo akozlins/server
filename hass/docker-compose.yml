@@ -1,0 +1,81 @@
+#
+
+x-service: &service
+  logging: { options: { max-size: "1m" } }
+  restart: "always"
+  stop_grace_period: "15s"
+  user: "1000:1000"
+
+services:
+
+  hass:
+    << : *service
+    image: "ghcr.io/home-assistant/home-assistant:stable"
+    depends_on: [ "mosquitto", "influxdb", ]
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.hass.rule=HostRegexp(`hass{host:(-[0-9a-z]+)?[.].+}`) && PathPrefix(`/`)"
+      - "traefik.http.services.hass.loadbalancer.server.port=8123"
+    networks: [ "default", "traefik", ]
+    #ports: [ "127.0.0.1:8123:8123", ]
+    volumes:
+      - ".local/hass:/config"
+    #profiles: [ "NONE" ]
+
+  influxdb:
+    << : *service
+    image: "influxdb"
+    networks: [ "default", ]
+    #ports: [ "127.0.0.1:8086:8086", ]
+    volumes:
+      - ".local/influxdb:/etc/influxdb2"
+      - ".local/influxdb:/var/lib/influxdb2"
+
+  nred:
+    << : *service
+    image: "nodered/node-red:latest"
+    depends_on: [ "mosquitto", ]
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.nred.middlewares=authelia@docker"
+      - "traefik.http.routers.nred.rule=PathPrefix(`/nred/`)"
+      - "traefik.http.services.nred.loadbalancer.server.port=1880"
+    networks: [ "default", "traefik", ]
+    #ports: [ "127.0.0.1:1880:1880", ]
+    volumes:
+      - .local/nred:/data
+    #profiles: [ "NONE" ]
+
+  mosquitto:
+    << : *service
+    image: "eclipse-mosquitto"
+    networks: [ "default", ]
+    ports: [ "127.0.0.1:1883:1883", ]
+    volumes:
+      - ".local/mosquitto:/mosquitto/config"
+      - ".local/mosquitto:/mosquitto/data"
+      - ".local/mosquitto:/mosquitto/log"
+
+  zb2mqtt:
+    << : *service
+    image: "koenkk/zigbee2mqtt"
+    depends_on: [ "mosquitto", ]
+    devices:
+      - "/dev/serial/by-id/usb:/dev/ttyACM0"
+    group_add: [ "986" ]
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.middlewares.zb2mqtt.stripprefix.prefixes=/zb2mqtt"
+      - "traefik.http.routers.zb2mqtt.middlewares=authelia@docker,zb2mqtt"
+      - "traefik.http.routers.zb2mqtt.rule=PathPrefix(`/zb2mqtt/`)"
+      - "traefik.http.services.zb2mqtt.loadbalancer.server.port=8080"
+    networks: [ "default", "traefik", ]
+    #ports: [ "127.0.0.1:8080:8080", ]
+    volumes:
+      - ".local/zigbee2mqtt:/app/data"
+    #profiles: [ "NONE" ]
+
+networks:
+  default:
+  inet: { external: true }
+  traefik: { external: true }
