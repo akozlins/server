@@ -12,7 +12,7 @@ build :
 	$(SUDO) docker-compose --progress plain build --pull
 
 down :
-	$(SUDO) docker-compose down
+	$(SUDO) docker-compose down --remove-orphans
 
 logs :
 	$(SUDO) docker-compose logs --follow
@@ -40,6 +40,8 @@ br-inet :
 	    --opt "com.docker.network.bridge.name=br-inet" \
 	    --opt "com.docker.network.bridge.enable_icc=false" \
 	    inet
+	RULE="DOCKER-USER -i br-inet -o br-inet -s $$INET_SUBNET.0/24 -d $$INET_SUBNET.254 -m conntrack --ctstate NEW -j ACCEPT"
+	sudo iptables -C $$RULE || sudo iptables -I $$RULE
 
 networks : br-traefik br-inet
 	fq_expr=".networks | select(. != null) | to_entries[] | select(.value.external == true) | .key"

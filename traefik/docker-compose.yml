@@ -4,6 +4,10 @@ x-service: &service
   logging: { options: { max-size: "1m" } }
   restart: "always"
   stop_grace_period: "5s"
+  cap_drop: [ "ALL", ]
+  read_only: true
+  security_opt: [ "no-new-privileges:true", ]
+  user: "1000:1000"
 
 services:
 
@@ -40,7 +44,7 @@ services:
       - "traefik.http.middlewares.authelia.forwardAuth.address=http://authelia:9091/authelia/api/verify?auth=basic"
       - "traefik.http.middlewares.authelia.forwardAuth.authResponseHeaders=Remote-User,Remote-Groups,Remote-Name,Remote-Email"
       - "traefik.http.middlewares.authelia.forwardAuth.trustForwardHeader=true"
-      - "traefik.http.routers.api.middlewares=auth0@file"
+      - "traefik.http.routers.api.middlewares=auth_users@file"
       - "traefik.http.routers.api.rule=HostRegexp(`traefik{host:(-[0-9a-z]+)?[.].+}`) && PathPrefix(`/`)"
       - "traefik.http.routers.api.service=api@internal"
     networks: { "default", "inet", "traefik" : { ipv4_address: "${TRAEFIK_SUBNET:?}.254" } }
@@ -50,7 +54,6 @@ services:
       - "0.0.0.0:443:443/udp"
       - "[::]:443:443/tcp"
       - "[::]:443:443/udp"
-    user: "1000:1000"
     volumes:
       - "./traefik:/etc/traefik"
       - "../etc/letsencrypt/live:/etc/letsencrypt/live:ro"
@@ -65,9 +68,8 @@ services:
     labels:
       - "traefik.docker.network=traefik_default"
       - "traefik.enable=true"
-      - "traefik.http.routers.authelia.rule=PathPrefix(`/authelia`)"
+      - "traefik.http.routers.authelia.rule=PathPrefix(`/authelia/`)"
       - "traefik.http.services.authelia.loadbalancer.server.port=9091"
-    user: "1000:1000"
     volumes:
       - "./authelia:/config:rw"
 
@@ -85,14 +87,13 @@ services:
       - "traefik.http.routers.dozzle.middlewares=authelia@docker"
       - "traefik.http.routers.dozzle.rule=PathPrefix(`/dozzle/`)"
       - "traefik.http.services.dozzle.loadbalancer.server.port=8080"
-#    ports: [ "127.0.0.1:8080:8080", ]
-    user: "1000:1000"
+    #ports: [ "127.0.0.1:8080:8080", ]
 
   docker_sock:
     << : *service
     image: "haproxy"
-#    ports: [ "127.0.0.1:2375:2375", ]
-    user: "1000:${DOCKER_GID:?}"
+    group_add: [ "${DOCKER_GID:?}" ]
+    #ports: [ "127.0.0.1:2375:2375", ]
     volumes:
       - "./haproxy.docker_sock.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro"
       - "/var/run/docker.sock:/var/run/docker.sock"

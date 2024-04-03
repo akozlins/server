@@ -63,7 +63,7 @@ location = /robots.txt {
 
 location = /.well-known/mta-sts.txt {
     default_type text/plain;
-    return 200 "version: STSv1\r\nmode: enforce\r\nmax_age: 86400\r\nmx: mail.$DOMAIN\r\n";
+    return 200 "version: STSv1\r\nmode: enforce\r\nmax_age: 604800\r\nmx: mail.$DOMAIN\r\n";
 }
 
 location = /.well-known/security.txt {

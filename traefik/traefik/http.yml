@@ -2,10 +2,18 @@
 
 http:
   middlewares:
-    auth0:
+    auth_users:
       basicauth:
         # `htpasswd -nb -B username password | cut -d ":" -f 2`
         usersFile: "/etc/traefik/users.key"
+    auth_rlimit:
+      ratelimit:
+        average: 25
+        burst: 50
+        period: 1s
+    auth:
+      chain:
+        middlewares: [ "auth_rlimit", "authelia@docker", ]
 
   routers:
     test-router:
