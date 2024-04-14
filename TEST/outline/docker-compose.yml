@@ -1,0 +1,61 @@
+#
+
+x-service: &service
+  logging: { options: { max-size: "1m" } }
+  restart: "always"
+  stop_grace_period: "5s"
+  cap_drop: [ "ALL", ]
+  #read_only: true
+  security_opt: [ "no-new-privileges:true", ]
+  user: "1000:1000"
+
+services:
+
+  outline:
+    << : *service
+    image: "docker.getoutline.com/outlinewiki/outline:latest"
+    depends_on: [ "postgres", "redis", ]
+    env_file: ./.env
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.outline.rule=PathPrefix(`/`)"
+      - "traefik.http.services.outline.loadbalancer.server.port=3000"
+    networks: [ "default", "inet", "traefik", ]
+#    ports: [ "127.0.0.1:3000:3000", ]
+    volumes:
+      - "./.local/outline:/var/lib/outline/data"
+
+  postgres:
+    << : *service
+    image: "postgres"
+    environment:
+      POSTGRES_USER: "user"
+      POSTGRES_PASSWORD: "pass"
+      POSTGRES_DB: "outline"
+    healthcheck:
+      test: [ "CMD", "pg_isready" ]
+      interval: 30s
+      timeout: 20s
+      retries: 3
+    networks: [ "default", ]
+    volumes:
+      - "./.local/postgres:/var/lib/postgresql/data"
+
+  redis:
+    << : *service
+    image: "redis"
+    command: [ "redis-server", "/redis.conf", ]
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      interval: 10s
+      timeout: 30s
+      retries: 3
+    networks: [ "default", ]
+    volumes:
+      - "./redis.conf:/redis.conf"
+      - "./.local/redis:/data"
+
+networks:
+  default: { internal: true }
+  inet: { external: true }
+  traefik: { external: true }
