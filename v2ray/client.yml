@@ -11,7 +11,7 @@ inbounds:
   protocol: socks
   sniffing:
     enabled: true
-    destOverride: [ http, tls, ]
+    destOverride: [ http, tls ]
   settings:
     auth: noauth
     udp: false
@@ -20,13 +20,13 @@ routing:
   domainStrategy: IPIfNonMatch
   rules:
   - type: field
-    domain: [ "geosite:private", ]
+    domain: [ "geosite:private" ]
     outboundTag: blackhole
   - type: field
-    ip: [ "geoip:private", ]
+    ip: [ "geoip:private" ]
     outboundTag: blackhole
   - type: field
-    domain: [ "regexp:.*", ]
+    domain: [ "regexp:.*" ]
     outboundTag: vless
 
 outbounds:

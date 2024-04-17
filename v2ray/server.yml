@@ -33,13 +33,13 @@ routing:
   domainStrategy: IPIfNonMatch
   rules:
   - type: field
-    domain: [ "geosite:private", "geosite:cn", ]
+    domain: [ "geosite:private", "geosite:cn" ]
     outboundTag: blackhole
   - type: field
-    ip: [ "geoip:private", "geoip:cn", ]
+    ip: [ "geoip:private", "geoip:cn" ]
     outboundTag: blackhole
   - type: field
-    ip: [ 127.0.0.0/8, 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16, ]
+    ip: [ 127.0.0.0/8, 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16 ]
     outboundTag: blackhole
 
 outbounds:

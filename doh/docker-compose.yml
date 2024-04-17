@@ -4,9 +4,9 @@ x-service: &service
   logging: { options: { max-size: "1m" } }
   restart: "always"
   stop_grace_period: "5s"
-  cap_drop: [ "ALL", ]
+  cap_drop: [ "ALL" ]
   read_only: true
-  security_opt: [ "no-new-privileges:true", ]
+  security_opt: [ "no-new-privileges:true" ]
 
 services:
 
@@ -18,21 +18,20 @@ services:
       - "traefik.tcp.routers.unbound.rule=HostSNIRegexp(`dot.{host:.+}`)"
       - "traefik.tcp.routers.unbound.tls=true"
       - "traefik.tcp.services.unbound.loadbalancer.server.port=53"
-    networks: [ "inet", "traefik", ]
-#    ports: [ "127.0.0.1:53:53", ]
+    networks: [ "inet", "traefik" ]
     volumes:
       - "./unbound.conf:/etc/unbound/unbound.conf:ro"
 
   doh:
     << : *service
     build: { context: ".", dockerfile: "./Dockerfile.doh-server" }
-    depends_on: [ "unbound", ]
+    depends_on: [ "unbound" ]
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.doh.rule=PathPrefix(`/doh`)"
       - "traefik.http.services.doh.loadbalancer.server.port=8053"
-    networks: [ "traefik", ]
-#    ports: [ "127.0.0.1:8053:8053", ]
+    networks: [ "traefik" ]
+#    ports: [ "127.0.0.1:8053:8053" ]
     volumes:
       - "./doh-server.conf:/doh-server.conf:ro"
 

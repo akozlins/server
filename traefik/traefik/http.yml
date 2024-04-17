@@ -13,7 +13,7 @@ http:
         period: 1s
     auth:
       chain:
-        middlewares: [ "auth_rlimit", "authelia@docker", ]
+        middlewares: [ "auth_rlimit", "authelia@docker" ]
 
   routers:
     test-router:
@@ -26,5 +26,5 @@ http:
   services:
     test-service:
       loadBalancer:
-        servers: [ url: "https://10.8.0.1", ]
+        servers: [ url: "https://10.8.0.1" ]
         serversTransport: "default-transport"

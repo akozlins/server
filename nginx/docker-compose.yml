@@ -19,9 +19,8 @@ services:
       - "traefik.http.routers.nginx1.rule=PathPrefix(`/`)"
       - "traefik.http.routers.nginx.rule=HostRegexp(`nginx{host:(-[0-9a-z]+)?[.].+}`) && PathPrefix(`/`)"
       - "traefik.http.services.nginx.loadbalancer.server.port=8080"
-    networks: [ "default", "traefik", ]
-#    ports: [ "0.0.0.0:8080:8080", ]
-    tmpfs: [ "/tmp:mode=777", ]
+    networks: [ "default", "traefik" ]
+    tmpfs: [ "/tmp:mode=777" ]
     volumes:
       - "./conf.d:/etc/nginx/templates:ro"
       - "./nginx.conf:/etc/nginx/nginx.conf:ro"
@@ -52,8 +51,8 @@ services:
       "--anyprot=nginx:8080",
       "--on-timeout=anyprot",
     ]
-    depends_on: [ "nginx", ]
-    networks: [ "default", "inet", ]
+    depends_on: [ "nginx" ]
+    networks: [ "default", "inet" ]
     ports:
     - "0.0.0.0:80:80"
     - "[::]:80:80"
@@ -66,7 +65,7 @@ services:
       - "traefik.http.routers.whoami.middlewares=auth@file"
       - "traefik.http.routers.whoami.rule=PathPrefix(`/whoami/`)"
       - "traefik.http.services.whoami.loadbalancer.server.port=80"
-    networks: [ "default", "traefik", ]
+    networks: [ "default", "traefik" ]
     user: "1000:1000"
 
 networks:

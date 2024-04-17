@@ -16,8 +16,8 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.matrix.rule=PathPrefix(`/_matrix`,`/_synapse`)"
       - "traefik.http.services.matrix.loadbalancer.server.port=8008"
-    networks: [ "inet", "traefik", ]
-#    ports: [ "127.0.0.1:8008:8008", ]
+    networks: [ "inet", "traefik" ]
+#    ports: [ "127.0.0.1:8008:8008" ]
     volumes:
       - "./data:/data:rw"
 

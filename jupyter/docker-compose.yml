@@ -9,7 +9,7 @@ services:
   jupyter:
     << : *service
     build: { context: ".", dockerfile: "./Dockerfile" }
-    command: [ "start-notebook.sh", "--NotebookApp.base_url=/jupyter", "--NotebookApp.token=", ]
+    command: [ "start-notebook.sh", "--NotebookApp.base_url=/jupyter", "--NotebookApp.token=" ]
     environment:
       - "NB_GID=1000"
       - "NB_UID=1000"
@@ -18,8 +18,7 @@ services:
       - "traefik.http.routers.jupyter.middlewares=authelia@docker"
       - "traefik.http.routers.jupyter.rule=PathPrefix(`/jupyter/`)"
       - "traefik.http.services.jupyter.loadbalancer.server.port=8888"
-    networks: [ "inet", "traefik", ]
-#    ports: [ "127.0.0.1:8888:8888", ]
+    networks: [ "inet", "traefik" ]
     volumes:
       - "./home:/home/jovyan"
 

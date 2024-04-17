@@ -4,9 +4,9 @@ x-service: &service
   logging: { options: { max-size: "1m" } }
   restart: "always"
   stop_grace_period: "5s"
-  cap_drop: [ "ALL", ]
+  cap_drop: [ "ALL" ]
   read_only: true
-  security_opt: [ "no-new-privileges:true", ]
+  security_opt: [ "no-new-privileges:true" ]
 
 services:
   komga:
@@ -21,9 +21,8 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.komga.rule=PathPrefix(`/komga/`)"
       - "traefik.http.services.komga.loadbalancer.server.port=25600"
-    networks: [ "traefik", ]
-#    ports: [ "127.0.0.1:25600:25600", ]
-    tmpfs: [ "/tmp:mode=777,exec", ]
+    networks: [ "traefik" ]
+    tmpfs: [ "/tmp:mode=777,exec" ]
     user: "1000:1000"
     volumes:
       - "./.local/config:/config"

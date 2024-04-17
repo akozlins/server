@@ -6,9 +6,9 @@ x-service: &service
   logging: { options: { max-size: "1m" } }
   restart: "always"
   stop_grace_period: "5s"
-  cap_drop: [ "ALL", ]
+  cap_drop: [ "ALL" ]
   read_only: true
-  security_opt: [ "no-new-privileges:true", ]
+  security_opt: [ "no-new-privileges:true" ]
 
 services:
   portainer:
@@ -23,8 +23,7 @@ services:
       - "traefik.http.routers.portainer.middlewares=portainer"
       - "traefik.http.routers.portainer.rule=HostRegexp(`traefik{host:(-[0-9a-z]+)?[.].+}`) && PathPrefix(`/portainer/`)"
       - "traefik.http.services.portainer.loadbalancer.server.port=9000"
-    networks: [ "traefik", ]
-#    ports: [ "127.0.0.1:9000:9000", ]
+    networks: [ "traefik" ]
     volumes:
       - "./.local/admin_password.key:/admin_password.key"
       - "data:/data"

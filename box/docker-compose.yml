@@ -4,24 +4,24 @@ x-service: &service
   logging: { options: { max-size: "1m" } }
   restart: "always"
   stop_grace_period: "10s"
-  cap_drop: [ "ALL", ]
+  cap_drop: [ "ALL" ]
   read_only: true
-  security_opt: [ "no-new-privileges:true", ]
+  security_opt: [ "no-new-privileges:true" ]
 
 x-lsio: &lsio
   logging: { options: { max-size: "1m" } }
   restart: "always"
   stop_grace_period: "10s"
-#  cap_drop: [ "ALL", ]
+#  cap_drop: [ "ALL" ]
 #  read_only: true
-  security_opt: [ "no-new-privileges:true", ]
+  security_opt: [ "no-new-privileges:true" ]
 
 services:
 
   qbittorrent:
     << : *service
     build: { context: ".", dockerfile: "./Dockerfile.qb" }
-    depends_on: [ "unbound", "socks", ]
+    depends_on: [ "unbound", "socks" ]
     dns: "${SUBNET:?}.254"
     labels:
       - "traefik.enable=true"
@@ -29,8 +29,7 @@ services:
       - "traefik.http.routers.qbittorrent.middlewares=authelia@docker,qbittorrent"
       - "traefik.http.routers.qbittorrent.rule=PathPrefix(`/qbittorrent/`)"
       - "traefik.http.services.qbittorrent.loadbalancer.server.port=8080"
-    networks: [ "default", "traefik", ]
-#    ports: [ "127.0.0.1:8080:8080", ]
+    networks: [ "default", "traefik" ]
     volumes:
       - "./.local/downloads:/home/1000/Downloads"
       - "./.local/qbittorrent:/home/1000/.local/share/qBittorrent"
@@ -39,7 +38,7 @@ services:
   jackett:
     << : *lsio
     image: "lscr.io/linuxserver/jackett"
-    depends_on: [ "unbound", "socks", ]
+    depends_on: [ "unbound", "socks" ]
     dns: "${SUBNET:?}.254"
     environment:
       - "PGID=1000"
@@ -53,7 +52,6 @@ services:
     networks:
       default: { aliases: [ "jackett_default" ] }
       traefik:
-#    ports: [ "127.0.0.1:9117:9117" ]
     volumes:
       - "./.local/jackett:/config"
       - "./.local/data/blackhole:/downloads"
@@ -61,7 +59,7 @@ services:
   sonarr:
     << : *lsio
     image: "lscr.io/linuxserver/sonarr"
-    depends_on: [ "unbound", "socks", "sabnzbd", ]
+    depends_on: [ "unbound", "socks", "sabnzbd" ]
     dns: "${SUBNET:?}.254"
     environment:
       - "PGID=1000"
@@ -71,8 +69,7 @@ services:
       - "traefik.http.routers.sonarr.middlewares=authelia@docker"
       - "traefik.http.routers.sonarr.rule=PathPrefix(`/sonarr/`)"
       - "traefik.http.services.sonarr.loadbalancer.server.port=8989"
-    networks: [ "default", "traefik", ]
-#    ports: [ "127.0.0.1:8989:8989" ]
+    networks: [ "default", "traefik" ]
     volumes:
       - "./.local/sonarr:/config"
       - "./.local/data:/data"
@@ -80,7 +77,7 @@ services:
   sabnzbd:
     << : *lsio
     image: "lscr.io/linuxserver/sabnzbd"
-    depends_on: [ "unbound", "socks", ]
+    depends_on: [ "unbound", "socks" ]
     dns: "${SUBNET:?}.254"
     environment:
       - "PGID=1000"
@@ -93,7 +90,6 @@ services:
     networks:
       default: { aliases: [ "sabnzbd_default" ] }
       traefik:
-#    ports: [ "127.0.0.1:8080:8080" ]
     volumes:
       - "./.local/sabnzbd:/config"
       - "./.local/data:/data"
@@ -101,7 +97,7 @@ services:
   socks:
     << : *service
     build: { context: ".", dockerfile: "../v2ray/Dockerfile" }
-    depends_on: [ "unbound", ]
+    depends_on: [ "unbound" ]
     dns: "${SUBNET:?}.254"
     environment:
       - "SOCKS_ADDRESS=${SOCKS_ADDRESS:?}"
@@ -110,7 +106,7 @@ services:
     networks:
       default: { aliases: [ "socks_default" ] }
       inet:
-    ports: [ "127.0.0.1:1080:1080", ]
+    ports: [ "127.0.0.1:1080:1080" ]
     volumes:
       - "./v2ray.yml:/etc/v2ray/config.json:ro"
 

@@ -8,7 +8,7 @@
 {{end}}
 {{define "port-service"}}
     p{{.}}:
-      loadBalancer: { servers: [ address: "{{env "DOMAIN"}}:{{.}}", ] }
+      loadBalancer: { servers: [ address: "{{env "DOMAIN"}}:{{.}}" ] }
 {{end}}
 
 tcp:
@@ -25,6 +25,6 @@ tcp:
   services:
     {{template "port-service" 1022}}
     ssh-service:
-      loadBalancer: { servers: [ address: "{{env "DOMAIN"}}:22", ] }
+      loadBalancer: { servers: [ address: "{{env "DOMAIN"}}:22" ] }
     vpn-service:
-      loadBalancer: { servers: [ address: "{{env "DOMAIN"}}:1194", ] }
+      loadBalancer: { servers: [ address: "{{env "DOMAIN"}}:1194" ] }

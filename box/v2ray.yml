@@ -17,7 +17,7 @@ routing:
   domainStrategy: IPIfNonMatch
   rules:
   - type: field
-    ip: [ geoip:private, ]
+    ip: [ geoip:private ]
     outboundTag: freedom
 
 outbounds:

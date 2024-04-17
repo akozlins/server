@@ -4,14 +4,14 @@ x-service: &service
   logging: { options: { max-size: "1m" } }
   restart: "always"
   stop_grace_period: "5s"
-  cap_drop: [ "ALL", ]
+  cap_drop: [ "ALL" ]
   read_only: true
-  security_opt: [ "no-new-privileges:true", ]
+  security_opt: [ "no-new-privileges:true" ]
 
 services:
   gatus:
     << : *service
-    build: { dockerfile: "Dockerfile", args: [ "VUE_PUBLIC_PATH=/gatus", ] }
+    build: { dockerfile: "Dockerfile", args: [ "VUE_PUBLIC_PATH=/gatus" ] }
     environment:
       - "GATUS_CONFIG_PATH=/config"
     labels:
@@ -20,8 +20,8 @@ services:
       - "traefik.http.routers.gatus.middlewares=authelia@docker,gatus"
       - "traefik.http.routers.gatus.rule=PathPrefix(`/gatus/`)"
       - "traefik.http.services.gatus.loadbalancer.server.port=8080"
-    networks: [ "inet", "traefik", ]
-#    ports: [ "127.0.0.1:8080:8080", ]
+    networks: [ "inet", "traefik" ]
+#    ports: [ "127.0.0.1:8080:8080" ]
     user: "1000:1000"
     volumes:
       - "./config:/config"

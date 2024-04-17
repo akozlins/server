@@ -10,9 +10,8 @@ services:
   # <https://github.com/gchq/CyberChef>
   cyberchef:
     << : *service
-    build: { context: ".", dockerfile: "./Dockerfile", args: [ "TAG=v9.55.0", ] }
-    networks: [ "traefik", ]
-#    ports: [ "127.0.0.1:80:80", ]
+    build: { context: ".", dockerfile: "./Dockerfile", args: [ "TAG=v9.55.0" ] }
+    networks: [ "traefik" ]
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.cyberchef.rule=PathPrefix(`/cyberchef/`)"

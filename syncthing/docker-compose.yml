@@ -4,9 +4,9 @@ x-service: &service
   logging: { options: { max-size: "1m" } }
   restart: "always"
   stop_grace_period: "5s"
-  cap_drop: [ "ALL", ]
+  cap_drop: [ "ALL" ]
   read_only: true
-  security_opt: [ "no-new-privileges:true", ]
+  security_opt: [ "no-new-privileges:true" ]
 
 services:
 
@@ -19,7 +19,7 @@ services:
       - "traefik.http.routers.syncthing.middlewares=authelia@docker,syncthing"
       - "traefik.http.routers.syncthing.rule=PathPrefix(`/syncthing/`)"
       - "traefik.http.services.syncthing.loadbalancer.server.port=8384"
-    networks: [ "inet", "traefik", ]
+    networks: [ "inet", "traefik" ]
     volumes:
       - "./.local/syncthing:/home/1000/.config/syncthing"
       - "${HOME:?}:${HOME:?}"

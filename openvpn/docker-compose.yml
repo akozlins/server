@@ -14,9 +14,9 @@ services:
       - "NET_ADMIN"
     devices:
       - "/dev/net/tun"
-    networks: [ "inet", "traefik", ]
-#    ports: [ "127.0.0.1:1194:1194", ]
-    tmpfs: [ "/tmp", ]
+    networks: [ "inet", "traefik" ]
+#    ports: [ "127.0.0.1:1194:1194" ]
+    tmpfs: [ "/tmp" ]
     volumes:
       - "./.cache:/run/openvpn:rw"
       - "./server.conf:/etc/openvpn/config.conf:ro"

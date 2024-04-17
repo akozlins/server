@@ -6,7 +6,7 @@ tls:
       keyFile: "/etc/letsencrypt/live/{{env "DOMAIN"}}/privkey.pem"
   options:
     default:
-      alpnProtocols: [ "h2", "http/1.1", "acme-tls/1", "dot", ]
+      alpnProtocols: [ "h2", "http/1.1", "acme-tls/1", "dot" ]
       minVersion: VersionTLS13
       sniStrict: true
   stores:
