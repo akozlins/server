@@ -14,7 +14,7 @@ services:
     depends_on: [ "mosquitto", "influxdb" ]
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.hass.rule=HostRegexp(`hass{host:(-[0-9a-z]+)?[.].+}`) && PathPrefix(`/`)"
+      - "traefik.http.routers.hass.rule=HostRegexp(`^hass(-[0-9a-z]+)?[.]`) && PathPrefix(`/`)"
       - "traefik.http.services.hass.loadbalancer.server.port=8123"
     networks: [ "default", "traefik" ]
     volumes:

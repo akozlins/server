@@ -21,7 +21,7 @@ services:
       - "traefik.enable=true"
       - "traefik.http.middlewares.portainer.stripprefix.prefixes=/portainer"
       - "traefik.http.routers.portainer.middlewares=portainer"
-      - "traefik.http.routers.portainer.rule=HostRegexp(`traefik{host:(-[0-9a-z]+)?[.].+}`) && PathPrefix(`/portainer/`)"
+      - "traefik.http.routers.portainer.rule=HostRegexp(`^traefik(-[0-9a-z]+)?[.]`) && PathPrefix(`/portainer/`)"
       - "traefik.http.services.portainer.loadbalancer.server.port=9000"
     networks: [ "traefik" ]
     volumes:

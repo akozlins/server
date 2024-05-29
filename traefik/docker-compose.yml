@@ -24,7 +24,6 @@ services:
 #      - --entryPoints.https.forwardedHeaders.trustedIPs=127.0.0.0/8
       - --entrypoints.https.http.tls=true
       - --entrypoints.https.http3
-      - --experimental.http3=true
       - --global.checknewversion=false
       - --global.sendanonymoususage=false
       - --log.level=WARN
@@ -45,7 +44,7 @@ services:
       - "traefik.http.middlewares.authelia.forwardAuth.authResponseHeaders=Remote-User,Remote-Groups,Remote-Name,Remote-Email"
       - "traefik.http.middlewares.authelia.forwardAuth.trustForwardHeader=true"
       - "traefik.http.routers.api.middlewares=auth_users@file"
-      - "traefik.http.routers.api.rule=HostRegexp(`traefik{host:(-[0-9a-z]+)?[.].+}`) && PathPrefix(`/`)"
+      - "traefik.http.routers.api.rule=HostRegexp(`^traefik(-[0-9a-z]+)?[.]`) && PathPrefix(`/`)"
       - "traefik.http.routers.api.service=api@internal"
     networks: { "default", "inet", "traefik" : { ipv4_address: "${TRAEFIK_SUBNET:?}.254" } }
     ports:

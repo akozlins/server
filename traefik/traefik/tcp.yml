@@ -2,7 +2,7 @@
 
 {{define "port-router"}}
     p{{.}}:
-      rule: "HostSNIRegexp(`p{{.}}.{host:.+}`)"
+      rule: "HostSNIRegexp(`^p{{.}}[.]`)"
       service: "p{{.}}"
       tls: true
 {{end}}
@@ -15,11 +15,11 @@ tcp:
   routers:
     {{template "port-router" 1022}}
     ssh-router:
-      rule: "HostSNIRegexp(`ssh.{host:.+}`)"
+      rule: "HostSNIRegexp(`^ssh[.]`)"
       service: "ssh-service"
       tls: true
     vpn-router:
-      rule: "HostSNIRegexp(`vpn.{host:.+}`)"
+      rule: "HostSNIRegexp(`^vpn[.]`)"
       service: "vpn-service"
       tls: true
   services:

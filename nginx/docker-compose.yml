@@ -17,7 +17,7 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.nginx1.priority=1"
       - "traefik.http.routers.nginx1.rule=PathPrefix(`/`)"
-      - "traefik.http.routers.nginx.rule=HostRegexp(`nginx{host:(-[0-9a-z]+)?[.].+}`) && PathPrefix(`/`)"
+      - "traefik.http.routers.nginx.rule=HostRegexp(`^nginx(-[0-9a-z]+)?[.]`) && PathPrefix(`/`)"
       - "traefik.http.services.nginx.loadbalancer.server.port=8080"
     networks: [ "default", "traefik" ]
     tmpfs: [ "/tmp:mode=777" ]
