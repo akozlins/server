@@ -1,0 +1,29 @@
+#
+
+x-service: &service
+  logging: { options: { max-size: "1m" } }
+  restart: "always"
+  stop_grace_period: "5s"
+
+services:
+
+  emby:
+    << : *service
+    image: emby/embyserver
+    devices:
+      - /dev/dri:/dev/dri # VAAPI/NVDEC/NVENC render nodes
+    environment:
+      - UID=1000
+      - GID=1000
+      - GIDLIST=1000
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.emby.middlewares=authelia@docker"
+      - "traefik.http.routers.emby.rule=PathRegexp(`^/(emby|embywebsocket)/`)"
+      - "traefik.http.services.emby.loadbalancer.server.port=8096"
+    networks: [ "traefik" ]
+    volumes:
+      - ./.local/config:/config
+
+networks:
+  traefik: { external: true }
