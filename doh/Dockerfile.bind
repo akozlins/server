@@ -1,0 +1,14 @@
+#
+
+FROM debian
+
+RUN apt-get update && apt-get --yes --no-install-recommends install \
+    bind9 dumb-init entr gettext \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /etc/bind
+
+USER 1000:1000
+
+ENTRYPOINT [ "/usr/bin/dumb-init", "--" ]
+CMD echo named.conf | entr -nrz bash -c "exec named -4 -n 1 -f"

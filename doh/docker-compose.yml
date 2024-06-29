@@ -35,6 +35,21 @@ services:
     volumes:
       - "./doh-server.conf:/doh-server.conf:ro"
 
+  bind:
+    << : *service
+    build: { context: ".", dockerfile: "./Dockerfile.bind" }
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.middlewares.bind.replacepath.path=/dns-query"
+      - "traefik.http.routers.bind.middlewares=bind"
+      - "traefik.http.routers.bind.rule=PathRegexp(`^/bind($|/.+)`)"
+      - "traefik.http.services.bind.loadbalancer.server.port=8080"
+      - "traefik.http.services.bind.loadbalancer.server.scheme=h2c" # grpc
+    network_mode: "service:unbound"
+    tmpfs: [ "/tmp:mode=777,exec" ]
+    volumes:
+      - "./named.conf:/etc/bind/named.conf:ro"
+
 networks:
   inet: { external: true }
   traefik: { external: true }
