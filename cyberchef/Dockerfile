@@ -1,6 +1,6 @@
 #
 
-FROM node:19 AS build
+FROM node:20 AS build
 
 USER 1000:1000
 WORKDIR /home/1000

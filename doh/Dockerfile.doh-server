@@ -16,7 +16,7 @@ RUN make doh-server/doh-server
 FROM debian
 
 RUN apt-get update && apt-get --yes --no-install-recommends install \
-    ca-certificates dumb-init \
+    ca-certificates dumb-init entr gettext \
     && rm -rf /var/lib/apt/lists/*
 
 COPY --from=build /build/doh-server/doh-server /doh-server

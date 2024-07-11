@@ -4,13 +4,16 @@ x-service: &service
   logging: { options: { max-size: "1m" } }
   restart: "always"
   stop_grace_period: "5s"
+#  cap_drop: [ "ALL" ]
+#  read_only: true
+  security_opt: [ "no-new-privileges:true" ]
 
 services:
 
   # <https://github.com/gchq/CyberChef>
   cyberchef:
     << : *service
-    build: { context: ".", dockerfile: "./Dockerfile", args: [ "TAG=v9.55.0" ] }
+    build: { context: ".", dockerfile: "./Dockerfile", args: [ "TAG=v10.19.0" ] }
     networks: [ "traefik" ]
     labels:
       - "traefik.enable=true"

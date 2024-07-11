@@ -14,7 +14,7 @@ services:
       - "UID=1000"
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.matrix.rule=PathPrefix(`/_matrix`,`/_synapse`)"
+      - "traefik.http.routers.matrix.rule=PathRegexp(`^/(_matrix|_synapse)/`)"
       - "traefik.http.services.matrix.loadbalancer.server.port=8008"
     networks: [ "inet", "traefik" ]
 #    ports: [ "127.0.0.1:8008:8008" ]

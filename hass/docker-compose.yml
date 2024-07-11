@@ -59,7 +59,7 @@ services:
     image: "koenkk/zigbee2mqtt"
     depends_on: [ "mosquitto" ]
     devices:
-      - "/dev/serial/by-id/usb-if00:/dev/ttyACM0"
+      - "/dev/serial/by-id/usb-...-if00:/dev/ttyACM0"
     group_add: [ "986" ] # uucp
     labels:
       - "traefik.enable=true"

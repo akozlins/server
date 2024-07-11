@@ -4,7 +4,7 @@ x-service: &service
   env_file: ".env"
   logging: { options: { max-size: "1m" } }
   restart: "always"
-  stop_grace_period: "5s"
+  stop_grace_period: "15s"
 
 services:
 

@@ -68,7 +68,7 @@ location = /.well-known/mta-sts.txt {
 
 location = /.well-known/security.txt {
     default_type text/plain;
-    return 200 "Contact: mailto:security@$DOMAIN\nExpires: 2023-01-01T00:00:00.000Z\n";
+    return 200 "Contact: mailto:security@$DOMAIN\nExpires: 2030-01-01T00:00:00.000Z\n";
 }
 
 location = /.well-known/matrix/client {
