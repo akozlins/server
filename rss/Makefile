@@ -9,11 +9,10 @@ init ::
 	[ -n "$${DB_USER:+x}" ] || echo "DB_USER=db_user" >> .env
 	# init files
 	source .env
-	mkdir -p .local && cd .local || exit 1
+	mkdir -p .local/postgres && cd .local || exit 1
 	# tt rss
 	if [ ! -d tt/.git ] ; then
 	    git clone https://git.tt-rss.org/fox/tt-rss tt
-	    patch --directory=tt -p1 < ../tt.patch
 	fi
 	[ -L "html/tt" ] || ( mkdir -p html && ln -s -T ../tt "html/tt" )
 	# fresh rss

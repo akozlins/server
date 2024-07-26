@@ -1,7 +1,0 @@
-diff --git a/classes/config.php b/classes/config.php
-index afdb7b8ef..fbde7bad5 100644
---- a/classes/config.php
-+++ b/classes/config.php
-@@ -478,1 +478,2 @@ class Config {
- 	static function get_self_url() : string {
-+		return self::make_self_url();
