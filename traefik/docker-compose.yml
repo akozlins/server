@@ -79,7 +79,7 @@ services:
     environment:
       - "DOZZLE_BASE=/dozzle"
       - "DOZZLE_NO_ANALYTICS=true"
-      - "DOCKER_HOST=tcp://docker_sock:2375"
+      - "DOZZLE_REMOTE_HOST=tcp://docker_sock:2375"
     labels:
       - "traefik.docker.network=traefik_default"
       - "traefik.enable=true"
