@@ -32,8 +32,7 @@ services:
       - "traefik.http.routers.doh.middlewares=doh"
       - "traefik.http.routers.doh.rule=PathRegexp(`^/doh($|/.+)`)"
       - "traefik.http.services.doh.loadbalancer.server.port=8053"
-    networks: [ "traefik" ]
-#    ports: [ "127.0.0.1:8053:8053" ]
+    network_mode: "service:unbound"
     volumes:
       - "./doh-server.conf:/doh-server.conf:ro"
 
