@@ -1,0 +1,19 @@
+#
+
+FROM debian
+
+RUN apt-get update && apt-get --yes --no-install-recommends install \
+    ca-certificates curl dumb-init entr gettext iproute2 iputils-ping \
+    cmake g++ git make zlib*-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+USER 1000:1000
+WORKDIR /midas
+
+RUN git clone https://bitbucket.org/tmidas/midas . \
+    && git submodule update --init --recursive
+RUN mkdir build && cd build \
+    && cmake .. && make && make install
+
+ENTRYPOINT [ "/usr/bin/dumb-init", "--" ]
+CMD echo ./expt/run.sh | entr -nrz ./expt/run.sh
