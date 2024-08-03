@@ -50,7 +50,7 @@ services:
     dns: "${DNS:?}"
     volumes:
       - "./data/smtp:/queue"
-#      - "./overrides/postfix:/overrides:ro"
+      - "./overrides/postfix:/overrides:ro"
 
   imap:
     << : *service

@@ -1,6 +1,7 @@
 #
 
 x-service: &service
+  dns_search: .
   logging: { options: { max-size: "1m" } }
   restart: "always"
   stop_grace_period: "5s"
@@ -67,7 +68,7 @@ services:
     labels:
       - "traefik.docker.network=traefik_default"
       - "traefik.enable=true"
-      - "traefik.http.routers.authelia.rule=PathPrefix(`/authelia/`)"
+      - "traefik.http.routers.authelia.rule=HostRegexp(`^auth(-[0-9a-z]+)?[.]`) || PathPrefix(`/authelia/`)"
       - "traefik.http.services.authelia.loadbalancer.server.port=9091"
     volumes:
       - "./authelia:/config:rw"

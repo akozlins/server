@@ -47,4 +47,4 @@ identity_providers:
       # `openssl req -x509 -nodes -newkey rsa:4096 -keyout key.pem -out cert.pem -sha256 -days 365 -subj "/CN=$DOMAIN"`
       - key: {{ secret "/config/oidc_jwks_key.key" | mindent 10 "|" | msquote }}
     clients:
-      #- {{ fileContent "/config/oidc_client_example.yml" | nindent 8 }}
+      - {{ fileContent "/config/oidc_client_example.yml" | nindent 8 }}
