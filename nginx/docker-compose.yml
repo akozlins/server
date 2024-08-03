@@ -68,6 +68,20 @@ services:
     networks: [ "default", "traefik" ]
     user: "1000:1000"
 
+  socat-test:
+    << : *service
+    build: "./socat"
+    command: [ "/usr/bin/socat",
+      "TCP4-LISTEN:8080,fork", "TCP4:${DOMAIN:?}:80",
+    ]
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.socat-test.middlewares=authelia@docker"
+      - "traefik.http.routers.socat-test.rule=HostRegexp(`^test(-[0-9a-z]+)?[.]`) && PathPrefix(`/`)"
+      - "traefik.http.services.socat-test.loadbalancer.server.port=8080"
+    networks: [ "inet", "traefik" ]
+    profiles: [ "TEST" ]
+
 networks:
   default: { internal: true }
   inet:  { external: true }
