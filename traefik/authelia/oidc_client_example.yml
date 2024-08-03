@@ -1,0 +1,7 @@
+client_id: 'example.0000000000000000'
+# `authelia crypto hash generate pbkdf2 --variant sha512 --iterations 100000 --password $CLIENT_SECRET`
+client_secret: '$pbkdf2-sha512$100000$...$...'
+redirect_uris: [ 'https://example.com/oidc.callback' ]
+scopes: [ 'email', 'openid', 'profile' ]
+token_endpoint_auth_method: 'client_secret_post'
+authorization_policy: 'one_factor'
