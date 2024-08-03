@@ -1,0 +1,27 @@
+#
+
+FROM opensuse/leap
+
+WORKDIR /root
+
+# common
+RUN zypper install --no-confirm \
+    git make nano python3
+    #gcc13-c++ glib2-devel xorg-x11-devel
+
+# quartus
+RUN zypper install --no-confirm \
+    libnsl1 libgthread-2_0-0
+
+# qmegawiz
+RUN zypper install --no-confirm \
+    libfreetype6 libgobject-2_0-0 libSM6 libXrender1 libfontconfig1 libXext6 \
+    xauth xorg-x11-server-Xvfb xvfb-run
+
+WORKDIR /root
+
+RUN git clone https://github.com/akozlins/dotfiles .dotfiles
+RUN ln -s .dotfiles/.profile
+RUN ln -s .dotfiles/.bashrc
+
+RUN git clone https://github.com/akozlins/vhdutil
