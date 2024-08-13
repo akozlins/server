@@ -1,0 +1,4 @@
+#
+
+# 2023-12-22 - see SMTP smuggling attack -> resolved on 2024-..-..
+#smtpd_data_restrictions = reject_unauth_pipelining
