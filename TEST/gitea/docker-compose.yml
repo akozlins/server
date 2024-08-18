@@ -17,7 +17,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.middlewares.gitea.stripprefix.prefixes=/gitea"
-      - "traefik.http.routers.gitea.middlewares=gitea"
+      - "traefik.http.routers.gitea.middlewares=auth@file,gitea"
       - "traefik.http.routers.gitea.rule=PathPrefix(`/gitea/`)"
       - "traefik.http.services.gitea.loadbalancer.server.port=3000"
     networks: [ "traefik" ]
@@ -29,10 +29,11 @@ services:
     << : *service
     image: "gerritcodereview/gerrit"
     environment:
-      - "CANONICAL_WEB_URL=https://${DOMAIN:?}/gerrit"
+      - "CANONICAL_WEB_URL=https://${HOST:?}.${DOMAIN:?}/gerrit"
       - "HTTPD_LISTEN_URL=proxy-https://0.0.0.0:8080/gerrit/"
     labels:
       - "traefik.enable=true"
+      - "traefik.http.routers.gerrit.middlewares=auth@file"
       - "traefik.http.routers.gerrit.rule=PathPrefix(`/gerrit/`)"
       - "traefik.http.services.gerrit.loadbalancer.server.port=8080"
     networks: [ "traefik" ]
