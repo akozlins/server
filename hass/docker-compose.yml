@@ -1,6 +1,7 @@
 #
 
 x-service: &service
+  dns_search: .
   logging: { options: { max-size: "1m" } }
   restart: "always"
   stop_grace_period: "15s"

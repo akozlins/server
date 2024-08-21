@@ -32,13 +32,14 @@ session:
 
 notifier:
   filesystem:
-    filename: "/config/notifier.txt"
+    filename: "/config/.cache/notifier.txt"
 
 access_control:
   default_policy: "deny"
   rules:
     - domain_regex: ".*"
       policy: "one_factor"
+      subject: [ "group:admin" ]
 
 identity_providers:
   oidc:

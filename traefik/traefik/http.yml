@@ -22,7 +22,7 @@ http:
       tls: true
   serversTransports:
     default-transport:
-      serverName: "{{env "DOMAIN"}}"
+      serverName: '{{env "DOMAIN"}}'
   services:
     test-service:
       loadBalancer:

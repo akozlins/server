@@ -16,6 +16,7 @@ services:
       - "TS_HOSTNAME=exitnode"
       - "TS_STATE_DIR=/var/lib/tailscale"
       - "TS_USERSPACE=false"
+      - "TS_EXTRA_ARGS=--advertise-exit-node"
     networks: [ "inet" ]
     volumes:
       - "/dev/net/tun:/dev/net/tun"

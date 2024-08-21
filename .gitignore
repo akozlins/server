@@ -4,6 +4,7 @@
 *.crt
 *.key
 *.pem
+*.sql
 
 .env
 .git

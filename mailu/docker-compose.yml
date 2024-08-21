@@ -1,6 +1,7 @@
 #
 
 x-service: &service
+  dns_search: .
   env_file: ".env"
   logging: { options: { max-size: "1m" } }
   restart: "always"

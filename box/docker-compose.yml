@@ -116,7 +116,7 @@ services:
     << : *service
     build: { context: ".", dockerfile: "../doh/Dockerfile.unbound" }
     networks:
-      default: { aliases: [ "unbound_default" ], ipv4_address: "${SUBNET:?}.254" }
+      default: { ipv4_address: "${SUBNET:?}.254" }
       inet:
     volumes:
       - "../doh/unbound.conf:/etc/unbound/unbound.conf:ro"

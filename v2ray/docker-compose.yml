@@ -32,7 +32,7 @@ services:
     << : *service
     build: { context: ".", dockerfile: "./Dockerfile" }
     environment:
-      - "V2RAY_ADDRESS=${V2RAY_ADDRESS:?}"
+      - "V2RAY_ADDRESS=127.0.0.1"
       - "V2RAY_ID=${V2RAY_ID:?}"
     networks: [ "inet" ]
     ports: [ "127.0.0.1:1080:1080" ]
