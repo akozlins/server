@@ -51,7 +51,7 @@ services:
       "--anyprot=nginx:8080",
       "--on-timeout=anyprot",
     ]
-    depends_on: [ "nginx" ]
+    depends_on: [ "caddy", "nginx" ]
     networks: [ "default", "inet" ]
     ports:
     - "0.0.0.0:80:80"
@@ -81,6 +81,21 @@ services:
       - "traefik.http.services.socat-test.loadbalancer.server.port=8080"
     networks: [ "inet", "traefik" ]
     profiles: [ "TEST" ]
+
+  caddy:
+    << : *service
+    image: "caddy"
+    environment:
+      - "DOMAIN=${DOMAIN:?}"
+      - "TRAEFIK_SUBNET=${TRAEFIK_SUBNET:?}"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.caddy.rule=HostRegexp(`^caddy(-[0-9a-z]+)?[.]`) && PathPrefix(`/`)"
+      - "traefik.http.services.caddy.loadbalancer.server.port=80"
+    networks: [ "default", "traefik" ]
+    volumes:
+      - "./Caddyfile:/etc/caddy/Caddyfile:ro"
+      - "./html:/opt/html:ro"
 
 networks:
   default: { internal: true }
