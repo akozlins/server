@@ -76,6 +76,26 @@ services:
       - "./.local/sonarr:/config"
       - "./.local/data:/data"
 
+  mylar:
+    << : *lsio
+    image: "lscr.io/linuxserver/mylar3"
+    depends_on: [ "unbound" ]
+    dns: "${SUBNET:?}.254"
+    environment:
+      - "PGID=1000"
+      - "PUID=1000"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.mylar.middlewares=authelia@docker"
+      - "traefik.http.routers.mylar.rule=PathPrefix(`/mylar/`)"
+      - "traefik.http.services.mylar.loadbalancer.server.port=8090"
+    networks: [ "default", "inet", "traefik" ]
+    volumes:
+      - "./.local/mylar:/config"
+      - "./.local/data/comics:/comics"
+      - "./.local/data/downloads:/downloads"
+#    profiles: [ "TEST" ]
+
   sabnzbd:
     << : *lsio
     image: "lscr.io/linuxserver/sabnzbd"
