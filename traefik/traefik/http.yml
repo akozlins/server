@@ -13,7 +13,17 @@ http:
         period: 1s
     auth:
       chain:
-        middlewares: [ "auth_rlimit", "authelia@docker" ]
+        middlewares: [ "auth_rlimit", "authelia@docker", "auth_headers" ]
+    auth_headers:
+      headers:
+        browserXssFilter: true
+        contentTypeNosniff: true
+        frameDeny: true
+        referrerPolicy: "no-referrer"
+        forceSTSHeader: true
+        stsIncludeSubdomains: true
+        stsPreload: true
+        stsSeconds: 31536000
 
   routers:
     test-router:
