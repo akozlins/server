@@ -18,7 +18,7 @@ services:
       - GIDLIST=1000
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.emby.middlewares=authelia@docker"
+      - "traefik.http.routers.emby.middlewares=auth@file"
       - "traefik.http.routers.emby.rule=PathRegexp(`^/(emby|embywebsocket)/`)"
       - "traefik.http.services.emby.loadbalancer.server.port=8096"
     networks: [ "traefik" ]

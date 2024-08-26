@@ -17,7 +17,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.middlewares.gatus.stripprefix.prefixes=/gatus"
-      - "traefik.http.routers.gatus.middlewares=authelia@docker,gatus"
+      - "traefik.http.routers.gatus.middlewares=auth@file,gatus"
       - "traefik.http.routers.gatus.rule=PathPrefix(`/gatus/`)"
       - "traefik.http.services.gatus.loadbalancer.server.port=8080"
     networks: [ "inet", "traefik" ]

@@ -84,7 +84,7 @@ services:
     labels:
       - "traefik.docker.network=traefik_default"
       - "traefik.enable=true"
-      - "traefik.http.routers.dozzle.middlewares=authelia@docker"
+      - "traefik.http.routers.dozzle.middlewares=auth@file"
       - "traefik.http.routers.dozzle.rule=PathPrefix(`/dozzle/`)"
       - "traefik.http.services.dozzle.loadbalancer.server.port=8080"
 

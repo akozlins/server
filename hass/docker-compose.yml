@@ -37,7 +37,7 @@ services:
     depends_on: [ "mosquitto" ]
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.nred.middlewares=authelia@docker"
+      - "traefik.http.routers.nred.middlewares=auth@file"
       - "traefik.http.routers.nred.rule=PathPrefix(`/nred/`)"
       - "traefik.http.services.nred.loadbalancer.server.port=1880"
     networks: [ "default", "traefik" ]
@@ -65,7 +65,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.middlewares.zb2mqtt.stripprefix.prefixes=/zb2mqtt"
-      - "traefik.http.routers.zb2mqtt.middlewares=authelia@docker,zb2mqtt"
+      - "traefik.http.routers.zb2mqtt.middlewares=auth@file,zb2mqtt"
       - "traefik.http.routers.zb2mqtt.rule=PathPrefix(`/zb2mqtt/`)"
       - "traefik.http.services.zb2mqtt.loadbalancer.server.port=8080"
     networks: [ "default", "traefik" ]

@@ -14,7 +14,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.middlewares.coder.stripprefix.prefixes=/coder"
-      - "traefik.http.routers.coder.middlewares=authelia@docker,coder"
+      - "traefik.http.routers.coder.middlewares=auth@file,coder"
       - "traefik.http.routers.coder.rule=PathPrefix(`/coder/`)"
       - "traefik.http.services.coder.loadbalancer.server.port=8080"
     networks: [ "inet", "traefik" ]

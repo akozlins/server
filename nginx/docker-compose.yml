@@ -76,7 +76,7 @@ services:
     ]
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.socat-test.middlewares=authelia@docker"
+      - "traefik.http.routers.socat-test.middlewares=auth@file"
       - "traefik.http.routers.socat-test.rule=HostRegexp(`^test(-[0-9a-z]+)?[.]`) && PathPrefix(`/`)"
       - "traefik.http.services.socat-test.loadbalancer.server.port=8080"
     networks: [ "inet", "traefik" ]
