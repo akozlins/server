@@ -13,8 +13,8 @@ http:
         period: 1s
     auth:
       chain:
-        middlewares: [ "auth_rlimit", "authelia@docker", "auth_headers" ]
-    auth_headers:
+        middlewares: [ "auth_rlimit", "authelia_rd@docker", "security_headers" ]
+    security_headers:
       headers:
         browserXssFilter: true
         contentTypeNosniff: true

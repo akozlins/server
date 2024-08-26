@@ -40,7 +40,9 @@ services:
       - "DOMAIN=${DOMAIN:?}"
     labels:
       - "traefik.enable=true"
-#      - "traefik.http.middlewares.authelia.forwardAuth.address=http://authelia:9091/authelia/api/verify?rd=https://${DOMAIN:?}/authelia/#/"
+      - "traefik.http.middlewares.authelia_rd.forwardAuth.address=http://authelia:9091/authelia/api/verify?rd=https://${HOST:?}${HOST:+.}${DOMAIN:?}/authelia/#/"
+      - "traefik.http.middlewares.authelia_rd.forwardAuth.authResponseHeaders=Remote-User,Remote-Groups,Remote-Name,Remote-Email"
+      - "traefik.http.middlewares.authelia_rd.forwardAuth.trustForwardHeader=true"
       - "traefik.http.middlewares.authelia.forwardAuth.address=http://authelia:9091/authelia/api/verify?auth=basic"
       - "traefik.http.middlewares.authelia.forwardAuth.authResponseHeaders=Remote-User,Remote-Groups,Remote-Name,Remote-Email"
       - "traefik.http.middlewares.authelia.forwardAuth.trustForwardHeader=true"
