@@ -33,9 +33,9 @@ services:
       - "traefik.http.services.qbittorrent.loadbalancer.server.port=8080"
     networks: [ "default", "traefik" ]
     volumes:
-      - "./.local/downloads:/home/1000/Downloads"
       - "./.local/qbittorrent:/home/1000/.local/share/qBittorrent"
       - "./.local/qbittorrent:/home/1000/.config/qBittorrent"
+      - "./.local/data:/data"
 
   jackett:
     << : *lsio

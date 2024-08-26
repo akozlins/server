@@ -15,6 +15,7 @@ services:
       - "TRAEFIK_SUBNET=${TRAEFIK_SUBNET:?}"
     labels:
       - "traefik.enable=true"
+      - "traefik.http.routers.nginx1.middlewares=security_headers@file"
       - "traefik.http.routers.nginx1.priority=1"
       - "traefik.http.routers.nginx1.rule=PathPrefix(`/`)"
       - "traefik.http.routers.nginx.rule=HostRegexp(`^nginx(-[0-9a-z]+)?[.]`) && PathPrefix(`/`)"

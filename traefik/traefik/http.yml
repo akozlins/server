@@ -9,7 +9,7 @@ http:
     auth_rlimit:
       ratelimit:
         average: 25
-        burst: 50
+        burst: 100
         period: 1s
     auth:
       chain:
@@ -17,6 +17,7 @@ http:
     security_headers:
       headers:
         browserXssFilter: true
+        #contentSecurityPolicy: "default-src 'self'"
         contentTypeNosniff: true
         frameDeny: true
         referrerPolicy: "no-referrer"

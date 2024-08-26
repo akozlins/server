@@ -69,8 +69,10 @@ location = /.well-known/mta-sts.txt {
 location = /.well-known/security.txt {
     default_type text/plain;
     return 200 "#
+Canonical: https://$DOMAIN/.well-known/security.txt
 Expires: 2030-01-01T00:00:00z
 Contact: mailto:security@$DOMAIN
+Preferred-Languages: en
 ";
 }
 

@@ -72,6 +72,7 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.authelia.rule=HostRegexp(`^auth(-[0-9a-z]+)?[.]`) || PathPrefix(`/authelia/`)"
       - "traefik.http.services.authelia.loadbalancer.server.port=9091"
+    mem_limit: 256m
     volumes:
       - "./authelia:/config:rw"
 
