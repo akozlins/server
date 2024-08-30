@@ -1,0 +1,23 @@
+#
+
+x-service: &service
+  logging: { options: { max-size: "1m" } }
+  restart: "always"
+  stop_grace_period: "30s"
+
+services:
+  qemu:
+    << : *service
+    image: "qemux/qemu-docker"
+    environment:
+      - "DISK_SIZE=16G"
+      - "BOOT=https://mirror.rackspace.com/archlinux/iso/2024.08.01/archlinux-x86_64.iso"
+    devices: [ "/dev/kvm" ]
+    cap_add: [ "NET_ADMIN" ]
+    ports: [ "127.0.0.1:8006:8006" ]
+    volumes:
+      - "./.local/storage:/storage"
+      - "./.local/archlinux-x86_64.iso:/boot.iso:ro"
+
+networks:
+  inet: { external: true }
