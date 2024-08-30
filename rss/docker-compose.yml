@@ -35,7 +35,7 @@ services:
       - "TTRSS_DB_PASS=${DB_PASSWORD:?}"
       - "TTRSS_DB_USER=${DB_USER:?}"
       - "TTRSS_PHP_EXECUTABLE=php"
-      - "TTRSS_PLUGINS=auth_internal"
+      - "TTRSS_PLUGINS=auth_remote"
       - "TTRSS_SELF_URL_PATH=/tt"
       # default lifetime of a session cookie in seconds
       # (0 means cookie will be deleted when browser closes)
@@ -46,9 +46,9 @@ services:
       - "./run-tt.sh:/run.sh:ro"
       - "./.local:/var/www"
 
-  nginx:
+  caddy:
     << : *service
-    image: "nginx"
+    image: "caddy"
     depends_on: [ "php" ]
     labels:
       - "traefik.enable=true"
@@ -57,7 +57,7 @@ services:
       - "traefik.http.services.rss.loadbalancer.server.port=8080"
     networks: [ "default", "traefik" ]
     volumes:
-      - "./nginx.conf:/etc/nginx/nginx.conf:ro"
+      - "./Caddyfile:/etc/caddy/Caddyfile:ro"
       - "./.local:/var/www:ro"
 
 networks:

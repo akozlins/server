@@ -1,0 +1,16 @@
+#
+
+{
+    log {
+        output stdout
+    }
+    servers {
+        trusted_proxies static private_ranges
+    }
+}
+
+:8080 {
+    root * /var/www/html
+    php_fastcgi php:9000
+    file_server
+}
