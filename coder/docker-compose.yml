@@ -18,7 +18,6 @@ services:
       - "traefik.http.routers.coder.rule=PathPrefix(`/coder/`)"
       - "traefik.http.services.coder.loadbalancer.server.port=8080"
     networks: [ "inet", "traefik" ]
-#    ports: [ "127.0.0.1:8080:8080" ]
     user: "1000:1000"
     volumes:
       - ./home:/home/coder

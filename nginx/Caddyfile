@@ -1,14 +1,18 @@
 #
 
-:80 {
-    root * /opt/html
-
-    templates
-    file_server
-
+{
     log {
         output stdout
     }
+    servers {
+        trusted_proxies static private_ranges
+    }
+}
+
+:80 {
+    root * /opt/html
+    templates
+    file_server
 }
 
 :8080 {
@@ -16,12 +20,7 @@
     handle @whoami {
         reverse_proxy http://whoami:80
     }
-
     handle {
         redir https://{host}{uri}
-    }
-
-    log {
-        output stdout
     }
 }

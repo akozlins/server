@@ -27,4 +27,8 @@ server {
     location /whoami {
         proxy_pass http://whoami:80;
     }
+
+    if ($http_x_forwarded_proto != "https") {
+        rewrite  ^/(.*)$  https://$host/$1 permanent;
+    }
 }

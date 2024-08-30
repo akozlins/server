@@ -58,7 +58,7 @@ services:
     networks: [ "default", "traefik" ]
     volumes:
       - "./nginx.conf:/etc/nginx/nginx.conf:ro"
-      - "./.local:/var/www"
+      - "./.local:/var/www:ro"
 
 networks:
   default: { internal: true }

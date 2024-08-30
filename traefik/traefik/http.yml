@@ -17,7 +17,7 @@ http:
     security_headers:
       headers:
         browserXssFilter: true
-        #contentSecurityPolicy: "default-src 'self'"
+        contentSecurityPolicy: "default-src 'self'; base-uri 'self'; form-action 'self'; frame-ancestors 'self';"
         contentTypeNosniff: true
         frameDeny: true
         referrerPolicy: "no-referrer"
