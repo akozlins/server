@@ -25,7 +25,6 @@ services:
     volumes:
       - "./conf.d:/etc/nginx/templates:ro"
       - "./nginx.conf:/etc/nginx/nginx.conf:ro"
-      - "../etc/letsencrypt:/etc/letsencrypt:ro"
       - "./html:/opt/html:ro"
       - "./.cache/run/socat:/run/socat:rw"
 

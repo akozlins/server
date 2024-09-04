@@ -9,6 +9,7 @@ x-service: &service
   read_only: true
   security_opt: [ "no-new-privileges:true" ]
   user: "1000:1000"
+  mem_limit: 256m
 
 services:
 
@@ -46,7 +47,7 @@ services:
       - "traefik.http.middlewares.authelia.forwardAuth.address=http://authelia:9091/authelia/api/verify?auth=basic"
       - "traefik.http.middlewares.authelia.forwardAuth.authResponseHeaders=Remote-User,Remote-Groups,Remote-Name,Remote-Email"
       - "traefik.http.middlewares.authelia.forwardAuth.trustForwardHeader=true"
-      - "traefik.http.routers.api.middlewares=auth_users@file"
+      - "traefik.http.routers.api.middlewares=auth@file"
       - "traefik.http.routers.api.rule=HostRegexp(`^traefik(-[0-9a-z]+)?[.]`) && PathPrefix(`/`)"
       - "traefik.http.routers.api.service=api@internal"
     networks: { "default", "inet", "traefik" : { ipv4_address: "${TRAEFIK_SUBNET:?}.254" } }
@@ -66,13 +67,13 @@ services:
     environment:
       - "AUTHELIA_LOG_LEVEL=info"
       - "DOMAIN=${DOMAIN:?}"
+      - "HOST=${HOST:?}"
       - "X_AUTHELIA_CONFIG_FILTERS=template"
     labels:
       - "traefik.docker.network=traefik_default"
       - "traefik.enable=true"
-      - "traefik.http.routers.authelia.rule=HostRegexp(`^auth(-[0-9a-z]+)?[.]`) || PathPrefix(`/authelia/`)"
+      - "traefik.http.routers.authelia.rule=HostRegexp(`^auth(-[0-9a-z]+)?[.]`) || PathRegexp(`^/authelia($|/)`)"
       - "traefik.http.services.authelia.loadbalancer.server.port=9091"
-    mem_limit: 256m
     volumes:
       - "./authelia:/config:rw"
 
