@@ -5,11 +5,11 @@ SHELL := bash
 .SHELLFLAGS := -euf -c
 
 ENVS := \
-    HOST=$(shell hostname) \
+    HOME=$(HOME) \
+    MACHINE_ID=$(shell cat /etc/machine-id | head -c 8) \
     DOCKER_GID=$(shell getent group docker | cut -d: -f3) \
-    MACHINE_ID=$(shell cat /etc/machine-id) \
-    HOME=$(HOME)
-SUDO := $(ENVS) $(shell [[ " $$(id --groups --name) " =~ " docker " ]] || echo sudo)
+    HOST=$(shell cat /etc/hostname)
+SUDO := $(shell [[ " $$(id --groups --name) " =~ " docker " ]] || echo sudo) $(ENVS)
 
 all :
 

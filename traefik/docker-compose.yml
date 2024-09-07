@@ -67,7 +67,7 @@ services:
     environment:
       - "AUTHELIA_LOG_LEVEL=info"
       - "DOMAIN=${DOMAIN:?}"
-      - "HOST=${HOST:?}"
+      - "MACHINE_ID=${MACHINE_ID:?}"
       - "X_AUTHELIA_CONFIG_FILTERS=template"
     labels:
       - "traefik.docker.network=traefik_default"
