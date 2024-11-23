@@ -85,3 +85,13 @@ location = /.well-known/matrix/server {
     default_type application/json;
     return 200 '{ "m.server" : "matrix.$DOMAIN:443" }\n';
 }
+
+location = /.well-known/webfinger {
+    return 307 /.well-known/webfinger/$arg_resource;
+}
+
+#location = /.well-known/webfinger {
+#    if ($arg_resource ~ ^acct) {
+#        rewrite ^ /.well-known/webfinger/$arg_resource;
+#    }
+#}
