@@ -27,8 +27,8 @@ storage:
 session:
   cookies:
   - domain: '{{ env "DOMAIN" }}'
-    authelia_url: 'https://{{ env "DOMAIN" }}/authelia'
-    name: 'authelia_session_{{ env "MACHINE_ID" }}'
+    authelia_url: 'https://{{ env "HOST" }}.{{ env "DOMAIN" }}/authelia'
+  name: 'authelia_session_{{ env "MACHINE_ID" }}'
   secret: '{{ secret "/config/session_secret.key" }}'
 
 notifier:
