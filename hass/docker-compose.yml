@@ -25,8 +25,12 @@ services:
   influxdb:
     << : *service
     image: "influxdb"
-    networks: [ "default" ]
-    #ports: [ "127.0.0.1:8086:8086" ]
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.influxdb.middlewares=auth@file"
+      - "traefik.http.routers.influxdb.rule=HostRegexp(`^influxdb(-[0-9a-z]+)?[.]`) && PathPrefix(`/`)"
+      - "traefik.http.services.influxdb.loadbalancer.server.port=8086"
+    networks: [ "default", "traefik" ]
     volumes:
       - ".local/influxdb:/etc/influxdb2"
       - ".local/influxdb:/var/lib/influxdb2"
