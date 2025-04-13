@@ -21,6 +21,19 @@
         }
         try_files {path}.json
     }
+
+    @webfinger {
+        path /.well-known/webfinger
+        #vars resource {query.resource}
+        #expression `{query.resource}.matches(r"[^/@]+@[^/@]+")`
+        query resource=acct:security@{$DOMAIN}
+    }
+    handle @webfinger {
+        templates {
+            mime application/json
+        }
+        try_files {path}.json
+    }
 }
 
 :8080 {

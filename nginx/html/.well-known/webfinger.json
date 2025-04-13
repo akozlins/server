@@ -1,0 +1,9 @@
+{
+  "subject" : "{{.Req.URL.Query.Get "resource"}}",
+  "links" : [
+    {
+      "rel" : "http://openid.net/specs/connect/1.0/issuer",
+      "href" : "https://auth.{{env "DOMAIN"}}"
+    }
+  ]
+}
