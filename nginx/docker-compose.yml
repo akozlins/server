@@ -15,9 +15,9 @@ services:
       - "TRAEFIK_SUBNET=${TRAEFIK_SUBNET:?}"
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.nginx1.middlewares=security_headers@file"
-      - "traefik.http.routers.nginx1.priority=1"
-      - "traefik.http.routers.nginx1.rule=PathPrefix(`/`)"
+      #- "traefik.http.routers.nginx1.middlewares=security_headers@file"
+      #- "traefik.http.routers.nginx1.priority=1"
+      #- "traefik.http.routers.nginx1.rule=PathPrefix(`/`)"
       - "traefik.http.routers.nginx.rule=HostRegexp(`^nginx(-[0-9a-z]+)?[.]`) && PathPrefix(`/`)"
       - "traefik.http.services.nginx.loadbalancer.server.port=8080"
     networks: [ "default", "traefik" ]
@@ -45,10 +45,10 @@ services:
     command: [ "sslh", "--foreground", "--numeric",
       "--listen=0.0.0.0:80",
       "--ssh=${DOMAIN:?}:1022",
-      "--http=nginx:8080",
+      "--http=caddy:8080",
       "--tls=${DOMAIN:?}:443",
       "--openvpn=${DOMAIN:?}:1194",
-      "--anyprot=nginx:8080",
+      "--anyprot=caddy:8080",
       "--on-timeout=anyprot",
     ]
     depends_on: [ "caddy", "nginx" ]
@@ -90,6 +90,9 @@ services:
       - "TRAEFIK_SUBNET=${TRAEFIK_SUBNET:?}"
     labels:
       - "traefik.enable=true"
+      - "traefik.http.routers.caddy1.middlewares=security_headers@file"
+      - "traefik.http.routers.caddy1.priority=1"
+      - "traefik.http.routers.caddy1.rule=PathPrefix(`/`)"
       - "traefik.http.routers.caddy.rule=HostRegexp(`^caddy(-[0-9a-z]+)?[.]`) && PathPrefix(`/`)"
       - "traefik.http.services.caddy.loadbalancer.server.port=80"
     networks: [ "default", "traefik" ]

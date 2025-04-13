@@ -1,0 +1,5 @@
+#
+Canonical: https://{{env "DOMAIN"}}/.well-known/security.txt
+Expires: 2030-01-01T00:00:00z
+Contact: mailto:security@{{env "DOMAIN"}}
+Preferred-Languages: en

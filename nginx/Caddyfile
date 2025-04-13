@@ -13,6 +13,14 @@
     root * /opt/html
     templates
     file_server
+
+    @matrix path /.well-known/matrix/*
+    handle @matrix {
+        templates {
+            mime application/json
+        }
+        try_files {path}.json
+    }
 }
 
 :8080 {
