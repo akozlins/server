@@ -41,7 +41,7 @@ services:
 
   sslh:
     << : *service
-    build: "./sslh"
+    build: "../etc/sslh"
     command: [ "sslh", "--foreground", "--numeric",
       "--listen=0.0.0.0:80",
       "--ssh=${DOMAIN:?}:1022",
