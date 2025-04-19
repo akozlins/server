@@ -15,7 +15,7 @@ services:
       - "syncthing.sock:127.0.0.1:8384"
     network_mode: "host"
     volumes:
-      - "./socat:/etc/socat:ro"
+      - "../etc/socat:/etc/socat:ro"
       - "./.cache/run/socat:/run/socat:rw"
 
   sslh:
