@@ -4,6 +4,11 @@ x-service: &service
   logging: { options: { max-size: "1m" } }
   restart: "always"
   stop_grace_period: "5s"
+  cap_drop: [ "ALL" ]
+  read_only: true
+  security_opt: [ "no-new-privileges:true" ]
+  user: "1000:1000"
+  mem_limit: 256m
 
 services:
 
@@ -45,7 +50,6 @@ services:
       - "traefik.http.routers.whoami.rule=PathPrefix(`/whoami/`)"
       - "traefik.http.services.whoami.loadbalancer.server.port=80"
     networks: [ "default", "traefik" ]
-    user: "1000:1000"
 
   socat-test:
     << : *service
@@ -64,6 +68,7 @@ services:
   caddy:
     << : *service
     image: "caddy"
+    cap_add: [ "CAP_NET_BIND_SERVICE" ]
     environment:
       - "DOMAIN=${DOMAIN:?}"
       - "TRAEFIK_SUBNET=${TRAEFIK_SUBNET:?}"
