@@ -3,4 +3,4 @@
 include ../makefile.mk
 
 init ::
-	mkdir -p -- .local authelia/.cache
+	mkdir -p -- .local/redis authelia/.cache

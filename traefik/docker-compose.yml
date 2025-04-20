@@ -62,6 +62,7 @@ services:
   authelia:
     << : *service
     image: "authelia/authelia"
+    depends_on: [ "redis" ]
     environment:
       - "AUTHELIA_LOG_LEVEL=info"
       - "DOMAIN=${DOMAIN:?}"
@@ -75,6 +76,14 @@ services:
       - "traefik.http.services.authelia.loadbalancer.server.port=9091"
     volumes:
       - "./authelia:/config:rw"
+
+  redis:
+    << : *service
+    image: "valkey/valkey"
+    # <https://github.com/redis/redis/blob/unstable/redis.conf>
+    command: valkey-server --bind 0.0.0.0
+    volumes:
+      - "./.local/redis:/data"
 
   dozzle:
     << : *service

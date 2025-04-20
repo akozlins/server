@@ -29,6 +29,8 @@ session:
   - domain: '{{ env "DOMAIN" }}'
     authelia_url: 'https://{{ env "HOST" }}.{{ env "DOMAIN" }}/authelia'
   name: 'authelia_session_{{ env "MACHINE_ID" }}'
+  redis:
+    host: 'redis'
   secret: '{{ secret "/config/session_secret.key" }}'
 
 notifier:
