@@ -102,11 +102,11 @@ services:
 
   docker_sock:
     << : *service
-    image: "haproxy"
+    image: "caddy"
+    cap_add: [ "CAP_NET_BIND_SERVICE" ]
     group_add: [ "${DOCKER_GID:?}" ]
-    #ports: [ "127.0.0.1:2375:2375", ]
     volumes:
-      - "./haproxy.docker_sock.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro"
+      - "./Caddyfile.docker_sock:/etc/caddy/Caddyfile:ro"
       - "/var/run/docker.sock:/var/run/docker.sock"
 
 networks:

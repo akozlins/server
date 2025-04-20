@@ -1,0 +1,36 @@
+#
+
+{
+    auto_https off
+    log {
+        level WARN
+        exclude http.log.error
+    }
+    log error {
+        format filter {
+            headers delete
+            request>headers delete
+        }
+        level DEBUG
+        include http.log.error
+    }
+}
+
+http://:2375 {
+    @docker {
+        method GET
+        path_regexp ^(/v[0-9.]+)?/(_ping|info|version|events|containers/.*)$
+    }
+    handle @docker {
+        reverse_proxy unix//var/run/docker.sock {
+            @err status 4xx 5xx
+            handle_response @err {
+                error "" {rp.status_code}
+            }
+            flush_interval -1
+        }
+    }
+    handle {
+        error 404
+    }
+}
