@@ -85,6 +85,23 @@ services:
     volumes:
       - "./.local/redis:/data"
 
+  lldap:
+    << : *service
+    image: "lldap/lldap:stable"
+    entrypoint: [ /app/lldap, run, --config-file, /data/lldap_config.toml ]
+    environment:
+      - LLDAP_LDAP_BASE_DN=dc=example,dc=com
+    labels:
+      - "traefik.docker.network=traefik_default"
+      - "traefik.enable=true"
+      - "traefik.http.routers.lldap.middlewares=auth@file"
+      #- "traefik.http.routers.lldap.rule=PathPrefix(`/lldap/`)"
+      - "traefik.http.routers.lldap.rule=HostRegexp(`^lldap(-[0-9a-z]+)?[.]`) && PathPrefix(`/`)"
+      - "traefik.http.services.lldap.loadbalancer.server.port=17170"
+    volumes:
+      - ".local/lldap:/data:rw"
+    profiles: [ "TEST" ]
+
   dozzle:
     << : *service
     image: "amir20/dozzle"
