@@ -6,6 +6,7 @@ x-service: &service
   restart: "always"
   stop_grace_period: "15s"
   user: "1000:1000"
+  mem_limit: 256m
 
 services:
 
@@ -17,6 +18,7 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.hass.rule=HostRegexp(`^hass(-[0-9a-z]+)?[.]`) && PathPrefix(`/`)"
       - "traefik.http.services.hass.loadbalancer.server.port=8123"
+    mem_limit: 1024m
     networks: [ "default", "traefik" ]
     volumes:
       - ".local/hass:/config"
@@ -30,6 +32,7 @@ services:
       - "traefik.http.routers.influxdb.middlewares=auth@file"
       - "traefik.http.routers.influxdb.rule=HostRegexp(`^influxdb(-[0-9a-z]+)?[.]`) && PathPrefix(`/`)"
       - "traefik.http.services.influxdb.loadbalancer.server.port=8086"
+    mem_limit: 1024m
     networks: [ "default", "traefik" ]
     volumes:
       - ".local/influxdb:/etc/influxdb2"
@@ -64,7 +67,7 @@ services:
     image: "koenkk/zigbee2mqtt"
     depends_on: [ "mosquitto" ]
     devices:
-      - "/dev/serial/by-id/usb-...-if00:/dev/ttyACM0"
+      - "/dev/serial/by-id/usb-${ZIGBEE_DEV:?}-if00:/dev/ttyACM0"
     group_add: [ "986" ] # uucp
     labels:
       - "traefik.enable=true"

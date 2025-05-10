@@ -7,6 +7,8 @@ x-service: &service
   cap_drop: [ "ALL" ]
   read_only: true
   security_opt: [ "no-new-privileges:true" ]
+  user: "1000:1000"
+  mem_limit: 128m
 
 services:
 

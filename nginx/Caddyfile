@@ -1,12 +1,22 @@
 #
 
 {
-    log {
-        output stdout
+    admin off
+    auto_https off
+    grace_period 1s
+    log error {
+        format filter {
+            headers delete
+            request>headers delete
+        }
+        level DEBUG
+        include http.log.error
     }
+    persist_config off
     servers {
         trusted_proxies static private_ranges
     }
+    storage_check off
 }
 
 :80 {
