@@ -7,11 +7,17 @@ authentication_backend:
   password_reset:
     disable: true
   # <https://www.authelia.com/configuration/first-factor/file/>
-  file:
-    path: "/config/users.yml"
-    watch: true
-    search:
-      email: true
+  #file:
+  #  path: '/config/users.yml'
+  #  watch: true
+  #  search:
+  #    email: true
+  ldap:
+    implementation: 'lldap'
+    address: 'ldap://lldap:3890'
+    base_dn: '{{ env "LDAP_BASE_DN" }}'
+    user: 'uid=lldap_readonly,ou=people,{{ env "LDAP_BASE_DN" }}'
+    password: '{{ secret "/config/ldap_password.key" }}'
 
 server:
   address: "tcp://:9091/authelia"

@@ -62,10 +62,11 @@ services:
   authelia:
     << : *service
     image: "authelia/authelia"
-    depends_on: [ "redis" ]
+    depends_on: [ "redis", "lldap" ]
     environment:
       - "AUTHELIA_LOG_LEVEL=info"
       - "DOMAIN=${DOMAIN:?}"
+      - "LDAP_BASE_DN=${LDAP_BASE_DN:?}"
       - "HOST=${HOST:?}"
       - "MACHINE_ID=${MACHINE_ID:?}"
       - "X_AUTHELIA_CONFIG_FILTERS=template"
@@ -87,10 +88,9 @@ services:
 
   lldap:
     << : *service
-    image: "lldap/lldap:stable"
-    entrypoint: [ /app/lldap, run, --config-file, /data/lldap_config.toml ]
+    image: "lldap/lldap:latest-debian-rootless"
     environment:
-      - LLDAP_LDAP_BASE_DN=dc=example,dc=com
+      - "LLDAP_LDAP_BASE_DN=${LDAP_BASE_DN:?}"
     labels:
       - "traefik.docker.network=traefik_default"
       - "traefik.enable=true"
@@ -99,8 +99,7 @@ services:
       - "traefik.http.routers.lldap.rule=HostRegexp(`^lldap(-[0-9a-z]+)?[.]`) && PathPrefix(`/`)"
       - "traefik.http.services.lldap.loadbalancer.server.port=17170"
     volumes:
-      - ".local/lldap:/data:rw"
-    profiles: [ "TEST" ]
+      - "./authelia/lldap_data:/data:rw"
 
   dozzle:
     << : *service
