@@ -1,0 +1,46 @@
+#
+
+x-service: &service
+  dns_search: .
+  logging: { options: { max-size: "1m" } }
+  restart: "always"
+  stop_grace_period: "5s"
+  cap_drop: [ "ALL" ]
+  read_only: true
+  security_opt: [ "no-new-privileges:true" ]
+  user: "1000:1000"
+  mem_limit: 256m
+
+services:
+
+  watchtower:
+    << : *service
+    image: "containrrr/watchtower"
+    environment:
+      WATCHTOWER_NOTIFICATIONS_HOSTNAME: '${HOST:?}'
+      WATCHTOWER_NOTIFICATIONS_LEVEL: 'info'
+      WATCHTOWER_NOTIFICATION_REPORT: 'true'
+      # https://containrrr.dev/watchtower/template-preview/
+      WATCHTOWER_NOTIFICATION_TEMPLATE: |
+       {{- if .Report -}}
+       {
+         "message": "watchtower@${HOST:?}:
+           {{- with .Report -}}{{- if ( or .Updated .Failed ) -}}
+             {{- range .Updated -}}\n- {{.State}}: {{.Name}} ({{.ImageName}}) {{.CurrentImageID.ShortID}} -> {{.LatestImageID.ShortID}}{{- end -}}
+             {{- range .Failed -}}\n- {{.State}}: {{.Name}} ({{.ImageName}}) {{.Error}}{{- end -}}
+           {{- end -}}{{- end -}}
+           {{- if .Entries -}}
+             {{- range .Entries -}}\n- [{{.Level}}] {{.Message}}{{- end -}}
+           {{- end -}}
+         ",
+         "channel_id": "..."
+       }
+       {{- end -}}
+      WATCHTOWER_NOTIFICATION_URL: 'generic://example.com/mattermost/api/v4/posts?@Authorization=Bearer%20...'
+    group_add: [ "${DOCKER_GID:?}" ]
+    networks: { "inet" }
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+
+networks:
+  inet: { external: true }
