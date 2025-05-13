@@ -5,7 +5,7 @@ import flask
 import os
 import requests
 
-TOKEN = os.environ['TELEGRAM_TOKEN']
+TOKEN = os.environ.get('TELEGRAM_TOKEN')
 
 app = flask.Flask(__name__)
 

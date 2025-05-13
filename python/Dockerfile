@@ -7,6 +7,7 @@ RUN apt-get update && apt-get --yes --no-install-recommends install \
     && rm -rf /var/lib/apt/lists/*
 
 RUN pip3 --no-cache-dir install \
+    uv \
     flask requests waitress
 
 USER 1000:1000

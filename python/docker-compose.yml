@@ -7,12 +7,16 @@ x-service: &service
   cap_drop: [ "ALL" ]
   read_only: true
   security_opt: [ "no-new-privileges:true" ]
+  tmpfs: [ "/tmp:mode=777" ]
+  user: "1000:1000"
+  working_dir: "/home/1000"
 
 services:
 
   telegram:
     << : *service
     build: { context: ".", dockerfile: "./Dockerfile" }
+    command: "uv run main.py"
     environment:
       - "TELEGRAM_TOKEN=${TELEGRAM_TOKEN:?}"
     labels:
@@ -21,7 +25,7 @@ services:
       - "traefik.http.services.telegram.loadbalancer.server.port=8080"
     networks: [ "inet", "traefik" ]
     volumes:
-      - "./:/home/1000/:ro"
+      - "./telegram:/home/1000:rw"
 
 networks:
   inet: { external: true }
