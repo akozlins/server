@@ -2,16 +2,16 @@
 
 FROM node:21 AS build
 
-USER 1000:1000
 WORKDIR /home/1000
+RUN chown 1000:1000 .
+USER 1000:1000
 
-ARG TAG
+ARG TAG="v10.19.4"
 RUN git clone -b "$TAG" --depth=1 https://github.com/gchq/CyberChef.git .
 
-RUN npm install
-
 ENV NODE_OPTIONS=--max_old_space_size=2048
-RUN npm exec -- grunt prod
+RUN npm ci
+RUN npm run build
 
 # http server
 FROM caddy
