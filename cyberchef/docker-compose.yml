@@ -15,13 +15,16 @@ services:
   # <https://github.com/gchq/CyberChef>
   cyberchef:
     << : *service
-    build: { context: ".", dockerfile: "./Dockerfile", args: [ "TAG=v10.19.4" ] }
+    image: "caddy"
     cap_add: [ "CAP_NET_BIND_SERVICE" ]
     networks: [ "traefik" ]
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.cyberchef.rule=PathPrefix(`/cyberchef/`)"
       - "traefik.http.services.cyberchef.loadbalancer.server.port=80"
+    volumes:
+      - "./Caddyfile:/etc/caddy/Caddyfile:ro"
+      - "./.local/app/build/prod:/opt/html/cyberchef:ro"
 
 networks:
   traefik: { external: true }
