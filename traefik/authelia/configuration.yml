@@ -20,14 +20,14 @@ authentication_backend:
     password: '{{ secret "/config/ldap_password.key" }}'
 
 server:
-  address: "tcp://:9091/authelia"
+  address: 'tcp://:9091/authelia'
   disable_healthcheck: true
 
 # <https://www.authelia.com/configuration/storage/introduction/>
 storage:
   encryption_key: '{{ secret "/config/storage_encryption_key.key" }}'
   local:
-    path: "/config/.cache/storage.sqlite3"
+    path: '/config/.cache/storage.sqlite3'
 
 # <https://www.authelia.com/configuration/session/introduction/>
 session:

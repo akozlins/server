@@ -16,27 +16,28 @@ services:
   watchtower:
     << : *service
     image: "containrrr/watchtower"
+    command: --cleanup --remove-volumes --rolling-restart
     environment:
       WATCHTOWER_NOTIFICATIONS_HOSTNAME: '${HOST:?}'
       WATCHTOWER_NOTIFICATIONS_LEVEL: 'info'
       WATCHTOWER_NOTIFICATION_REPORT: 'true'
-      # https://containrrr.dev/watchtower/template-preview/
+      # <https://containrrr.dev/watchtower/template-preview/>
       WATCHTOWER_NOTIFICATION_TEMPLATE: |
-       {{- if .Report -}}
-       {
-         "message": "watchtower@${HOST:?}:
-           {{- with .Report -}}{{- if ( or .Updated .Failed ) -}}
-             {{- range .Updated -}}\n- {{.State}}: {{.Name}} ({{.ImageName}}) {{.CurrentImageID.ShortID}} -> {{.LatestImageID.ShortID}}{{- end -}}
-             {{- range .Failed -}}\n- {{.State}}: {{.Name}} ({{.ImageName}}) {{.Error}}{{- end -}}
-           {{- end -}}{{- end -}}
-           {{- if .Entries -}}
-             {{- range .Entries -}}\n- [{{.Level}}] {{.Message}}{{- end -}}
-           {{- end -}}
-         ",
-         "channel_id": "..."
-       }
-       {{- end -}}
-      WATCHTOWER_NOTIFICATION_URL: 'generic://example.com/mattermost/api/v4/posts?@Authorization=Bearer%20...'
+        {{- if .Report -}}
+        {
+          "message": "watchtower@${HOST:?}:
+            {{- with .Report -}}{{- if ( or .Updated .Failed ) -}}
+              {{- range .Updated -}}\n- {{.State}}: {{.Name}} ({{.ImageName}}) {{.CurrentImageID.ShortID}} -> {{.LatestImageID.ShortID}}{{- end -}}
+              {{- range .Failed -}}\n- {{.State}}: {{.Name}} ({{.ImageName}}) {{.Error}}{{- end -}}
+            {{- end -}}{{- end -}}
+            {{- if .Entries -}}
+              {{- range .Entries -}}\n- [{{.Level}}] {{.Message}}{{- end -}}
+            {{- end -}}
+          ",
+          "channel_id": "${WATCHTOWER_MM_CHANNEL:?}"
+        }
+        {{- end -}}
+      WATCHTOWER_NOTIFICATION_URL: 'generic://{WATCHTOWER_MM_URL:?}/api/v4/posts?@Authorization=Bearer%20{WATCHTOWER_MM_TOKEN:?}'
     group_add: [ "${DOCKER_GID:?}" ]
     networks: { "inet" }
     volumes:

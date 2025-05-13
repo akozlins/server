@@ -6,13 +6,9 @@ USER 1000:1000
 WORKDIR /home/1000
 ENV HOME="/home/1000"
 
-USER 1000:1000
-WORKDIR /home/1000
-ENV HOME="/home/1000"
-
 RUN git clone https://github.com/TwiN/gatus .
 
-ARG VUE_PUBLIC_PATH
+ARG VUE_PUBLIC_PATH=/gatus
 RUN sed -i \
     -e "s|publicPath: .*|publicPath: '${VUE_PUBLIC_PATH}'|" \
     web/app/vue.config.js
