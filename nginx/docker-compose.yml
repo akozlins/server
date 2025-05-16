@@ -15,12 +15,11 @@ services:
   socat:
     << : *service
     build: "./socat"
-    command:
-      - "/etc/socat/run.sh"
-      - "syncthing.sock:127.0.0.1:8384"
+    command: sh -c "
+      socat -d UNIX-LISTEN:syncthing.sock,fork,mode=666 TCP:127.0.0.1:8384 &
+      wait"
     network_mode: "host"
     volumes:
-      - "../etc/socat:/etc/socat:ro"
       - "./.cache/run/socat:/run/socat:rw"
 
   sslh:
