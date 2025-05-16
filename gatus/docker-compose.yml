@@ -11,7 +11,7 @@ x-service: &service
 services:
   gatus:
     << : *service
-    build: { dockerfile: "Dockerfile", args: [ "VUE_PUBLIC_PATH=/gatus" ] }
+    image: "akozlins/gatus"
     environment:
       - "GATUS_CONFIG_PATH=/config"
     labels:
@@ -21,7 +21,6 @@ services:
       - "traefik.http.routers.gatus.rule=PathPrefix(`/gatus/`)"
       - "traefik.http.services.gatus.loadbalancer.server.port=8080"
     networks: [ "inet", "traefik" ]
-#    ports: [ "127.0.0.1:8080:8080" ]
     user: "1000:1000"
     volumes:
       - "./config:/config"

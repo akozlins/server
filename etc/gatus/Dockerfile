@@ -1,9 +1,10 @@
 #
 
-FROM node as node_build
+FROM node:23 as node_build
 
-USER 1000:1000
 WORKDIR /home/1000
+RUN chown 1000:1000 .
+USER 1000:1000
 ENV HOME="/home/1000"
 
 RUN git clone https://github.com/TwiN/gatus .
@@ -26,8 +27,9 @@ RUN npm --prefix web/app run build
 
 FROM golang AS build
 
-USER 1000:1000
 WORKDIR /home/1000
+RUN chown 1000:1000 .
+USER 1000:1000
 ENV HOME="/home/1000"
 
 COPY --from=node_build /home/1000/ .
@@ -36,8 +38,9 @@ RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o gatus .
 
 FROM scratch
 
-USER 1000:1000
 WORKDIR /home/1000
+#RUN chown 1000:1000 .
+USER 1000:1000
 ENV HOME="/home/1000"
 
 COPY --from=build /home/1000/gatus .
