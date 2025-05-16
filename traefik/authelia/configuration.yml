@@ -46,9 +46,14 @@ notifier:
 access_control:
   default_policy: 'deny'
   rules:
+    #- domain_regex: '.*'
+    #  policy: 'bypass'
+    #  resources: [ '^/(|index\.html|robots\.txt)$', '^/\.well-known/' ]
     - domain_regex: '.*'
       policy: 'one_factor'
       subject: [ 'group:admin' ]
+    - domain_regex: '.*'
+      policy: 'deny'
 
 identity_providers:
   oidc:

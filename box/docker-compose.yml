@@ -56,7 +56,7 @@ services:
       traefik:
     volumes:
       - "./.local/jackett:/config"
-      - "./.local/data/blackhole:/downloads"
+      #- "./.local/data:/data"
 
   sonarr:
     << : *lsio

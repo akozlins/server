@@ -37,7 +37,7 @@ services:
           "channel_id": "${WATCHTOWER_MM_CHANNEL:?}"
         }
         {{- end -}}
-      WATCHTOWER_NOTIFICATION_URL: 'generic://{WATCHTOWER_MM_URL:?}/api/v4/posts?@Authorization=Bearer%20{WATCHTOWER_MM_TOKEN:?}'
+      WATCHTOWER_NOTIFICATION_URL: 'generic://${WATCHTOWER_MM_URL:?}/api/v4/posts?@Authorization=Bearer%20${WATCHTOWER_MM_TOKEN:?}'
     group_add: [ "${DOCKER_GID:?}" ]
     networks: { "inet" }
     volumes:

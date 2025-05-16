@@ -14,7 +14,7 @@ services:
 
   socat:
     << : *service
-    build: "./socat"
+    image: "akozlins/socat"
     command: sh -c "
       socat -d UNIX-LISTEN:syncthing.sock,fork,mode=666 TCP:127.0.0.1:8384 &
       wait"
@@ -24,7 +24,7 @@ services:
 
   sslh:
     << : *service
-    build: "../etc/sslh"
+    image: "akozlins/sslh"
     command: [ "sslh", "--foreground", "--numeric",
       "--listen=0.0.0.0:80",
       "--ssh=${DOMAIN:?}:1022",

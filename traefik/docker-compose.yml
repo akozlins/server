@@ -19,17 +19,18 @@ services:
     command:
       - --accesslog=true
       - --api.dashboard=true
-#      - --entrypoints.http.address=:80
-#      - --entrypoints.http.http.redirections.entrypoint.to=https
-#      - --entrypoints.http.http.redirections.entrypoint.scheme=https
+      #- --entrypoints.http.address=:80
+      #- --entrypoints.http.http.redirections.entrypoint.to=https
+      #- --entrypoints.http.http.redirections.entrypoint.scheme=https
       - --entrypoints.https.address=:443
-#      - --entryPoints.https.forwardedHeaders.trustedIPs=127.0.0.0/8
+      #- --entryPoints.https.forwardedHeaders.trustedIPs=127.0.0.0/8
+      #- --entrypoints.https.http.middlewares=auth@file
       - --entrypoints.https.http.tls=true
       - --entrypoints.https.http3
       - --global.checknewversion=false
       - --global.sendanonymoususage=false
       - --log.level=WARN
-#      - --ping
+      #- --ping
       - --providers.docker=true
       - --providers.docker.endpoint=tcp://docker_sock:2375
       - --providers.docker.exposedbydefault=false
@@ -50,7 +51,7 @@ services:
       - "traefik.http.routers.api.service=api@internal"
     networks: { "default", "inet", "traefik" : { ipv4_address: "${TRAEFIK_SUBNET:?}.254" } }
     ports:
-#      - "0.0.0.0:80:80"
+      #- "0.0.0.0:80:80"
       - "0.0.0.0:443:443/tcp"
       - "0.0.0.0:443:443/udp"
       - "[::]:443:443/tcp"
