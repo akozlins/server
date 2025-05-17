@@ -26,16 +26,22 @@ http:
         stsPreload: true
         stsSeconds: 31536000
 
+  {{ $routers := dict "test" "10.8.0.1" }}
   routers:
-    test-router:
-      rule: "Host(`test.{{env "DOMAIN"}}`)"
-      service: "test-service"
+    {{ range $k, $v := $routers }}
+    {{$k}}-router:
+      priority: 255
+      rule: "HostRegexp(`^([0-9a-z]+-)?{{$k}}[.]`)"
+      service: "{{$k}}-service"
       tls: true
+    {{end}}
   serversTransports:
     default-transport:
       serverName: '{{env "DOMAIN"}}'
   services:
-    test-service:
+    {{ range $k, $v := $routers }}
+    {{$k}}-service:
       loadBalancer:
-        servers: [ url: "https://10.8.0.1" ]
+        servers: [ url: "https://{{$v}}" ]
         serversTransport: "default-transport"
+    {{end}}
