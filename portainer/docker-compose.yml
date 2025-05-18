@@ -9,14 +9,16 @@ x-service: &service
   cap_drop: [ "ALL" ]
   read_only: true
   security_opt: [ "no-new-privileges:true" ]
+  user: "1000:1000"
 
 services:
   portainer:
     << : *service
     image: "portainer/portainer-ce"
     command: [
-      "--admin-password-file", "/admin_password.key",
+      "--admin-password-file", "/data/admin_password.key",
     ]
+    group_add: [ "${DOCKER_GID:?}" ]
     labels:
       - "traefik.enable=true"
       - "traefik.http.middlewares.portainer.stripprefix.prefixes=/portainer"
@@ -25,12 +27,8 @@ services:
       - "traefik.http.services.portainer.loadbalancer.server.port=9000"
     networks: [ "traefik" ]
     volumes:
-      - "./.local/admin_password.key:/admin_password.key"
-      - "data:/data"
+      - "./.local:/data"
       - "/var/run/docker.sock:/var/run/docker.sock"
-
-volumes:
-  data:
 
 networks:
   traefik: { external: true }
