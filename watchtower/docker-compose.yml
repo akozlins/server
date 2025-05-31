@@ -30,9 +30,6 @@ services:
               {{- range .Updated -}}\n- {{.State}}: {{.Name}} ({{.ImageName}}) {{.CurrentImageID.ShortID}} -> {{.LatestImageID.ShortID}}{{- end -}}
               {{- range .Failed -}}\n- {{.State}}: {{.Name}} ({{.ImageName}}) {{.Error}}{{- end -}}
             {{- end -}}{{- end -}}
-            {{- if .Entries -}}
-              {{- range .Entries -}}\n- [{{.Level}}] {{.Message}}{{- end -}}
-            {{- end -}}
           ",
           "channel_id": "${WATCHTOWER_MM_CHANNEL:?}"
         }
