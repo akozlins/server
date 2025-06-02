@@ -6,4 +6,4 @@ init ::
 	mkdir -p -- config/.cache
 
 build :
-	docker build -t akozlins/gatus .
+	$(SUDO) docker build -t akozlins/gatus .

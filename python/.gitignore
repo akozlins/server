@@ -1,4 +1,5 @@
 #
 
 *.lock
+.python-version
 .venv

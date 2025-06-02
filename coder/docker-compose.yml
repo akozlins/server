@@ -9,8 +9,8 @@ x-service: &service
 services:
   coder:
     << : *service
-#    image: codercom/code-server
-    build: { context: ".", dockerfile: "./Dockerfile" }
+    #image: "codercom/code-server"
+    image: "akozlins/coder"
     labels:
       - "traefik.enable=true"
       - "traefik.http.middlewares.coder.stripprefix.prefixes=/coder"

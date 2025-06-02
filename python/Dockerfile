@@ -18,3 +18,5 @@ ENV HOME="/home/1000"
 
 ENTRYPOINT [ "/usr/bin/dumb-init", "--" ]
 CMD [ "python3", "-u", "main.py" ]
+
+LABEL com.centurylinklabs.watchtower.enable="false"

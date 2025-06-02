@@ -20,7 +20,7 @@ services:
       wait"
     network_mode: "host"
     volumes:
-      - "./.cache/run/socat:/run/socat:rw"
+      - "socat:/run/socat"
 
   sslh:
     << : *service
@@ -72,3 +72,6 @@ networks:
   default: { internal: true }
   inet:  { external: true }
   traefik: { external: true }
+
+volumes:
+  socat: { driver: local, driver_opts: { type: tmpfs, device: tmpfs } }

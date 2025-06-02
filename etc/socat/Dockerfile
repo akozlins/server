@@ -10,3 +10,5 @@ USER 1000:1000
 WORKDIR /run/socat
 
 ENTRYPOINT [ "/usr/bin/dumb-init", "--" ]
+
+LABEL com.centurylinklabs.watchtower.enable="false"
