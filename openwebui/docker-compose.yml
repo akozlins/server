@@ -1,0 +1,31 @@
+#
+
+x-service: &service
+  logging: { options: { max-size: "1m" } }
+  restart: "always"
+  stop_grace_period: "5s"
+  cap_drop: [ "ALL" ]
+  #read_only: true
+  security_opt: [ "no-new-privileges:true" ]
+  user: "1000:1000"
+  #mem_limit: 1024m
+
+services:
+
+  openwebui:
+    << : *service
+    image: "ghcr.io/open-webui/open-webui:main"
+    environment:
+      WEBUI_AUTH: False
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.openwebui.middlewares=authelia@docker"
+      - "traefik.http.routers.openwebui.rule=HostRegexp(`^openwebui(-[0-9a-z]+)?[.]`) && PathPrefix(`/`)"
+      - "traefik.http.services.openwebui.loadbalancer.server.port=8080"
+    networks: [ "inet", "traefik" ]
+    volumes:
+      - "./.local/data:/app/backend/data"
+
+networks:
+  inet: { external: true }
+  traefik: { external: true }
