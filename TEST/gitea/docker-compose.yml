@@ -25,25 +25,5 @@ services:
     volumes:
       - "./.local/gitea:/data"
 
-  gerrit:
-    << : *service
-    image: "gerritcodereview/gerrit"
-    environment:
-      - "CANONICAL_WEB_URL=https://${HOST:?}.${DOMAIN:?}/gerrit"
-      - "HTTPD_LISTEN_URL=proxy-https://0.0.0.0:8080/gerrit/"
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.gerrit.middlewares=auth@file"
-      - "traefik.http.routers.gerrit.rule=PathPrefix(`/gerrit/`)"
-      - "traefik.http.services.gerrit.loadbalancer.server.port=8080"
-    networks: [ "traefik" ]
-    #ports: [ "127.0.0.1:29418:29418" ]
-    volumes:
-      - ./.local/gerrit/db:/var/gerrit/db
-      - ./.local/gerrit/etc:/var/gerrit/etc
-      - ./.local/gerrit/git:/var/gerrit/git
-      - ./.local/gerrit/cache:/var/gerrit/cache
-      - ./.local/gerrit/index:/var/gerrit/index
-
 networks:
   traefik: { external: true }
