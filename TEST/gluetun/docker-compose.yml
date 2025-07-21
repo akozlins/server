@@ -1,0 +1,49 @@
+#
+
+x-service: &service
+  logging: { options: { max-size: "1m" } }
+  restart: "always"
+  stop_grace_period: "10s"
+  cap_drop: [ "ALL" ]
+  #read_only: true
+  security_opt: [ "no-new-privileges:true" ]
+
+services:
+  gluetun:
+    << : *service
+    image: "qmcgaw/gluetun"
+    cap_add: [ "NET_ADMIN" ]
+    devices: [ "/dev/net/tun:/dev/net/tun" ]
+    environment:
+      VPN_SERVICE_PROVIDER: "custom"
+      VPN_TYPE: "openvpn"
+      OPENVPN_CUSTOM_CONFIG: "/gluetun/custom.conf"
+      #DOT: "off"
+      #DNS_ADDRESS: "8.8.8.8"
+      #HEALTH_VPN_DURATION_INITIAL: "61s"
+    volumes:
+      - ./gluetun.conf:/gluetun/custom.conf
+    profiles: [ "TEST" ]
+
+  mullvad:
+    << : *service
+    image: "qmcgaw/gluetun"
+    cap_add: [ "NET_ADMIN" ]
+    devices: [ "/dev/net/tun:/dev/net/tun" ]
+    environment:
+      VPN_SERVICE_PROVIDER: "mullvad"
+      VPN_TYPE: "wireguard"
+      WIREGUARD_PRIVATE_KEY: "${WIREGUARD_PRIVATE_KEY:?}"
+      WIREGUARD_ADDRESSES: "${WIREGUARD_ADDRESSES:?}"
+      WIREGUARD_ENDPOINT_PORT: "443"
+      SERVER_CITIES: "Amsterdam"
+    networks: [ "default", "inet" ]
+
+  #dut:
+  #  << : *service
+  #  network_mode: "service:mullvad"
+
+networks:
+  default: { internal: true }
+  inet: { external: true }
+  traefik: { external: true }
