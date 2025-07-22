@@ -14,8 +14,8 @@ x-lsio: &lsio
   logging: { options: { max-size: "1m" } }
   restart: "always"
   stop_grace_period: "10s"
-#  cap_drop: [ "ALL" ]
-#  read_only: true
+  #cap_drop: [ "ALL" ]
+  #read_only: true
   security_opt: [ "no-new-privileges:true" ]
 
 services:

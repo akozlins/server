@@ -7,8 +7,7 @@ RUN apt-get update && apt-get --yes --no-install-recommends install \
     && rm -rf /var/lib/apt/lists/*
 
 RUN pip3 --no-cache-dir install \
-    uv \
-    flask requests waitress
+    uv
 
 RUN addgroup --gid 1000 user && adduser --uid 1000 --gid 1000 --home /home/1000 user
 

@@ -29,8 +29,8 @@ br-traefik :
 	$(SUDO) docker network create \
 	    --internal \
 	    --subnet="$$TRAEFIK_SUBNET.0/24" \
-	    --opt "com.docker.network.bridge.name=br-traefik" \
-	    --opt "com.docker.network.bridge.enable_icc=false" \
+	    --opt="com.docker.network.bridge.name=br-traefik" \
+	    --opt="com.docker.network.bridge.enable_icc=false" \
 	    traefik
 	# allow connections only from traefik container in traefik network
 	RULE="DOCKER-USER -i br-traefik -o br-traefik -s $$TRAEFIK_SUBNET.254 -d $$TRAEFIK_SUBNET.0/24 -m conntrack --ctstate NEW -j ACCEPT"
