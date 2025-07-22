@@ -1,0 +1,55 @@
+#
+
+x-service: &service
+  logging: { options: { max-size: "1m" } }
+  restart: "always"
+  stop_grace_period: "5s"
+  cap_drop: [ "ALL" ]
+  #read_only: true
+  security_opt: [ "no-new-privileges:true" ]
+  user: "1000:1000"
+
+services:
+
+  postgres:
+    << : *service
+    image: "docker.io/pgvector/pgvector:pg15"
+    environment:
+      - "POSTGRES_DB=db"
+      - "POSTGRES_PASSWORD=postgres"
+      - "POSTGRES_USER=postgres"
+    networks: [ "default" ]
+    volumes:
+      - "./.local/postgres:/var/lib/postgresql/data"
+
+  # https://github.com/khoj-ai/khoj/
+  khoj:
+    << : *service
+    image: "ghcr.io/khoj-ai/khoj:latest"
+    command: --host="0.0.0.0" --port=42110 -vv --anonymous-mode --non-interactive
+    depends_on: [ "postgres" ]
+    environment:
+      - KHOJ_ADMIN_EMAIL=admin@example.com
+      - KHOJ_ADMIN_PASSWORD=password
+      - KHOJ_DEBUG=False
+      - KHOJ_NO_HTTPS=True
+      - KHOJ_TELEMETRY_DISABLE=True
+      - POSTGRES_DB=db
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_HOST=postgres
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.khoj.middlewares=auth@file"
+      - "traefik.http.routers.khoj.rule=HostRegexp(`^khoj(-[0-9a-z]+)?[.]`) && PathPrefix(`/`)"
+      - "traefik.http.services.khoj.loadbalancer.server.port=42110"
+    networks: [ "default", "inet", "traefik" ]
+    volumes:
+      - "./.local/khoj:/.khoj"
+      - "./.local/cache:/.cache"
+    working_dir: "/app"
+
+networks:
+  default: { internal: true }
+  inet: { external: true }
+  traefik: { external: true }
