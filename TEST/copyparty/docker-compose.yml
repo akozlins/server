@@ -1,0 +1,31 @@
+#
+
+x-service: &service
+  logging: { options: { max-size: "1m" } }
+  restart: "always"
+  stop_grace_period: "5s"
+  cap_drop: [ "ALL" ]
+  #read_only: true
+  security_opt: [ "no-new-privileges:true" ]
+  user: "1000:1000"
+  mem_limit: 1024m
+
+services:
+
+  copyparty:
+    << : *service
+    build: { dockerfile: "./Dockerfile" }
+    command: -c /server.conf --rp-loc=/copyparty --xff-src={TRAEFIK_SUBNET:?}.0/24
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.copyparty.middlewares=auth@file"
+      - "traefik.http.routers.copyparty.rule=PathPrefix(`/copyparty/`)"
+      - "traefik.http.services.copyparty.loadbalancer.server.port=3923"
+    networks: [ "traefik" ]
+    volumes:
+      - "./server.conf:/server.conf"
+      - "./.local/copyparty:/home/1000"
+
+networks:
+  inet: { external: true }
+  traefik: { external: true }
