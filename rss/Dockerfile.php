@@ -1,6 +1,6 @@
 #
 
-FROM php:8.2-fpm
+FROM php:8-fpm
 
 RUN apt-get update && apt-get --yes --no-install-recommends install \
     dumb-init git postgresql-client \

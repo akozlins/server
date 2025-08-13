@@ -4,6 +4,7 @@ x-service: &service
   logging: { options: { max-size: "1m" } }
   restart: "always"
   stop_grace_period: "5s"
+  user: "1000:1000"
 
 services:
 
@@ -25,7 +26,6 @@ services:
       - "traefik.http.routers.grafana.rule=PathPrefix(`/grafana/`)"
       - "traefik.http.services.grafana.loadbalancer.server.port=3000"
     networks: [ "default", "traefik" ]
-    user: "1000:1000"
     volumes:
       - "./.local/grafana:/var/lib/grafana"
 
@@ -36,13 +36,13 @@ services:
       "--config.file=/etc/prometheus/prometheus.yml"
       "--web.listen-address=0.0.0.0:9090"
       "--web.route-prefix=/prometheus"
+      "--web.enable-admin-api"
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.prometheus.middlewares=auth@file"
       - "traefik.http.routers.prometheus.rule=PathPrefix(`/prometheus/`)"
       - "traefik.http.services.prometheus.loadbalancer.server.port=9090"
     networks: [ "default", "inet", "traefik" ]
-    user: "1000:1000"
     volumes:
       - "./prometheus.yml:/etc/prometheus/prometheus.yml"
       - "./.local/prometheus:/prometheus"

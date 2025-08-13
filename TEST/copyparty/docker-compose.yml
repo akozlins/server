@@ -15,7 +15,7 @@ services:
   copyparty:
     << : *service
     build: { dockerfile: "./Dockerfile" }
-    command: -c /server.conf --rp-loc=/copyparty --xff-src={TRAEFIK_SUBNET:?}.0/24
+    command: -c /server.conf --rp-loc=/copyparty --xff-src=${TRAEFIK_SUBNET:?}.0/24 --rproxy=-1
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.copyparty.middlewares=auth@file"

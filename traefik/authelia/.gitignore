@@ -1,4 +1,5 @@
 #
 
+lldap_data
 users.yml
 oidc_client_*.yml

@@ -55,8 +55,16 @@ access_control:
     - domain_regex: '.*'
       policy: 'one_factor'
       subject: [ 'group:admin' ]
+    # test
     - domain_regex: '.*'
-      policy: 'deny'
+      policy: 'one_factor'
+      resources: [ '^/(whoami|copyparty)/' ]
+      subject: [ 'group:test' ]
+    # calibre
+    - domain_regex: '.*'
+      policy: 'one_factor'
+      resources: [ '^/(calibre)/' ]
+      subject: [ 'group:calibre' ]
 
 identity_providers:
   oidc:

@@ -49,6 +49,9 @@ services:
       - "traefik.http.routers.api.middlewares=auth@file"
       - "traefik.http.routers.api.rule=HostRegexp(`^traefik(-[0-9a-z]+)?[.]`) && PathPrefix(`/`)"
       - "traefik.http.routers.api.service=api@internal"
+      - "traefik.http.middlewares.authelia-legacy.forwardAuth.address=http://authelia:9091/authelia/api/verify?auth=basic"
+      - "traefik.http.middlewares.authelia-legacy.forwardAuth.authResponseHeaders=Remote-User,Remote-Groups,Remote-Name,Remote-Email"
+      - "traefik.http.middlewares.authelia-legacy.forwardAuth.trustForwardHeader=true"
     networks: { "default", "inet", "traefik" : { ipv4_address: "${TRAEFIK_SUBNET:?}.254" } }
     ports:
       #- "0.0.0.0:80:80"

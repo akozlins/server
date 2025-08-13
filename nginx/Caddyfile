@@ -47,10 +47,17 @@
 }
 
 :8080 {
+    # connectivity check
+    @204 path /204
+    handle @204 {
+        respond "" 204
+    }
+
     @whoami path /whoami
     handle @whoami {
         reverse_proxy http://whoami:80
     }
+
     handle {
         redir https://{host}{uri}
     }
