@@ -8,6 +8,7 @@ x-service: &service
   read_only: true
   security_opt: [ "no-new-privileges:true" ]
   mem_limit: 256m
+  user: "1000:1000"
 
 services:
 
@@ -25,6 +26,23 @@ services:
     volumes:
       - "./.local/calibre:/home/1000/.local/share/calibre"
       - "./.local/calibre:/home/1000/.config/calibre"
+
+  calibre2:
+    << : *service
+    image: python
+    environment:
+      - "HOME=/home/1000"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.middlewares.calibre2.headers.customrequestheaders.X-Script-Name=/calibre-web"
+      - "traefik.http.routers.calibre2.middlewares=auth@file,calibre2"
+      - "traefik.http.routers.calibre2.rule=PathPrefix(`/calibre-web/`)"
+      - "traefik.http.services.calibre2.loadbalancer.server.port=8083"
+    networks: [ "inet", "traefik" ]
+    volumes:
+      - "./.local/calibre2:/home/1000"
+      - "./.local/calibre:/home/1000/calibre"
+    profiles: [ "NONE" ]
 
 networks:
   inet: { external: true }
