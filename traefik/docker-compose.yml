@@ -18,6 +18,7 @@ services:
     image: "traefik"
     command:
       - --accesslog=true
+      - --api.basePath=/traefik
       - --api.dashboard=true
       #- --entrypoints.http.address=:80
       #- --entrypoints.http.http.redirections.entrypoint.to=https
@@ -47,7 +48,7 @@ services:
       - "traefik.http.middlewares.authelia.forwardAuth.authResponseHeaders=Remote-User,Remote-Groups,Remote-Name,Remote-Email"
       - "traefik.http.middlewares.authelia.forwardAuth.trustForwardHeader=true"
       - "traefik.http.routers.api.middlewares=auth@file"
-      - "traefik.http.routers.api.rule=HostRegexp(`^traefik(-[0-9a-z]+)?[.]`) && PathPrefix(`/`)"
+      - "traefik.http.routers.api.rule=PathPrefix(`/traefik/`)"
       - "traefik.http.routers.api.service=api@internal"
       - "traefik.http.middlewares.authelia-legacy.forwardAuth.address=http://authelia:9091/authelia/api/verify?auth=basic"
       - "traefik.http.middlewares.authelia-legacy.forwardAuth.authResponseHeaders=Remote-User,Remote-Groups,Remote-Name,Remote-Email"
