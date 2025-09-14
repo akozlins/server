@@ -26,6 +26,7 @@ services:
     volumes:
       - "./.local/postgres:/var/lib/postgresql/data"
       - "./backup:/backup:rw"
+    read_only: true
 
   php:
     << : *service
@@ -57,7 +58,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.rss.middlewares=auth@file"
-      - "traefik.http.routers.rss.rule=HostRegexp(`^rss(-[0-9a-z]+)?[.]`) && PathRegexp(`^/(tt|fresh)/`)"
+      - "traefik.http.routers.rss.rule=PathRegexp(`^/(tt|fresh)/`)"
       - "traefik.http.services.rss.loadbalancer.server.port=8080"
     networks: [ "default", "traefik" ]
     volumes:

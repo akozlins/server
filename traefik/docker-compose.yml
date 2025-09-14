@@ -47,12 +47,14 @@ services:
       - "traefik.http.middlewares.authelia.forwardAuth.address=http://authelia:9091/authelia/api/authz/forward-auth"
       - "traefik.http.middlewares.authelia.forwardAuth.authResponseHeaders=Remote-User,Remote-Groups,Remote-Name,Remote-Email"
       - "traefik.http.middlewares.authelia.forwardAuth.trustForwardHeader=true"
-      - "traefik.http.routers.api.middlewares=auth@file"
-      - "traefik.http.routers.api.rule=PathPrefix(`/traefik/`)"
-      - "traefik.http.routers.api.service=api@internal"
+      # basic auth
       - "traefik.http.middlewares.authelia-legacy.forwardAuth.address=http://authelia:9091/authelia/api/verify?auth=basic"
       - "traefik.http.middlewares.authelia-legacy.forwardAuth.authResponseHeaders=Remote-User,Remote-Groups,Remote-Name,Remote-Email"
       - "traefik.http.middlewares.authelia-legacy.forwardAuth.trustForwardHeader=true"
+      # traefik api endpoint
+      - "traefik.http.routers.api.middlewares=auth@file"
+      - "traefik.http.routers.api.rule=PathPrefix(`/traefik/`)"
+      - "traefik.http.routers.api.service=api@internal"
     networks: { "default", "inet", "traefik" : { ipv4_address: "${TRAEFIK_SUBNET:?}.254" } }
     ports:
       #- "0.0.0.0:80:80"
@@ -99,9 +101,9 @@ services:
     labels:
       - "traefik.docker.network=traefik_default"
       - "traefik.enable=true"
-      - "traefik.http.routers.lldap.middlewares=auth@file"
-      #- "traefik.http.routers.lldap.rule=PathPrefix(`/lldap/`)"
-      - "traefik.http.routers.lldap.rule=HostRegexp(`^lldap(-[0-9a-z]+)?[.]`) && PathPrefix(`/`)"
+      - "traefik.http.middlewares.lldap.stripprefix.prefixes=/lldap"
+      - "traefik.http.routers.lldap.middlewares=auth@file,lldap"
+      - "traefik.http.routers.lldap.rule=HostRegexp(`^lldap(-[0-9a-z]+)?[.]`) || PathPrefix(`/lldap/`)"
       - "traefik.http.services.lldap.loadbalancer.server.port=17170"
     volumes:
       - "./authelia/lldap_data:/data:rw"

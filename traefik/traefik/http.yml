@@ -9,7 +9,7 @@ http:
     auth_rlimit:
       ratelimit:
         average: 25
-        burst: 100
+        burst: 200
         period: 1s
     auth:
       chain:

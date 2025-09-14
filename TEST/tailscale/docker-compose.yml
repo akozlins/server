@@ -19,6 +19,7 @@ services:
       - "TS_STATE_DIR=/var/lib/tailscale"
       - "TS_USERSPACE=false"
       - "TS_EXTRA_ARGS=--advertise-exit-node"
+      - "TS_NO_LOGS_NO_SUPPORT=true"
     networks: [ "inet" ]
     volumes:
       - "/dev/net/tun:/dev/net/tun"

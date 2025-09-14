@@ -14,11 +14,16 @@
     }
     persist_config off
     servers {
+        protocols h1
         trusted_proxies static private_ranges
     }
     storage_check off
 }
 
+# traefik:443 -> caddy:80 -> services:
+# - files
+# -.well-known
+# - webfinger
 :80 {
     root * /opt/html
     templates
@@ -46,6 +51,10 @@
     }
 }
 
+# 0.0.0.0:80 -> caddy:8080 -> services:
+# - conn.check
+# - whoami
+# - redirect http to https
 :8080 {
     # connectivity check
     @204 path /204

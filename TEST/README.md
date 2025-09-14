@@ -47,21 +47,3 @@ frontend php-frontend
     bind :8080
     default_backend php-backend
 ```
-
-``` yaml
-  siyuan:
-    << : *service
-    image: "b3log/siyuan"
-    entrypoint: [ /opt/siyuan/kernel, --workspace=/workspace ]
-    environment:
-      - SIYUAN_ACCESS_AUTH_CODE_BYPASS=true
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.siyuan.middlewares=auth@file"
-      - "traefik.http.routers.siyuan.rule=HostRegexp(`^siyuan(-[0-9a-z]+)?[.]`) && PathPrefix(`/`)"
-      - "traefik.http.services.siyuan.loadbalancer.server.port=6806"
-    networks: [ "traefik" ]
-    volumes:
-      - "./.local:/home/siyuan"
-      - "./.local:/workspace"
-```
