@@ -13,7 +13,7 @@ x-service: &service
 services:
 
   unbound:
-    << : *service
+    <<: *service
     build: { context: ".", dockerfile: "./Dockerfile.unbound" }
     labels:
       - "traefik.enable=true"
@@ -25,7 +25,7 @@ services:
       - "./unbound.conf:/etc/unbound/unbound.conf:ro"
 
   doh:
-    << : *service
+    <<: *service
     build: { context: ".", dockerfile: "./Dockerfile.doh-server" }
     depends_on: [ "unbound" ]
     labels:
@@ -39,7 +39,7 @@ services:
       - "./doh-server.conf:/doh-server.conf:ro"
 
   bind:
-    << : *service
+    <<: *service
     build: { context: ".", dockerfile: "./Dockerfile.bind" }
     labels:
       - "traefik.enable=true"

@@ -7,7 +7,7 @@ x-service: &service
 
 services:
   matrix:
-    << : *service
+    <<: *service
     image: "matrixdotorg/synapse"
     environment:
       - "GID=1000"

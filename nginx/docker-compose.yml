@@ -13,7 +13,7 @@ x-service: &service
 services:
 
   socat:
-    << : *service
+    <<: *service
     image: "akozlins/socat"
     command: sh -c "
       socat -d UNIX-LISTEN:syncthing.sock,fork,mode=666 TCP:127.0.0.1:8384 &
@@ -23,7 +23,7 @@ services:
       - "socat:/run/socat"
 
   sslh:
-    << : *service
+    <<: *service
     image: "akozlins/sslh"
     command: [ "sslh", "--foreground", "--numeric",
       "--listen=0.0.0.0:80",
@@ -41,7 +41,7 @@ services:
     - "[::]:80:80"
 
   whoami:
-    << : *service
+    <<: *service
     image: "containous/whoami"
     labels:
       - "traefik.enable=true"
@@ -51,7 +51,7 @@ services:
     networks: [ "default", "traefik" ]
 
   caddy:
-    << : *service
+    <<: *service
     image: "caddy"
     cap_add: [ "CAP_NET_BIND_SERVICE" ]
     environment:

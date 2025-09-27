@@ -7,7 +7,7 @@ x-service: &service
 
 services:
   quartus:
-    << : *service
+    <<: *service
     build: { context: ".", dockerfile: "./Dockerfile.opensuse" }
     command: "sleep 100000"
     environment:

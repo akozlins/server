@@ -13,7 +13,7 @@ x-service: &service
 
 services:
   portainer:
-    << : *service
+    <<: *service
     image: "portainer/portainer-ce"
     command: [
       "--admin-password-file", "/data/admin_password.key",

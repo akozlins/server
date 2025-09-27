@@ -1,27 +1,21 @@
 #
 
-x-service: &service
-  dns_search: .
-  logging: { options: { max-size: "1m" } }
-  restart: "always"
-  stop_grace_period: "10s"
-  cap_drop: [ "ALL" ]
-  read_only: true
-  security_opt: [ "no-new-privileges:true" ]
-
 x-lsio: &lsio
   dns_search: .
   logging: { options: { max-size: "1m" } }
   restart: "always"
   stop_grace_period: "10s"
-  #cap_drop: [ "ALL" ]
-  #read_only: true
   security_opt: [ "no-new-privileges:true" ]
+
+x-service: &service
+  <<: *lsio
+  cap_drop: [ "ALL" ]
+  read_only: true
 
 services:
 
   qbittorrent:
-    << : *service
+    <<: *service
     build: { context: ".", dockerfile: "./Dockerfile.qb" }
     depends_on: [ "unbound", "socks" ]
     dns: "${SUBNET:?}.254"
@@ -38,7 +32,7 @@ services:
       - "./.local/data:/data"
 
   jackett:
-    << : *lsio
+    <<: *lsio
     image: "lscr.io/linuxserver/jackett"
     depends_on: [ "unbound", "socks" ]
     dns: "${SUBNET:?}.254"
@@ -59,7 +53,7 @@ services:
       #- "./.local/data:/data"
 
   sonarr:
-    << : *lsio
+    <<: *lsio
     image: "lscr.io/linuxserver/sonarr"
     depends_on: [ "unbound", "socks", "sabnzbd" ]
     dns: "${SUBNET:?}.254"
@@ -77,7 +71,7 @@ services:
       - "./.local/data:/data"
 
   mylar:
-    << : *lsio
+    <<: *lsio
     image: "lscr.io/linuxserver/mylar3"
     depends_on: [ "unbound" ]
     dns: "${SUBNET:?}.254"
@@ -97,7 +91,7 @@ services:
 #    profiles: [ "TEST" ]
 
   sabnzbd:
-    << : *lsio
+    <<: *lsio
     image: "lscr.io/linuxserver/sabnzbd"
     depends_on: [ "unbound", "socks" ]
     dns: "${SUBNET:?}.254"
@@ -117,7 +111,7 @@ services:
       - "./.local/data:/data"
 
   socks:
-    << : *service
+    <<: *service
     build: { context: ".", dockerfile: "../v2ray/Dockerfile" }
     depends_on: [ "unbound" ]
     dns: "${SUBNET:?}.254"
@@ -133,7 +127,7 @@ services:
       - "./v2ray.yml:/etc/v2ray/config.json:ro"
 
   unbound:
-    << : *service
+    <<: *service
     build: { context: ".", dockerfile: "../doh/Dockerfile.unbound" }
     networks:
       default: { ipv4_address: "${SUBNET:?}.254" }

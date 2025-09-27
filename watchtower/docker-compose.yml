@@ -14,7 +14,7 @@ x-service: &service
 services:
 
   watchtower:
-    << : *service
+    <<: *service
     image: "containrrr/watchtower"
     command: --cleanup --remove-volumes --rolling-restart --interval=86400
     environment:

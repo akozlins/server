@@ -12,7 +12,7 @@ x-service: &service
 services:
 
   syncthing:
-    << : *service
+    <<: *service
     build: { dockerfile: "./Dockerfile" }
     labels:
       - "traefik.enable=true"

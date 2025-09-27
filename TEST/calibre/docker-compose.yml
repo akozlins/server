@@ -13,7 +13,7 @@ x-service: &service
 services:
 
   calibre:
-    << : *service
+    <<: *service
     build: { dockerfile: "./Dockerfile" }
     #command: "calibredb add .local/share/calibre/example.txt --library-path=.local/share/calibre"
     labels:
@@ -28,7 +28,7 @@ services:
       - "./.local/calibre:/home/1000/.config/calibre"
 
   calibre2:
-    << : *service
+    <<: *service
     image: python
     environment:
       - "HOME=/home/1000"

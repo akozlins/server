@@ -13,7 +13,7 @@
         include http.log.error
     }
     persist_config off
-    storage_check off
+    storage_clean_interval off
 }
 
 http://:2375 {

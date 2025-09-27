@@ -14,9 +14,9 @@ x-service: &service
 services:
 
   telegram:
-    << : *service
+    <<: *service
     build: { context: ".", dockerfile: "./Dockerfile" }
-    command: "uv run main.py"
+    command: "./main.py"
     environment:
       - "TELEGRAM_TOKEN=${TELEGRAM_TOKEN:?}"
     labels:

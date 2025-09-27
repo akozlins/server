@@ -17,7 +17,7 @@
         protocols h1
         trusted_proxies static private_ranges
     }
-    storage_check off
+    storage_clean_interval off
 }
 
 # traefik:443 -> caddy:80 -> services:

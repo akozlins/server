@@ -11,7 +11,7 @@ x-service: &service
 
 services:
   jenkins:
-    << : *service
+    <<: *service
     image: "jenkins/jenkins"
     environment:
       - "JAVA_OPTS=-Xmx1g"

@@ -11,7 +11,7 @@ x-service: &service
 services:
 
   server:
-    << : *service
+    <<: *service
     build: { context: ".", dockerfile: "./Dockerfile" }
     environment:
       - "V2RAY_ID=${V2RAY_ID:?}"
@@ -29,7 +29,7 @@ services:
       - "./server.yml:/etc/v2ray/config.json:ro"
 
   client:
-    << : *service
+    <<: *service
     build: { context: ".", dockerfile: "./Dockerfile" }
     environment:
       - "V2RAY_ADDRESS=127.0.0.1"

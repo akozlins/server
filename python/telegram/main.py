@@ -1,9 +1,16 @@
-#!/usr/bin/env python3
+#!/usr/bin/env -S uv run --script
+#
+# /// script
+# requires-python = ">=3.12"
+# dependencies = [ "flask", "requests" ]
+# ///
+
+import os
+
+import flask
+import requests
 
 import config
-import flask
-import os
-import requests
 
 TOKEN = os.environ.get('TELEGRAM_TOKEN')
 

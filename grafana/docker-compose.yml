@@ -9,17 +9,17 @@ x-service: &service
 services:
 
   grafana:
-    << : *service
+    <<: *service
     image: "grafana/grafana-oss"
     environment:
-      - "GF_SERVER_ROOT_URL=/grafana"
-      - "GF_SERVER_SERVE_FROM_SUB_PATH=true"
-      - "GF_AUTH_BASIC_ENABLED=false"
       #- "GF_AUTH_ANONYMOUS_ENABLED=true"
       #- "GF_AUTH_ANONYMOUS_ORG_ROLE=Admin"
+      - "GF_AUTH_BASIC_ENABLED=false"
       - "GF_AUTH_PROXY_ENABLED=true"
       - "GF_AUTH_PROXY_HEADER_NAME=Remote-User"
       - "GF_AUTH_PROXY_WHITELIST=${TRAEFIK_SUBNET:?}.0/24"
+      - "GF_SERVER_ROOT_URL=/grafana"
+      - "GF_SERVER_SERVE_FROM_SUB_PATH=true"
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.grafana.middlewares=auth@file"
@@ -30,10 +30,10 @@ services:
       - "./.local/grafana:/var/lib/grafana"
 
   prometheus:
-    << : *service
+    <<: *service
     image: "prom/prometheus"
     command: >
-      "--config.file=/etc/prometheus/prometheus.yml"
+      "--config.file=/prometheus.yml"
       "--web.listen-address=0.0.0.0:9090"
       "--web.route-prefix=/prometheus"
       "--web.enable-admin-api"
@@ -44,7 +44,7 @@ services:
       - "traefik.http.services.prometheus.loadbalancer.server.port=9090"
     networks: [ "default", "inet", "traefik" ]
     volumes:
-      - "./prometheus.yml:/etc/prometheus/prometheus.yml"
+      - "./prometheus.yml:/prometheus.yml"
       - "./.local/prometheus:/prometheus"
 
 networks:

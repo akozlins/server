@@ -2,7 +2,7 @@
 
 ```yaml
   miniflux:
-    << : *service
+    <<: *service
     image: "miniflux/miniflux"
     depends_on: [ "rss_db" ]
     environment:
@@ -21,7 +21,7 @@
 
 ```yaml
   organice:
-    << : *service
+    <<: *service
     image: "twohundredok/organice"
 #    environment:
 #      - "ORGANICE_WEBDAV_URL=http://webdav.example.com"

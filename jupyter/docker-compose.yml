@@ -7,7 +7,7 @@ x-service: &service
 
 services:
   jupyter:
-    << : *service
+    <<: *service
     build: { context: ".", dockerfile: "./Dockerfile" }
     command: [ "start-notebook.sh",
       "--NotebookApp.base_url=/jupyter", "--NotebookApp.token=",

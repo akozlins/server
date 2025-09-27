@@ -12,7 +12,7 @@ x-service: &service
 
 services:
   komga:
-    << : *service
+    <<: *service
     image: "gotson/komga"
     environment:
       - "SERVER_SERVLET_CONTEXT_PATH=/komga/"

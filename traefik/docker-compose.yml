@@ -14,7 +14,7 @@ x-service: &service
 services:
 
   traefik:
-    << : *service
+    <<: *service
     image: "traefik"
     command:
       - --accesslog=true
@@ -67,7 +67,7 @@ services:
       - "../etc/letsencrypt/live:/etc/letsencrypt/live:ro"
 
   authelia:
-    << : *service
+    <<: *service
     image: "authelia/authelia"
     depends_on: [ "redis", "lldap" ]
     environment:
@@ -86,7 +86,7 @@ services:
       - "./authelia:/config:rw"
 
   redis:
-    << : *service
+    <<: *service
     image: "valkey/valkey"
     # <https://github.com/redis/redis/blob/unstable/redis.conf>
     command: valkey-server --bind 0.0.0.0
@@ -94,7 +94,7 @@ services:
       - "./.local/redis:/data"
 
   lldap:
-    << : *service
+    <<: *service
     image: "lldap/lldap:latest-debian-rootless"
     environment:
       - "LLDAP_LDAP_BASE_DN=${LDAP_BASE_DN:?}"
@@ -109,7 +109,7 @@ services:
       - "./authelia/lldap_data:/data:rw"
 
   dozzle:
-    << : *service
+    <<: *service
     image: "amir20/dozzle"
     depends_on: [ "docker_sock" ]
     environment:
@@ -124,7 +124,7 @@ services:
       - "traefik.http.services.dozzle.loadbalancer.server.port=8080"
 
   docker_sock:
-    << : *service
+    <<: *service
     image: "caddy"
     cap_add: [ "CAP_NET_BIND_SERVICE" ]
     group_add: [ "${DOCKER_GID:?}" ]

@@ -8,7 +8,7 @@ x-service: &service
 
 services:
   coder:
-    << : *service
+    <<: *service
     #image: "codercom/code-server"
     image: "akozlins/coder"
     labels:

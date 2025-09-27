@@ -13,7 +13,7 @@ x-service: &service
 services:
 
   gitea:
-    << : *service
+    <<: *service
     image: "gitea/gitea:latest-rootless"
     environment:
       #- USER_GID=1000

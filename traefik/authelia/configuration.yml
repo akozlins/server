@@ -49,22 +49,18 @@ notifier:
 access_control:
   default_policy: 'deny'
   rules:
-    #- domain_regex: '.*'
-    #  policy: 'bypass'
-    #  resources: [ '^/(|index\.html|robots\.txt)$', '^/\.well-known/' ]
+    # public
+    - domain_regex: '.*'
+      policy: 'bypass'
+      resources: [ '^/(|index\.html|robots\.txt)$', '^/\.well-known/' ]
+    # admin
     - domain_regex: '.*'
       policy: 'one_factor'
       subject: [ 'group:admin' ]
-    # test
+    # https://$DOMAIN/$GROUP/
     - domain_regex: '.*'
       policy: 'one_factor'
-      resources: [ '^/(whoami|copyparty)/' ]
-      subject: [ 'group:test' ]
-    # calibre
-    - domain_regex: '.*'
-      policy: 'one_factor'
-      resources: [ '^/(calibre)/' ]
-      subject: [ 'group:calibre' ]
+      resources: [ '^/(?P<Group>[-\w]+)/' ]
 
 identity_providers:
   oidc:

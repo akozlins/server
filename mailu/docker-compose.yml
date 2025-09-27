@@ -10,7 +10,7 @@ x-service: &service
 services:
 
   front:
-    << : *service
+    <<: *service
     image: "${DOCKER_ORG:-ghcr.io/mailu}/${DOCKER_PREFIX:-}nginx:${MAILU_VERSION:-2.0}"
     depends_on: [ "resolver" ]
     dns: "${DNS:?}"
@@ -36,7 +36,7 @@ services:
       - "traefik.http.services.mailu.loadbalancer.server.port=80"
 
   admin:
-    << : *service
+    <<: *service
     image: "${DOCKER_ORG:-ghcr.io/mailu}/${DOCKER_PREFIX:-}admin:${MAILU_VERSION:-2.0}"
     depends_on: [ "resolver", "redis" ]
     dns: ${DNS:?}
@@ -45,7 +45,7 @@ services:
       - "./data/dkim:/dkim"
 
   smtp:
-    << : *service
+    <<: *service
     image: "${DOCKER_ORG:-ghcr.io/mailu}/${DOCKER_PREFIX:-}postfix:${MAILU_VERSION:-2.0}"
     depends_on: [ "resolver", "front" ]
     dns: "${DNS:?}"
@@ -54,7 +54,7 @@ services:
       - "./overrides/postfix:/overrides:ro"
 
   imap:
-    << : *service
+    <<: *service
     image: "${DOCKER_ORG:-ghcr.io/mailu}/${DOCKER_PREFIX:-}dovecot:${MAILU_VERSION:-2.0}"
     depends_on: [ "resolver", "front" ]
     dns: "${DNS:?}"
@@ -63,7 +63,7 @@ services:
 #      - "./overrides/dovecot:/overrides:ro"
 
   antispam:
-    << : *service
+    <<: *service
     image: "${DOCKER_ORG:-ghcr.io/mailu}/${DOCKER_PREFIX:-}rspamd:${MAILU_VERSION:-2.0}"
     depends_on: [ "resolver", "front", "redis" ]
     dns: "${DNS:?}"
@@ -72,7 +72,7 @@ services:
 #      - "./overrides/rspamd:/overrides:ro"
 
   redis:
-    << : *service
+    <<: *service
     image: "redis:alpine"
     depends_on: [ "resolver" ]
     dns: "${DNS:?}"
@@ -80,7 +80,7 @@ services:
       - "./data/redis:/data"
 
   resolver:
-    << : *service
+    <<: *service
     image: "${DOCKER_ORG:-ghcr.io/mailu}/${DOCKER_PREFIX:-}unbound:${MAILU_VERSION:-2.0}"
     networks: { default: { ipv4_address: "${DNS:?}" } }
 

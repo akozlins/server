@@ -10,7 +10,7 @@ x-service: &service
 
 services:
   gatus:
-    << : *service
+    <<: *service
     image: "akozlins/gatus"
     environment:
       - "GATUS_CONFIG_PATH=/config"

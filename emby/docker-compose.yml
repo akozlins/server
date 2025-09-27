@@ -8,7 +8,7 @@ x-service: &service
 services:
 
   emby:
-    << : *service
+    <<: *service
     image: emby/embyserver
     devices:
       - /dev/dri:/dev/dri # VAAPI/NVDEC/NVENC render nodes

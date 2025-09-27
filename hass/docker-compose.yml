@@ -11,7 +11,7 @@ x-service: &service
 services:
 
   hass:
-    << : *service
+    <<: *service
     image: "ghcr.io/home-assistant/home-assistant:stable"
     depends_on: [ "mosquitto", "influxdb" ]
     labels:
@@ -25,7 +25,7 @@ services:
     #profiles: [ "NONE" ]
 
   influxdb:
-    << : *service
+    <<: *service
     image: "influxdb"
     mem_limit: 1024m
     networks: [ "default" ]
@@ -34,7 +34,7 @@ services:
       - ".local/influxdb:/var/lib/influxdb2"
 
   nred:
-    << : *service
+    <<: *service
     image: "nodered/node-red:latest"
     depends_on: [ "mosquitto" ]
     labels:
@@ -48,7 +48,7 @@ services:
     #profiles: [ "NONE" ]
 
   mosquitto:
-    << : *service
+    <<: *service
     image: "eclipse-mosquitto"
     networks: [ "default" ]
     #ports: [ "127.0.0.1:1883:1883" ]
@@ -58,7 +58,7 @@ services:
       - ".local/mosquitto:/mosquitto/log"
 
   zb2mqtt:
-    << : *service
+    <<: *service
     image: "koenkk/zigbee2mqtt"
     depends_on: [ "mosquitto" ]
     devices:

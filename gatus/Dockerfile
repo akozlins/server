@@ -22,8 +22,9 @@ RUN sed -i \
     -e 's|="/|="./|g' \
     web/app/public/index.html
 
-RUN npm --prefix web/app install
-RUN npm --prefix web/app run build
+RUN npm --ignore-scripts --prefix web/app install
+RUN npm --ignore-scripts --prefix web/app run build
+RUN npm prune --omit=dev
 
 FROM golang AS build
 

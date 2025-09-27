@@ -7,7 +7,7 @@ x-service: &service
 
 services:
   qemu:
-    << : *service
+    <<: *service
     image: "qemux/qemu-docker"
     environment:
       - "DISK_SIZE=16G"

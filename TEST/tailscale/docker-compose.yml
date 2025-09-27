@@ -8,7 +8,7 @@ x-service: &service
 services:
 
   exitnode:
-    << : *service
+    <<: *service
     image: "tailscale/tailscale"
     cap_add: [ "net_admin", "sys_module" ]
     devices:
