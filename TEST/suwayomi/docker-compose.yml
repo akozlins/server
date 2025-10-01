@@ -1,0 +1,38 @@
+#
+
+x-service: &service
+  logging: { options: { max-size: "1m" } }
+  restart: "always"
+  stop_grace_period: "5s"
+  cap_drop: [ "ALL" ]
+  #read_only: true
+  security_opt: [ "no-new-privileges:true" ]
+  mem_limit: 4096m
+  user: "1000:1000"
+
+services:
+
+  tachidesk:
+    <<: *service
+    image: "ghcr.io/suwayomi/tachidesk"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.tachidesk.middlewares=auth@file"
+      - "traefik.http.routers.tachidesk.rule=HostRegexp(`^tachidesk(-[0-9a-z]+)?[.]`) || PathPrefix(`/tachidesk/`)"
+      - "traefik.http.services.tachidesk.loadbalancer.server.port=4567"
+    networks: [ "default", "inet", "traefik" ]
+    volumes:
+      - ./.local/tachidesk2:/home/suwayomi/.local/share/Tachidesk
+      - /nfs/akozlins/media/tachidesk:/downloads
+
+  flaresolverr:
+    <<: *service
+    image: "ghcr.io/flaresolverr/flaresolverr"
+    environment:
+      LOG_LEVEL: "info"
+    networks: [ "default", "inet" ]
+
+networks:
+  default: { internal: true }
+  inet: { external: true }
+  traefik: { external: true }
