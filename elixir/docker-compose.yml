@@ -9,7 +9,7 @@ services:
 
   elixir:
     <<: *service
-    build: { context: ".", dockerfile: "./Dockerfile" }
+    build: { dockerfile: "./Dockerfile" }
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.elixir.rule=PathPrefix(`/elixir`)"

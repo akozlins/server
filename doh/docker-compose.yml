@@ -14,7 +14,7 @@ services:
 
   unbound:
     <<: *service
-    build: { context: ".", dockerfile: "./Dockerfile.unbound" }
+    build: { dockerfile: "./Dockerfile.unbound" }
     labels:
       - "traefik.enable=true"
       - "traefik.tcp.routers.unbound.rule=HostSNIRegexp(`^dot[.]`)"
@@ -26,7 +26,7 @@ services:
 
   doh:
     <<: *service
-    build: { context: ".", dockerfile: "./Dockerfile.doh-server" }
+    build: { dockerfile: "./Dockerfile.doh-server" }
     depends_on: [ "unbound" ]
     labels:
       - "traefik.enable=true"
@@ -40,7 +40,7 @@ services:
 
   bind:
     <<: *service
-    build: { context: ".", dockerfile: "./Dockerfile.bind" }
+    build: { dockerfile: "./Dockerfile.bind" }
     labels:
       - "traefik.enable=true"
       - "traefik.http.middlewares.bind.replacepath.path=/dns-query"

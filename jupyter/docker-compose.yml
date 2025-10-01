@@ -8,7 +8,7 @@ x-service: &service
 services:
   jupyter:
     <<: *service
-    build: { context: ".", dockerfile: "./Dockerfile" }
+    build: { dockerfile: "./Dockerfile" }
     command: [ "start-notebook.sh",
       "--NotebookApp.base_url=/jupyter", "--NotebookApp.token=",
       "--FileCheckpoints.checkpoint_dir=.cache/ipynb_checkpoints",

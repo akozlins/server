@@ -12,7 +12,7 @@ services:
 
   server:
     <<: *service
-    build: { context: ".", dockerfile: "./Dockerfile" }
+    build: { dockerfile: "./Dockerfile" }
     environment:
       - "V2RAY_ID=${V2RAY_ID:?}"
     labels:
@@ -30,7 +30,7 @@ services:
 
   client:
     <<: *service
-    build: { context: ".", dockerfile: "./Dockerfile" }
+    build: { dockerfile: "./Dockerfile" }
     environment:
       - "V2RAY_ADDRESS=127.0.0.1"
       - "V2RAY_ID=${V2RAY_ID:?}"

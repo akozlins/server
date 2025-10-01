@@ -12,7 +12,7 @@ services:
 
   midas:
     <<: *service
-    build: { context: ".", dockerfile: "./Dockerfile.midas" }
+    build: { dockerfile: "./Dockerfile.midas" }
     networks: [ "inet" ]
     ports: [ "127.0.0.1:1175:1175", "127.0.0.1:8080:8080" ]
     volumes:

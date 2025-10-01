@@ -30,7 +30,7 @@ services:
 
   php:
     <<: *service
-    build: { context: ".", dockerfile: "./Dockerfile.php" }
+    build: { dockerfile: "./Dockerfile.php" }
     command: [ "/run.sh" ]
     depends_on: [ "postgres" ]
     environment:

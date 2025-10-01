@@ -16,7 +16,7 @@ services:
 
   qbittorrent:
     <<: *service
-    build: { context: ".", dockerfile: "./Dockerfile.qb" }
+    build: { dockerfile: "./Dockerfile.qb" }
     depends_on: [ "unbound", "socks" ]
     dns: "${SUBNET:?}.254"
     labels:
@@ -112,7 +112,7 @@ services:
 
   socks:
     <<: *service
-    build: { context: ".", dockerfile: "../v2ray/Dockerfile" }
+    build: { dockerfile: "../v2ray/Dockerfile" }
     depends_on: [ "unbound" ]
     dns: "${SUBNET:?}.254"
     environment:
@@ -128,7 +128,7 @@ services:
 
   unbound:
     <<: *service
-    build: { context: ".", dockerfile: "../doh/Dockerfile.unbound" }
+    build: { dockerfile: "../doh/Dockerfile.unbound" }
     networks:
       default: { ipv4_address: "${SUBNET:?}.254" }
       inet:
