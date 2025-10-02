@@ -16,7 +16,7 @@ services:
   watchtower:
     <<: *service
     image: "containrrr/watchtower"
-    command: --cleanup --remove-volumes --rolling-restart --interval=86400
+    command: --cleanup --remove-volumes --rolling-restart --interval=450000
     environment:
       WATCHTOWER_NOTIFICATIONS_HOSTNAME: '${HOST:?}'
       WATCHTOWER_NOTIFICATIONS_LEVEL: 'info'

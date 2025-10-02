@@ -16,9 +16,11 @@ services:
     <<: *service
     image: "ghcr.io/open-webui/open-webui:main"
     environment:
+      OAUTH_SESSION_TOKEN_ENCRYPTION_KEY: "${OAUTH_SESSION_TOKEN_ENCRYPTION_KEY:?}"
       WEBUI_AUTH: False
       WEBUI_AUTH_TRUSTED_EMAIL_HEADER: "Remote-Email"
       WEBUI_AUTH_TRUSTED_GROUPS_HEADER: "Remote-Groups"
+      WEBUI_SECRET_KEY: "${WEBUI_SECRET_KEY:?}"
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.openwebui.middlewares=auth@file,openwebui"

@@ -22,6 +22,10 @@ tcp:
       rule: "HostSNIRegexp(`^vpn[.]`)"
       service: "vpn-service"
       tls: true
+    #test-router:
+    #  rule: "HostSNIRegexp(`^test[.]`)"
+    #  service: "test-service"
+    #  tls: { passthrough: true }
   services:
     {{template "port-service" 1022}}
     ssh-service:

@@ -48,3 +48,5 @@ COPY --from=build /home/1000/gatus .
 COPY --from=build /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/ca-certificates.crt
 
 ENTRYPOINT [ "./gatus" ]
+
+LABEL com.centurylinklabs.watchtower.enable="false"

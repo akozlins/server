@@ -2,7 +2,7 @@
 
 include ../makefile.mk
 
-init :
+init ::
 	mkdir -p .local && cd .local || exit 1
 	git clone https://github.com/bootlin/elixir
 	# geant4

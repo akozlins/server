@@ -28,3 +28,5 @@ env PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
 
 ENTRYPOINT [ "/usr/bin/dumb-init", "--" ]
 CMD [ "php-fpm", "--nodaemonize", "--force-stderr" ]
+
+LABEL com.centurylinklabs.watchtower.enable="false"

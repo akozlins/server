@@ -6,56 +6,62 @@
 # ///
 
 import math
+import os
 
 import influxdb_client
-import numpy
-import pandas
+import numpy as np
+import pandas as pd
 import requests
 
 INFLUX_URL = 'http://influxdb:8086'
-INFLUX_TOKEN = ''
+INFLUX_TOKEN = os.getenv("INFLUX_TOKEN")
 INFLUX_ORG = 'hass'
 INFLUX_BUCKET = 'hass'
 VM_URL = 'http://victoria:8428'
 VM_DB = 'hass_influxdb'
 
-client = influxdb_client.InfluxDBClient(url=INFLUX_URL, token=INflux2vm.pyFLUX_TOKEN, org=INFLUX_ORG)
+client = influxdb_client.InfluxDBClient(url=INFLUX_URL, token=INFLUX_TOKEN, org=INFLUX_ORG)
 api = client.query_api()
 
-df = api.query_data_frame(f'''
+df = api.query_data_frame(f"""
 from(bucket: "{INFLUX_BUCKET}")
 |> range(start: 0)
 |> drop(columns: ["_start","_stop"])
-''')
-df = pandas.concat(df)
+""")
+df = pd.concat(df)
 
-# delete columns
-df = df.drop(['result','table'], axis=1)
-# make id to name dict
-id2name = df[df['_field'] == 'friendly_name_str'].set_index('entity_id')['_value'].to_dict()
-df['friendly_name'] = df['entity_id'].map(id2name)
-df = df[~df['_field'].str.endswith('_str')]
+def df_cleanup(df) :
+    # delete columns
+    df = df.drop(['result','table'], axis=1)
+    # make id to name dict
+    id2name = df[df['_field'] == 'friendly_name_str'].set_index('entity_id')['_value'].to_dict()
+    df['friendly_name'] = df['entity_id'].map(id2name)
+    df = df[~df['_field'].str.endswith('_str')]
 
-# delete entities
-df = df[~df['entity_id'].isin([ '192_168_178_31' ])]
+    # delete entities
+    df = df[~df['entity_id'].isin([ '192_168_178_31' ])]
 
-# delete domains
-df = df[~df['domain'].isin([ 'automation', 'calendar', 'number', 'sun', 'update' ])]
-# delete attributes
-df = df[~df['_field'].isin([ 'device_class', 'icon', 'max', 'min', 'state_class' ])]
+    # delete domains
+    df = df[~df['domain'].isin([ 'automation', 'calendar', 'number', 'sun', 'update' ])]
+    # delete attributes
+    df = df[~df['_field'].isin([ 'device_class', 'icon', 'max', 'min', 'state_class' ])]
 
-# remove non-numeric values
-df['_value'] = pandas.to_numeric(df['_value'], errors='coerce')
-df = df.dropna(subset=['_value'])
+    # remove non-numeric values
+    df['_value'] = pd.to_numeric(df['_value'], errors='coerce')
+    df = df.dropna(subset=['_value'])
 
-# keep first and last entries in sets of non-changing values
-#df = df[(df['_value'].shift(periods=+1) != df['_value']) | (df['_value'].shift(periods=-1) != df['_value'])]
+    # keep first and last entries in sets of non-changing values
+    #df = df[(df['_value'].shift(periods=+1) != df['_value']) | (df['_value'].shift(periods=-1) != df['_value'])]
 
-# remove entities with same value
-df = df.groupby(['entity_id','_field']).filter(lambda g: g['_value'].nunique() > 1)
-#df = df.groupby(['entity_id','_field']).filter(lambda g: not g['_value'].eq(0).all())
+    # remove entities with same value
+    df = df.groupby(['entity_id','_field']).filter(lambda g: g['_value'].nunique() > 1)
+    #df = df.groupby(['entity_id','_field']).filter(lambda g: not g['_value'].eq(0).all())
 
-def escape(s) :
+    return df
+
+df = df_cleanup(df)
+
+def escape(s:str) -> str :
     return s.replace('\\',r'\\').replace('"',r'\"').replace(',',r'\,').replace(' ',r'\ ').replace('=',r'\=').replace('\n',r'\n').replace('\r',r'\r').replace('\t',r'\t')
 
 # make metrics:
@@ -71,5 +77,5 @@ metrics += ' ' + df['_field'].apply(escape) + '=' + df['_value'].astype(str).app
 # - time
 metrics += ' ' + df['_time'].astype(int).astype(str)
 
-for chunk in numpy.array_split(metrics, math.ceil(len(metrics)/10000)) :
+for chunk in np.array_split(metrics, math.ceil(len(metrics)/10000)) :
     requests.post(f"{VM_URL}/write?db={VM_DB}", data='\n'.join(chunk))

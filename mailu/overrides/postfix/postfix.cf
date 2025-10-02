@@ -2,3 +2,7 @@
 
 # 2023-12-22 - see SMTP smuggling attack -> resolved on 2024-..-..
 #smtpd_data_restrictions = reject_unauth_pipelining
+
+# 2024-08-12 - remove `permit_mynetworks`
+smtpd_relay_restrictions = permit_sasl_authenticated, reject_unauth_destination
+mynetworks =

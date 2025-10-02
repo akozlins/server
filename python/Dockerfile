@@ -3,7 +3,7 @@
 FROM python
 
 RUN apt-get update && apt-get --yes --no-install-recommends install \
-    dumb-init \
+    dnsutils dumb-init entr ffmpeg git \
     && rm -rf /var/lib/apt/lists/*
 
 RUN pip3 --no-cache-dir install \
@@ -20,6 +20,6 @@ ENV PYTHONUNBUFFERED=1
 ENV PYTHONPYCACHEPREFIX="$HOME"
 
 ENTRYPOINT [ "/usr/bin/dumb-init", "--" ]
-CMD [ "python3", "-u", "main.py" ]
+CMD [ "./main.py" ]
 
 LABEL com.centurylinklabs.watchtower.enable="false"
