@@ -29,23 +29,25 @@ services:
     volumes:
       - "./.local/grafana:/var/lib/grafana"
 
-  prometheus:
+  # <https://hub.docker.com/r/victoriametrics/victoria-metrics>
+  victoria:
     <<: *service
-    image: "prom/prometheus"
+    image: "victoriametrics/victoria-metrics:latest"
     command: >
-      "--config.file=/prometheus.yml"
-      "--web.listen-address=0.0.0.0:9090"
-      "--web.route-prefix=/prometheus"
-      "--web.enable-admin-api"
+      "-http.pathPrefix=/victoria"
+      "-storageDataPath=/victoria"
+      "-retentionPeriod=99y"
+      "-selfScrapeInterval=5s"
+      "-promscrape.config=/scrape.yaml"
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.prometheus.middlewares=auth@file"
-      - "traefik.http.routers.prometheus.rule=PathPrefix(`/prometheus/`)"
-      - "traefik.http.services.prometheus.loadbalancer.server.port=9090"
+      - "traefik.http.routers.victoria.middlewares=auth@file"
+      - "traefik.http.routers.victoria.rule=PathPrefix(`/victoria/`)"
+      - "traefik.http.services.victoria.loadbalancer.server.port=8428"
     networks: [ "default", "inet", "traefik" ]
     volumes:
-      - "./prometheus.yml:/prometheus.yml"
-      - "./.local/prometheus:/prometheus"
+      - "./scrape.yaml:/scrape.yaml"
+      - "./.local/victoria:/victoria"
 
 networks:
   default: { internal: true }
