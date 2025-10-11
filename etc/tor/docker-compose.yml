@@ -1,0 +1,9 @@
+#
+
+services:
+  tor:
+    <<: *service
+    build: { dockerfile: "../etc/tor/Dockerfile" }
+    networks: [ "default", "inet" ]
+    ports: [ "127.0.0.1:1080:1080" ]
+    profiles: [ "TEST" ]

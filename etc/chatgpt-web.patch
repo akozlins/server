@@ -1,0 +1,13 @@
+diff --git a/src/lib/EditMessage.svelte b/src/lib/EditMessage.svelte
+index 596c961..76858e7 100644
+--- a/src/lib/EditMessage.svelte
++++ b/src/lib/EditMessage.svelte
+@@ -245,8 +245,6 @@
+       <div 
+         class="message-display" 
+          
+-        on:touchend={editOnDoubleTap}
+-          on:dblclick|preventDefault={() => edit()}
+         >
+         {#if message.summary && !message.summary.length}
+         <p><b>Summarizing...</b></p>

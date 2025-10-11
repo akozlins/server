@@ -22,7 +22,7 @@ services:
       - "traefik.http.services.tachidesk.loadbalancer.server.port=4567"
     networks: [ "default", "inet", "traefik" ]
     volumes:
-      - ./.local/tachidesk2:/home/suwayomi/.local/share/Tachidesk
+      - ./.local/tachidesk:/home/suwayomi/.local/share/Tachidesk
       - /nfs/akozlins/media/tachidesk:/downloads
 
   flaresolverr:
