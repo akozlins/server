@@ -6,7 +6,7 @@ WORKDIR /root
 
 # common
 RUN zypper install --no-confirm \
-    git make nano python3
+    git make
     #gcc13-c++ glib2-devel xorg-x11-devel
 
 # quartus
@@ -18,7 +18,10 @@ RUN zypper install --no-confirm \
     libfreetype6 libgobject-2_0-0 libSM6 libXrender1 libfontconfig1 libXext6 \
     xauth xorg-x11-server-Xvfb xvfb-run
 
-WORKDIR /root
+WORKDIR /home/1000
+RUN chown 1000:1000 .
+USER 1000:1000
+ENV HOME="/home/1000"
 
 RUN git clone https://github.com/akozlins/dotfiles .dotfiles
 RUN ln -s .dotfiles/.profile

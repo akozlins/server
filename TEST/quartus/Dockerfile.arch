@@ -2,17 +2,18 @@
 
 FROM archlinux:latest
 
-RUN echo "[multilib]" >> /etc/pacman.conf \
- && echo "Include = /etc/pacman.d/mirrorlist" >> /etc/pacman.conf
+RUN pacman -Sy && pacman -S --noconfirm \
+    git make \
+    libxcrypt-compat \
+    && pacman -Sc --noconfirm
 
-RUN pacman -Sy
-RUN pacman -S --noconfirm \
-    cmake gcc diffutils git make nano openssh \
-    libxcrypt-compat
-
-WORKDIR /root
+WORKDIR /home/1000
+RUN chown 1000:1000 .
+USER 1000:1000
+ENV HOME="/home/1000"
 
 RUN git clone https://github.com/akozlins/dotfiles .dotfiles
 RUN ln -s .dotfiles/.profile
+RUN ln -s .dotfiles/.bashrc
 
 RUN git clone https://github.com/akozlins/vhdutil
