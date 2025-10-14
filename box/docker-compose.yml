@@ -16,7 +16,7 @@ services:
 
   qbittorrent:
     <<: *service
-    build: { dockerfile: "./Dockerfile.qb" }
+    image: "qbittorrentofficial/qbittorrent-nox"
     depends_on: [ "unbound", "socks" ]
     dns: "${SUBNET:?}.254"
     labels:
@@ -26,9 +26,9 @@ services:
       - "traefik.http.routers.qbittorrent.rule=PathPrefix(`/qbittorrent/`)"
       - "traefik.http.services.qbittorrent.loadbalancer.server.port=8080"
     networks: [ "default", "traefik" ]
+    user: "1000:1000"
     volumes:
-      - "./.local/qbittorrent:/home/1000/.local/share/qBittorrent"
-      - "./.local/qbittorrent:/home/1000/.config/qBittorrent"
+      - "./.local/qbittorrent:/config/qBittorrent"
       - "./.local/data:/data"
 
   jackett:
