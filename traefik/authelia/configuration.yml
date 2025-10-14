@@ -60,7 +60,7 @@ access_control:
     # https://$DOMAIN/$GROUP/
     - domain_regex: '.*'
       policy: 'one_factor'
-      resources: [ '^/(?P<Group>[-\w]+)/' ]
+      resources: [ '^/(?P<Group>[-\w]+)($|/)' ]
 
 identity_providers:
   oidc:

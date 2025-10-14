@@ -52,17 +52,6 @@ services:
     network_mode: "service:gluetun-mullvad"
     profiles: [ "TEST" ]
 
-  whoami1:
-    <<: *service
-    image: "containous/whoami"
-    depends_on: [ "gluetun-mullvad" ]
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.whoami1.middlewares=auth@file"
-      - "traefik.http.routers.whoami1.rule=PathPrefix(`/whoami1/`)"
-      - "traefik.http.services.whoami1.loadbalancer.server.port=80"
-    network_mode: "service:gluetun-pia"
-
 networks:
   default: { internal: true }
   inet: { external: true }
