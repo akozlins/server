@@ -1,0 +1,32 @@
+#
+
+x-service: &service
+  dns_search: .
+  logging: { options: { max-size: "1m" } }
+  restart: "always"
+  stop_grace_period: "10s"
+  cap_drop: [ "ALL" ]
+  #read_only: true
+  security_opt: [ "no-new-privileges:true" ]
+  user: "1000:1000"
+
+services:
+
+  # <https://forgejo.org/docs/latest/admin/installation/docker/>
+  forgejo:
+    <<: *service
+    image: "codeberg.org/forgejo/forgejo:11-rootless"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.middlewares.forgejo.stripprefix.prefixes=/forgejo"
+      - "traefik.http.routers.forgejo.middlewares=auth@file,forgejo"
+      - "traefik.http.routers.forgejo.rule=HostRegexp(`^forgejo(-[0-9a-z]+)?[.]`) || PathPrefix(`/forgejo/`)"
+      - "traefik.http.services.forgejo.loadbalancer.server.port=3000"
+    networks: [ "inet", "traefik" ]
+    volumes:
+      - "./.local/forgejo:/var/lib/gitea"
+      - "./.local/forgejo:/etc/gitea"
+
+networks:
+  inet: { external: true }
+  traefik: { external: true }
