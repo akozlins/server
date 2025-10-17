@@ -25,6 +25,7 @@ services:
     volumes:
       - "./server.conf:/server.conf"
       - "./.local/copyparty:/home/1000"
+      - "./.local/media:/media"
 
 networks:
   inet: { external: true }

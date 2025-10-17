@@ -23,7 +23,8 @@ services:
       - "traefik.http.services.emby.loadbalancer.server.port=8096"
     networks: [ "traefik" ]
     volumes:
-      - ./.local/config:/config
+      - "./.local/config:/config"
+      - "./.local/youtube:/youtube:ro"
 
 networks:
   traefik: { external: true }

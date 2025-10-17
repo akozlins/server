@@ -70,7 +70,7 @@ services:
     dns: "${DNS:?}"
     volumes:
       - "./data/rspamd:/var/lib/rspamd"
-#      - "./overrides/rspamd:/overrides:ro"
+      - "./overrides/rspamd:/etc/rspamd/override.d:ro"
 
   redis:
     <<: *service

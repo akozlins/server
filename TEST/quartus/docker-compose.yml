@@ -15,6 +15,7 @@ services:
     environment:
       - "ALTERAD_LICENSE_FILE=${ALTERAD_LICENSE_FILE:?}"
     # NOTE: quartus will segfault if MAC address is null
+    # TODO: try `LD_PRELOAD=/usr/lib/libtcmalloc_minimal.so`
     network_mode: host
     volumes:
       - "/opt/intelFPGA/20.1:/opt/intelFPGA/20.1:ro"

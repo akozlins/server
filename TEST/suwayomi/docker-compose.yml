@@ -7,7 +7,7 @@ x-service: &service
   cap_drop: [ "ALL" ]
   #read_only: true
   security_opt: [ "no-new-privileges:true" ]
-  mem_limit: 4096m
+  mem_limit: 8192m
   user: "1000:1000"
 
 services:
@@ -22,8 +22,8 @@ services:
       - "traefik.http.services.tachidesk.loadbalancer.server.port=4567"
     networks: [ "default", "inet", "traefik" ]
     volumes:
-      - ./.local/tachidesk:/home/suwayomi/.local/share/Tachidesk
-      - /nfs/akozlins/media/tachidesk:/downloads
+      - "./.local/tachidesk:/home/suwayomi/.local/share/Tachidesk"
+      - "./.local/downloads:/downloads"
 
   flaresolverr:
     <<: *service

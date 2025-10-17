@@ -88,7 +88,7 @@ services:
       - "./.local/mylar:/config"
       - "./.local/data/comics:/comics"
       - "./.local/data/downloads:/downloads"
-#    profiles: [ "TEST" ]
+    profiles: [ "TEST" ]
 
   sabnzbd:
     <<: *lsio

@@ -17,6 +17,7 @@ services:
       - "GF_AUTH_BASIC_ENABLED=false"
       - "GF_AUTH_PROXY_ENABLED=true"
       - "GF_AUTH_PROXY_HEADER_NAME=Remote-User"
+      #- "GF_AUTH_PROXY_HEADERS=Name:Remote-User Role:X-WEBAUTH-ROLE Email:Remote-Email Groups:Remote-Groups"
       - "GF_AUTH_PROXY_WHITELIST=${TRAEFIK_SUBNET:?}.0/24"
       - "GF_SERVER_ROOT_URL=/grafana"
       - "GF_SERVER_SERVE_FROM_SUB_PATH=true"

@@ -8,8 +8,8 @@ http:
         usersFile: "/etc/traefik/users.key"
     auth_rlimit:
       ratelimit:
-        average: 25
-        burst: 200
+        average: 50
+        burst: 500
         period: 1s
     auth:
       chain:

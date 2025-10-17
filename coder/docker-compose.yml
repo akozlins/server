@@ -20,7 +20,7 @@ services:
     networks: [ "inet", "traefik" ]
     user: "1000:1000"
     volumes:
-      - ./home:/home/coder
+      - "./.local/coder:/home/coder"
 
 networks:
   inet: { external: true }

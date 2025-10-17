@@ -14,6 +14,7 @@ services:
 
   unbound:
     <<: *service
+    # TODO: move to ../etc/unbound/
     build: { dockerfile: "./Dockerfile.unbound" }
     labels:
       - "traefik.enable=true"

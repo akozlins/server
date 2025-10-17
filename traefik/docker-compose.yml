@@ -103,7 +103,7 @@ services:
       - "traefik.enable=true"
       - "traefik.http.middlewares.lldap.stripprefix.prefixes=/lldap"
       - "traefik.http.routers.lldap.middlewares=auth@file,lldap"
-      - "traefik.http.routers.lldap.rule=HostRegexp(`^lldap(-[0-9a-z]+)?[.]`) || PathPrefix(`/lldap/`)"
+      - "traefik.http.routers.lldap.rule=HostRegexp(`^lldap(-[0-9a-z]+)?[.]`) || PathRegexp(`^/lldap($|/)`)"
       - "traefik.http.services.lldap.loadbalancer.server.port=17170"
     volumes:
       - "./authelia/lldap_data:/data:rw"

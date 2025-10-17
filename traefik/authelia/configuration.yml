@@ -27,6 +27,7 @@ server:
 storage:
   encryption_key: '{{ secret "/config/storage_encryption_key.key" }}'
   local:
+    # TODO: use /tmp
     path: '/config/.cache/storage.sqlite3'
 
 # <https://www.authelia.com/configuration/session/introduction/>

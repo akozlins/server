@@ -8,7 +8,7 @@ x-service: &service
 services:
   jupyter:
     <<: *service
-    build: { dockerfile: "./Dockerfile" }
+    image: "jupyter/scipy-notebook"
     command: [ "start-notebook.sh",
       "--NotebookApp.base_url=/jupyter", "--NotebookApp.token=",
       "--FileCheckpoints.checkpoint_dir=.cache/ipynb_checkpoints",
@@ -23,8 +23,7 @@ services:
       - "traefik.http.services.jupyter.loadbalancer.server.port=8888"
     networks: [ "inet", "traefik" ]
     volumes:
-      - "./.local:/home/jovyan"
-      - "./workspace:/home/jovyan/workspace"
+      - "./.local/jovyan:/home/jovyan"
 
 networks:
   inet: { external: true }
