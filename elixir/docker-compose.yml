@@ -12,13 +12,13 @@ services:
     build: { dockerfile: "./Dockerfile" }
     labels:
       - "traefik.enable=true"
+      - "traefik.http.routers.elixir.middlewares=auth@file"
       - "traefik.http.routers.elixir.rule=PathPrefix(`/elixir`)"
       - "traefik.http.services.elixir.loadbalancer.server.port=8080"
     networks: [ "traefik" ]
-    ports: [ "127.0.0.1:8080:8080" ]
     volumes:
-      - "./.local:/1000/proj_dir"
-      - "./lighttpd.conf:/1000/lighttpd.conf:ro"
+      - "./.local:/home/1000/proj_dir"
+      - "./lighttpd.conf:/home/1000/lighttpd.conf:ro"
 
 networks:
   traefik: { external: true }

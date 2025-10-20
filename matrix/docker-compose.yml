@@ -6,6 +6,7 @@ x-service: &service
   stop_grace_period: "5s"
 
 services:
+
   matrix:
     <<: *service
     image: "matrixdotorg/synapse"
@@ -19,6 +20,18 @@ services:
     networks: [ "inet", "traefik" ]
     volumes:
       - "./data:/data:rw"
+
+  element:
+    << : *service
+    image: "vectorim/element-web"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.middlewares.element.stripprefix.prefixes=/element"
+      - "traefik.http.routers.element.middlewares=auth@file,element"
+      - "traefik.http.routers.element.rule=PathRegexp(`^/(element)($|/)`)"
+      - "traefik.http.services.element.loadbalancer.server.port=80"
+    networks: [ "inet", "traefik" ]
+    profiles: [ "TEST" ]
 
 networks:
   inet: { external: true }

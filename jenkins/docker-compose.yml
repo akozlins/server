@@ -24,7 +24,7 @@ services:
     networks: [ "inet", "traefik" ]
     tmpfs: [ "/tmp:mode=777,exec" ]
     volumes:
-      - "./.cache/jenkins:/var/jenkins_home"
+      - "./.local/jenkins_home:/var/jenkins_home"
 
 networks:
   inet: { external: true }

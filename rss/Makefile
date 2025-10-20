@@ -12,7 +12,7 @@ init ::
 	mkdir -p .local/postgres && cd .local || exit 1
 	# tt rss
 	if [ ! -d tt/.git ] ; then
-	    git clone https://git.tt-rss.org/fox/tt-rss tt
+	    git clone https://github.com/tt-rss/tt-rss
 	fi
 	[ -L "html/tt" ] || ( mkdir -p html && ln -s -T ../tt "html/tt" )
 	# fresh rss
