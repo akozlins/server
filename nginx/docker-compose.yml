@@ -23,14 +23,15 @@ services:
       - "socat:/run/socat"
 
   sslh:
-    <<: *service
-    image: "akozlins/sslh"
-    command: [ "sslh", "--foreground", "--numeric",
-      "--listen=0.0.0.0:80",
-      "--ssh=${DOMAIN:?}:1022",
+    << : *service
+    image: "akozlins/sslh:v2.3.0"
+    command: [ "./sslh-select", "--config=/sslh.cfg",
       "--http=caddy:8080",
+      "--ssh=${DOMAIN:?}:1022",
       "--tls=${DOMAIN:?}:443",
+      "--socks5=${DOMAIN:?}:1080",
       "--openvpn=${DOMAIN:?}:1194",
+      #"--wireguard=${DOMAIN:?}:51820",
       "--anyprot=caddy:8080",
       "--on-timeout=anyprot",
     ]
@@ -39,6 +40,9 @@ services:
     ports:
     - "0.0.0.0:80:80"
     - "[::]:80:80"
+    - "0.0.0.0:80:80/udp"
+    volumes:
+    - "./sslh.cfg:/sslh.cfg:ro"
 
   whoami:
     <<: *service
