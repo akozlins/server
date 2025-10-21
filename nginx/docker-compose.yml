@@ -12,16 +12,6 @@ x-service: &service
 
 services:
 
-  socat:
-    <<: *service
-    image: "akozlins/socat"
-    command: sh -c "
-      socat -d UNIX-LISTEN:syncthing.sock,fork,mode=666 TCP:127.0.0.1:8384 &
-      wait"
-    network_mode: "host"
-    volumes:
-      - "socat:/run/socat"
-
   sslh:
     << : *service
     image: "akozlins/sslh:v2.3.0"
@@ -76,6 +66,3 @@ networks:
   default: { internal: true }
   inet:  { external: true }
   traefik: { external: true }
-
-volumes:
-  socat: { driver: local, driver_opts: { type: tmpfs, device: tmpfs } }
