@@ -1,0 +1,25 @@
+#
+
+x-service: &service
+  logging: { options: { max-size: "1m" } }
+  restart: "always"
+  stop_grace_period: "5s"
+
+services:
+
+  test:
+    <<: *service
+    build: { dockerfile: "./Dockerfile" }
+    command: zsh
+    environment:
+      - "DISPLAY=${DISPLAY:?}"
+      - "XAUTHORITY=/home/user/.Xauthority"
+    hostname: "${HOST:?}"
+    networks: [ "inet", "traefik" ]
+    volumes:
+      - "/tmp/.X11-unix:/tmp/.X11-unix"
+      - "${XAUTHORITY:?}:/home/user/.Xauthority"
+
+networks:
+  inet: { external: true }
+  traefik: { external: true }
