@@ -15,17 +15,19 @@ RUN pacman -S --noconfirm \
 # cleanup
 RUN pacman -Scc --noconfirm
 
-RUN groupadd --gid 1000 user && \
-    useradd --gid 1000 --uid 1000 --shell /bin/zsh user
-RUN echo "user ALL=(ALL:ALL) NOPASSWD: ALL" > /etc/sudoers.d/user
+ARG USER=user
+RUN groupadd --gid 1000 $USER && \
+    useradd --gid 1000 --uid 1000 --no-create-home --shell /bin/zsh $USER
+#RUN echo "$USER ALL=(ALL:ALL) NOPASSWD: ALL" > /etc/sudoers.d/$USER
 
-WORKDIR /home/user
+WORKDIR /home/$USER
 RUN chown 1000:1000 .
 USER 1000:1000
+ENV USER=$USER
+ENV HOST=docker
 
 RUN git clone https://github.com/akozlins/dotfiles .dotfiles
-RUN ln -s .dotfiles/.profile
-RUN ln -s .dotfiles/.zshrc
+RUN bash -c ./.dotfiles/install.sh
 
-RUN git clone https://aur.archlinux.org/yay-bin.git
-RUN cd yay-bin && makepkg && makepkg -i --noconfirm
+#RUN git clone https://aur.archlinux.org/yay-bin.git
+#RUN cd yay-bin && makepkg && makepkg -i --noconfirm

@@ -16,40 +16,30 @@ x-service: &service
 services:
 
   gluetun:
-    <<: *service
+    <<: *base
     image: "qmcgaw/gluetun"
     cap_add: [ "NET_ADMIN" ]
     devices: [ "/dev/net/tun:/dev/net/tun" ]
     environment:
-      VPN_SERVICE_PROVIDER: "custom"
-      VPN_TYPE: "openvpn"
-      OPENVPN_CUSTOM_CONFIG: "/gluetun/custom.conf"
-      #DOT: "off"
-      #DNS_ADDRESS: "8.8.8.8"
-      #HEALTH_VPN_DURATION_INITIAL: "61s"
-    volumes:
-      - ./gluetun.conf:/gluetun/custom.conf
-    profiles: [ "TEST" ]
-
-  gluetun-mullvad:
-    <<: *service
-    image: "qmcgaw/gluetun"
-    cap_add: [ "NET_ADMIN" ]
-    devices: [ "/dev/net/tun:/dev/net/tun" ]
-    environment:
+      #VPN_SERVICE_PROVIDER: "custom"
+      #OPENVPN_CUSTOM_CONFIG: "/gluetun/custom.ovpn"
       VPN_SERVICE_PROVIDER: "mullvad"
-      VPN_TYPE: "wireguard"
-      WIREGUARD_PRIVATE_KEY: "${MULLVAD_KEY:?}"
-      WIREGUARD_ADDRESSES: "${MULLVAD_ADDR:?}"
+      VPN_TYPE: "openvpn"
+      #VPN_TYPE: "wireguard"
+      OPENVPN_USER: "${OVPN_USER:?}"
+      OPENVPN_PASSWORD: "${OVPN_PASSWORD:?}"
+      WIREGUARD_PRIVATE_KEY: "${WG_KEY:?}"
+      WIREGUARD_ADDRESSES: "${WG_ADDR:?}"
       WIREGUARD_ENDPOINT_PORT: "443"
-      SERVER_CITIES: "Amsterdam"
-    networks: [ "default", "inet" ]
-    profiles: [ "TEST" ]
+      SERVER_REGIONS: "Netherlands"
+    networks: [ "default", "inet", "traefik" ]
+    volumes:
+      - ./.local/gluetun:/gluetun
 
   dut:
     <<: *base
     image: "archlinux"
-    network_mode: "service:gluetun-mullvad"
+    network_mode: "service:gluetun"
     profiles: [ "TEST" ]
 
 networks:

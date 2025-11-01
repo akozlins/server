@@ -7,8 +7,9 @@ RUN apt-get update && apt-get --yes --no-install-recommends install \
     python3-bsddb3 python3-jinja2 \
     && rm -rf /var/lib/apt/lists/*
 
-USER 1000:1000
 WORKDIR /home/1000
+RUN chown 1000:1000 .
+USER 1000:1000
 ENV HOME="/home/1000"
 
 RUN git clone https://github.com/bootlin/elixir.git

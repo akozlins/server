@@ -80,6 +80,7 @@ services:
     labels:
       - "traefik.docker.network=traefik_default"
       - "traefik.enable=true"
+      - "traefik.http.routers.authelia.priority=255"
       - "traefik.http.routers.authelia.rule=HostRegexp(`^auth(-[0-9a-z]+)?[.]`) || PathRegexp(`^/authelia($|/)`)"
       - "traefik.http.services.authelia.loadbalancer.server.port=9091"
     volumes:

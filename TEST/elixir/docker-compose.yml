@@ -13,7 +13,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.elixir.middlewares=auth@file"
-      - "traefik.http.routers.elixir.rule=PathPrefix(`/elixir`)"
+      - "traefik.http.routers.elixir.rule=PathRegexp(`^/elixir($|/)`)"
       - "traefik.http.services.elixir.loadbalancer.server.port=8080"
     networks: [ "traefik" ]
     volumes:

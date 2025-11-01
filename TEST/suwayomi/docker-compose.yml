@@ -31,6 +31,8 @@ services:
     environment:
       LOG_LEVEL: "info"
     networks: [ "default", "inet" ]
+    volumes:
+      - "./.local/flaresolverr:/config"
 
 networks:
   default: { internal: true }

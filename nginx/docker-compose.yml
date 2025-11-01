@@ -15,7 +15,7 @@ services:
   sslh:
     << : *service
     image: "akozlins/sslh:v2.3.0"
-    command: [ "./sslh-select", "--config=/sslh.cfg",
+    command: [ "./sslh-ev", "--config=/sslh.cfg",
       "--http=caddy:8080",
       "--ssh=${DOMAIN:?}:1022",
       "--tls=${DOMAIN:?}:443",

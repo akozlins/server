@@ -8,7 +8,7 @@ x-service: &service
 services:
   jupyter:
     <<: *service
-    image: "jupyter/scipy-notebook"
+    image: "quay.io/jupyter/scipy-notebook:latest"
     command: [ "start-notebook.sh",
       "--NotebookApp.base_url=/jupyter", "--NotebookApp.token=",
       "--FileCheckpoints.checkpoint_dir=.cache/ipynb_checkpoints",
