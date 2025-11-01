@@ -1,0 +1,38 @@
+#
+
+x-service: &service
+  logging: { options: { max-size: "1m" } }
+  restart: "always"
+  stop_grace_period: "5s"
+  cap_drop: [ "ALL" ]
+  #read_only: true
+  security_opt: [ "no-new-privileges:true" ]
+  mem_limit: 8192m
+  user: "1000:1000"
+
+services:
+
+  clickhouse:
+    <<: *service
+    image: "clickhouse/clickhouse-server"
+    environment:
+      CLICKHOUSE_SKIP_USER_SETUP: 1
+    labels:
+      - "traefik.enable=true"
+      #- "traefik.http.middlewares.clickhouse.stripprefix.prefixes=/clickhouse"
+      - "traefik.http.routers.clickhouse.middlewares=auth@file"
+      - "traefik.http.routers.clickhouse.rule=HostRegexp(`^clickhouse(-[0-9a-z]+)?[.]`) || PathPrefix(`/clickhouse/`)"
+      - "traefik.http.services.clickhouse.loadbalancer.server.port=8123"
+    networks: [ "default", "inet", "traefik" ]
+    ports:
+      - "0.0.0.0:8123:8123"
+    ulimits:
+      nofile: 262144
+    volumes:
+      - "./.local:/var/log/clickhouse-server"
+      - "./.local:/var/lib/clickhouse"
+
+networks:
+  default: { internal: true }
+  inet: { external: true }
+  traefik: { external: true }
