@@ -1,0 +1,38 @@
+#
+
+x-service: &service
+  logging: { options: { max-size: "1m" } }
+  restart: "always"
+  stop_grace_period: "5s"
+  cap_drop: [ "ALL" ]
+  #read_only: true
+  security_opt: [ "no-new-privileges:true" ]
+  #mem_limit: 8192m
+  user: "1000:1000"
+
+services:
+
+  # <https://www.navidrome.org/docs/installation/docker/>
+  navidrome:
+    <<: *service
+    image: "deluan/navidrome"
+    environment:
+      ND_BASEURL: "/navidrome"
+      #ND_REVERSEPROXYUSERHEADER: "Remote-User"
+      #ND_REVERSEPROXYWHITELIST: "${TRAEFIK_IP:?}"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.navidrome.middlewares=auth@file"
+      - "traefik.http.routers.navidrome.rule=PathRegexp(`^/navidrome($|/)`)"
+      #- "traefik.http.routers.navidrome-api.middlewares=authelia-basic@docker"
+      - "traefik.http.routers.navidrome-api.rule=PathRegexp(`^/navidrome/rest/.+`) && !Query(`c`, `NavidromeUI`)"
+      - "traefik.http.services.navidrome.loadbalancer.server.port=4533"
+    networks: [ "default", "inet", "traefik" ]
+    volumes:
+      - "./.local/music:/music:ro"
+      - "./.local/data:/data"
+
+networks:
+  default: { internal: true }
+  inet: { external: true }
+  traefik: { external: true }
