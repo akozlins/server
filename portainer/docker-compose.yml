@@ -23,7 +23,7 @@ services:
       - "traefik.enable=true"
       - "traefik.http.middlewares.portainer.stripprefix.prefixes=/portainer"
       - "traefik.http.routers.portainer.middlewares=auth@file,portainer"
-      - "traefik.http.routers.portainer.rule=PathPrefix(`/portainer/`)"
+      - "traefik.http.routers.portainer.rule=PathRegexp(`^/portainer($|/)`)"
       - "traefik.http.services.portainer.loadbalancer.server.port=9000"
     networks: [ "traefik" ]
     volumes:

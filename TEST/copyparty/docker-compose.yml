@@ -19,7 +19,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.copyparty.middlewares=auth@file"
-      - "traefik.http.routers.copyparty.rule=PathPrefix(`/copyparty/`)"
+      - "traefik.http.routers.copyparty.rule=PathRegexp(`^/copyparty($|/)`)"
       - "traefik.http.services.copyparty.loadbalancer.server.port=3923"
     networks: [ "traefik" ]
     volumes:

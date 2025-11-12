@@ -19,7 +19,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.emby.middlewares=auth@file"
-      - "traefik.http.routers.emby.rule=PathRegexp(`^/(emby|embywebsocket)/`)"
+      - "traefik.http.routers.emby.rule=PathRegexp(`^/(emby|embywebsocket)($|/)`)"
       - "traefik.http.services.emby.loadbalancer.server.port=8096"
     networks: [ "traefik" ]
     volumes:

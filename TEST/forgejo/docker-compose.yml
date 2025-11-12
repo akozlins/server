@@ -20,7 +20,7 @@ services:
       - "traefik.enable=true"
       - "traefik.http.middlewares.forgejo.stripprefix.prefixes=/forgejo"
       - "traefik.http.routers.forgejo.middlewares=auth@file,forgejo"
-      - "traefik.http.routers.forgejo.rule=HostRegexp(`^forgejo(-[0-9a-z]+)?[.]`) || PathPrefix(`/forgejo/`)"
+      - "traefik.http.routers.forgejo.rule=HostRegexp(`^forgejo(-[0-9a-z]+)?[.]`) || PathRegexp(`^/forgejo($|/)`)"
       - "traefik.http.services.forgejo.loadbalancer.server.port=3000"
     networks: [ "inet", "traefik" ]
     volumes:

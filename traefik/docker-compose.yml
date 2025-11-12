@@ -48,12 +48,12 @@ services:
       - "traefik.http.middlewares.authelia.forwardAuth.authResponseHeaders=Remote-User,Remote-Groups,Remote-Name,Remote-Email"
       - "traefik.http.middlewares.authelia.forwardAuth.trustForwardHeader=true"
       # basic auth
-      - "traefik.http.middlewares.authelia-legacy.forwardAuth.address=http://authelia:9091/authelia/api/verify?auth=basic"
-      - "traefik.http.middlewares.authelia-legacy.forwardAuth.authResponseHeaders=Remote-User,Remote-Groups,Remote-Name,Remote-Email"
-      - "traefik.http.middlewares.authelia-legacy.forwardAuth.trustForwardHeader=true"
+      - "traefik.http.middlewares.authelia-basic.forwardAuth.address=http://authelia:9091/authelia/api/verify?auth=basic"
+      - "traefik.http.middlewares.authelia-basic.forwardAuth.authResponseHeaders=Remote-User,Remote-Groups,Remote-Name,Remote-Email"
+      - "traefik.http.middlewares.authelia-basic.forwardAuth.trustForwardHeader=true"
       # traefik api endpoint
       - "traefik.http.routers.api.middlewares=auth@file"
-      - "traefik.http.routers.api.rule=PathPrefix(`/traefik/`)"
+      - "traefik.http.routers.api.rule=PathRegexp(`^/traefik/dashboard/`)"
       - "traefik.http.routers.api.service=api@internal"
     networks: { "default", "inet", "traefik" : { ipv4_address: "${TRAEFIK_SUBNET:?}.254" } }
     ports:
@@ -121,7 +121,7 @@ services:
       - "traefik.docker.network=traefik_default"
       - "traefik.enable=true"
       - "traefik.http.routers.dozzle.middlewares=auth@file"
-      - "traefik.http.routers.dozzle.rule=PathPrefix(`/dozzle/`)"
+      - "traefik.http.routers.dozzle.rule=PathRegexp(`^/dozzle($|/)`)"
       - "traefik.http.services.dozzle.loadbalancer.server.port=8080"
 
   docker_sock:

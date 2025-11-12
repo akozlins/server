@@ -18,7 +18,7 @@ services:
       - "traefik.enable=true"
       - "traefik.http.middlewares.syncthing.stripprefix.prefixes=/syncthing"
       - "traefik.http.routers.syncthing.middlewares=auth@file,syncthing"
-      - "traefik.http.routers.syncthing.rule=PathPrefix(`/syncthing/`)"
+      - "traefik.http.routers.syncthing.rule=PathRegexp(`^/syncthing($|/)`)"
       - "traefik.http.services.syncthing.loadbalancer.server.port=8384"
     networks: [ "inet", "traefik" ]
     volumes:

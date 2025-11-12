@@ -21,7 +21,7 @@ services:
       - "traefik.enable=true"
       #- "traefik.http.middlewares.clickhouse.stripprefix.prefixes=/clickhouse"
       - "traefik.http.routers.clickhouse.middlewares=auth@file"
-      - "traefik.http.routers.clickhouse.rule=HostRegexp(`^clickhouse(-[0-9a-z]+)?[.]`) || PathPrefix(`/clickhouse/`)"
+      - "traefik.http.routers.clickhouse.rule=HostRegexp(`^clickhouse(-[0-9a-z]+)?[.]`) || PathRegexp(`^/clickhouse($|/)`)"
       - "traefik.http.services.clickhouse.loadbalancer.server.port=8123"
     networks: [ "default", "inet", "traefik" ]
     ports:

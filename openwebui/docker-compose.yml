@@ -25,7 +25,7 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.openwebui.middlewares=auth@file,openwebui"
       - "traefik.http.middlewares.openwebui.stripprefix.prefixes=/openwebui"
-      - "traefik.http.routers.openwebui.rule=HostRegexp(`^openwebui(-[0-9a-z]+)?[.]`) || PathPrefix(`/openwebui/`)"
+      - "traefik.http.routers.openwebui.rule=HostRegexp(`^openwebui(-[0-9a-z]+)?[.]`) || PathRegexp(`^/openwebui($|/)`)"
       - "traefik.http.services.openwebui.loadbalancer.server.port=8080"
     networks: [ "inet", "traefik" ]
     volumes:

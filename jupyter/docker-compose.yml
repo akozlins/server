@@ -19,7 +19,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.jupyter.middlewares=auth@file"
-      - "traefik.http.routers.jupyter.rule=PathPrefix(`/jupyter/`)"
+      - "traefik.http.routers.jupyter.rule=PathRegexp(`^/jupyter($|/)`)"
       - "traefik.http.services.jupyter.loadbalancer.server.port=8888"
     networks: [ "inet", "traefik" ]
     volumes:

@@ -59,7 +59,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.rss.middlewares=auth@file"
-      - "traefik.http.routers.rss.rule=PathRegexp(`^/(tt|fresh)/`)"
+      - "traefik.http.routers.rss.rule=PathRegexp(`^/(tt|fresh)($|/)`)"
       - "traefik.http.services.rss.loadbalancer.server.port=8080"
     networks: [ "default", "traefik" ]
     volumes:

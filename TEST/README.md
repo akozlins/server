@@ -14,7 +14,7 @@
       - "RUN_MIGRATIONS=1"
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.miniflux.rule=PathPrefix(`/miniflux/`)"
+      - "traefik.http.routers.miniflux.rule=PathRegexp(`^/miniflux($|/)`)"
       - "traefik.http.services.miniflux.loadbalancer.server.port=8080"
     networks: [ "traefik" ]
 ```
@@ -27,7 +27,7 @@
 #      - "ORGANICE_WEBDAV_URL=http://webdav.example.com"
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.organice.rule=PathPrefix(`/organice/`)"
+      - "traefik.http.routers.organice.rule=PathRegexp(`^/organice($|/)`)"
       - "traefik.http.services.organice.loadbalancer.server.port=5000"
     networks: [ "traefik" ]
 ```

@@ -20,7 +20,7 @@ services:
     networks: [ "traefik" ]
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.cyberchef.rule=PathPrefix(`/cyberchef/`)"
+      - "traefik.http.routers.cyberchef.rule=PathRegexp(`^/cyberchef($|/)`)"
       - "traefik.http.services.cyberchef.loadbalancer.server.port=80"
     volumes:
       - "./Caddyfile:/etc/caddy/Caddyfile:ro"

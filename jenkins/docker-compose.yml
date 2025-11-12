@@ -10,6 +10,7 @@ x-service: &service
   security_opt: [ "no-new-privileges:true" ]
 
 services:
+
   jenkins:
     <<: *service
     image: "jenkins/jenkins"
@@ -19,7 +20,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.jenkins.middlewares=auth@file"
-      - "traefik.http.routers.jenkins.rule=PathPrefix(`/jenkins/`)"
+      - "traefik.http.routers.jenkins.rule=PathRegexp(`^/jenkins($|/)`)"
       - "traefik.http.services.jenkins.loadbalancer.server.port=8080"
     networks: [ "inet", "traefik" ]
     tmpfs: [ "/tmp:mode=777,exec" ]
