@@ -49,6 +49,20 @@ services:
     networks: [ "inet", "traefik" ]
     profiles: [ "TEST" ]
 
+  thelounge:
+    << : *service
+    image: "ghcr.io/thelounge/thelounge:latest"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.middlewares.thelounge.stripprefix.prefixes=/thelounge"
+      - "traefik.http.routers.thelounge.middlewares=auth@file,thelounge"
+      - "traefik.http.routers.thelounge.rule=PathRegexp(`^/(thelounge)($|/)`)"
+      - "traefik.http.services.thelounge.loadbalancer.server.port=9000"
+    networks: [ "inet", "traefik" ]
+    volumes:
+      - "./.local/thelounge:/var/opt/thelounge"
+    profiles: [ "test" ]
+
 networks:
   default: { internal: true }
   inet: { external: true }
