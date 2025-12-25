@@ -7,18 +7,18 @@ x-service: &service
   cap_drop: [ "ALL" ]
   #read_only: true
   security_opt: [ "no-new-privileges:true" ]
-  mem_limit: 8192m
   user: "1000:1000"
+  mem_limit: 2048m
 
 services:
 
   tachidesk:
     <<: *service
-    image: "ghcr.io/suwayomi/tachidesk"
+    image: "ghcr.io/suwayomi/tachidesk:v2.1.2019"
     labels:
       - "traefik.enable=true"
       - "traefik.http.middlewares.tachidesk.stripprefix.prefixes=/tachidesk"
-      - "traefik.http.routers.tachidesk.middlewares=auth@file,tachidesk"
+      - "traefik.http.routers.tachidesk.middlewares=auth@file"
       - "traefik.http.routers.tachidesk.rule=HostRegexp(`^tachidesk(-[0-9a-z]+)?[.]`) || PathRegexp(`^/tachidesk($|/)`)"
       - "traefik.http.services.tachidesk.loadbalancer.server.port=4567"
     networks: [ "default", "inet", "traefik" ]
