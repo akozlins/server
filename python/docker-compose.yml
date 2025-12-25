@@ -8,17 +8,25 @@ x-service: &service
   read_only: true
   security_opt: [ "no-new-privileges:true" ]
   tmpfs: [ "/tmp:mode=777" ]
+  mem_limit: 2048m
+
+x-uv: &uv
+  <<: *service
+  environment:
+    HOME: "/home/1000"
+    XDG_DATA_HOME: "/home/1000/.cache"
+    PYTHONPYCACHEPREFIX: "/home/1000/.cache/pycache"
+    PYTHONUNBUFFERED: 1
+    UV_PROJECT_ENVIRONMENT: ".cache/venv"
   user: "1000:1000"
   working_dir: "/home/1000"
 
 services:
 
   telegram:
-    <<: *service
-    build: { dockerfile: "./Dockerfile" }
+    <<: *uv
+    image: "ghcr.io/astral-sh/uv:debian"
     command: "./main.py"
-    environment:
-      - "TELEGRAM_TOKEN=${TELEGRAM_TOKEN:?}"
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.telegram.rule=PathPrefix(`/telegram/`)"

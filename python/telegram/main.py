@@ -2,17 +2,19 @@
 #
 # /// script
 # requires-python = ">=3.12"
-# dependencies = [ "flask", "requests" ]
+# dependencies = [ "flask", "requests", "python-dotenv" ]
 # ///
 
 import os
 
 import flask
+import dotenv
 import requests
 
-import config
-
-TOKEN = os.environ.get('TELEGRAM_TOKEN')
+config = dotenv.dotenv_values('.env')
+TOKEN = config['TELEGRAM_TOKEN']
+CHATS = (config['TELEGRAM_CHATS'] or '').split(', ')
+print(f'CHATS: {CHATS}')
 
 app = flask.Flask(__name__)
 
@@ -44,8 +46,9 @@ def webhook_post() :
     if not message :
         return flask.Response('post-ok', status=200)
 
-    chat_id = message.get("chat", {}).get("id", "")
-    if chat_id not in config.CHATS :
+    chat_id = str(message.get("chat", {}).get("id", ""))
+    if chat_id not in CHATS :
+        print(f'W [] chat_id {chat_id} not in {CHATS}')
         return flask.Response('post-ok', status=200)
 
     sendMessage(chat_id, f'chat_id = {chat_id}')
