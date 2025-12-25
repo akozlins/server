@@ -3,7 +3,8 @@
 include ../makefile.mk
 
 init ::
-	mkdir -p -- .local && cd .local || exit 1
+	mkdir -p -- .local
+	cd .local || exit 1
 	mkdir -p -- data/{downloads,incomplete,media}
 	# qbittorrent
 	mkdir -p qbittorrent/data/logs

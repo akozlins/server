@@ -16,14 +16,14 @@ services:
     environment:
       DISPLAY: "${DISPLAY:?}"
       XAUTHORITY: "${XAUTHORITY:?}"
-      HOME: "${HOME:?}"
+      HOME: "${HOME0:?}"
       HOST: "docker"
     hostname: "${HOST:?}" # match host in .Xauthority
     networks: [ "inet", "traefik" ]
     security_opt:
       - apparmor=unconfined # fix gedit
       - seccomp=unconfined # fix code
-    tmpfs: [ "/tmp:mode=777", "${HOME:?}:uid=1000", "/run/user/1000:uid=1000" ]
+    tmpfs: [ "/tmp:mode=777", "${HOME0:?}:uid=1000", "/run/user/1000:uid=1000" ]
     user: "1000:1000"
     volumes:
       - "/opt:/opt:ro"

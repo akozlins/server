@@ -22,6 +22,7 @@ services:
       - "KOMGA_SESSIONTIMEOUT=7d"
     labels:
       - "traefik.enable=true"
+      #- "traefik.http.routers.komga.middlewares=auth@file"
       - "traefik.http.routers.komga.rule=PathRegexp(`^/komga($|/)`)"
       - "traefik.http.routers.komga-api.rule=PathRegexp(`^/komga/api/.+`)"
       - "traefik.http.services.komga.loadbalancer.server.port=25600"

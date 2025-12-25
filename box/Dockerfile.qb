@@ -10,8 +10,8 @@ USER 1000:1000
 WORKDIR /home/1000
 ENV HOME="/home/1000"
 
-RUN mkdir -p ".cache/qBittorrent" ".config/qBittorrent" ".local/share/qBittorrent/logs"
-RUN ln -s -T /dev/stdout .local/share/qBittorrent/logs/qbittorrent.log
+RUN mkdir -p "/config/qBittorrent/data/logs"
+RUN ln -s -T /dev/stdout /config/qBittorrent/data/logs/qbittorrent.log
 
 ENTRYPOINT [ "/usr/bin/dumb-init", "--" ]
-CMD [ "qbittorrent-nox" ]
+CMD [ "qbittorrent-nox", "--profile=/config", "--confirm-legal-notice" ]

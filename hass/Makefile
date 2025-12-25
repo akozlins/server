@@ -2,6 +2,8 @@
 
 include ../makefile.mk
 
+TOKEN:=
+
 influxdb-passwd :
 	sudo docker-compose exec influxdb \
 	    influx user password -n hass \
@@ -14,7 +16,7 @@ python :
 .PHONY : backup
 backup :
 	name=".local.$$(hostname).$$(date --utc +%Y%m%d)"
-	tar --exclude='.npm' --exclude='node_modules' -cf "./$(name).tar" .local
+	tar --exclude='.npm' --exclude='node_modules' -cf "./$$(name).tar" .local
 
 .PHONY : influx2raw
 influx2raw :
