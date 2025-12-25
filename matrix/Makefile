@@ -25,6 +25,16 @@ synapse_register_user :
 	    matrixdotorg/synapse \
 	    register_new_matrix_user http://127.0.0.1:8008 -c /data/homeserver.yaml
 
+synapse_port_db :
+	# https://matrix-org.github.io/synapse/latest/postgres.html
+	source .env
+	$(SUDO) docker run -it --rm \
+	    --volume ./data:/data \
+	    --user 1000:1000 \
+	    --entrypoint= \
+	    matrixdotorg/synapse:1.129 \
+	    synapse_port_db --sqlite-database /data/homeserver.db --postgres-config /data/homeserver-postgres.yaml
+
 matrix_login :
 	source .env
 	echo -n 'password: ' && read -rs PASSWORD && echo
@@ -45,3 +55,9 @@ synapse_purge_media_cache :
 	curl --header "Authorization: Bearer $$TOKEN" \
 	    -X POST \
 	    "https://$$DOMAIN/_synapse/admin/v1/purge_media_cache?before_ts=$$BEFORE_TS"
+
+synapse_background_updates_status :
+	# https://matrix-org.github.io/synapse/latest/usage/administration/admin_api/background_updates.html
+	source .env
+	curl --header "Authorization: Bearer $$TOKEN" \
+	    "https://$$DOMAIN/_synapse/admin/v1/background_updates/status"

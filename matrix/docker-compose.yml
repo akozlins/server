@@ -20,9 +20,22 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.matrix.rule=PathRegexp(`^/(_matrix|_synapse)/`)"
       - "traefik.http.services.matrix.loadbalancer.server.port=8008"
-    networks: [ "inet", "traefik" ]
+    networks: [ "default", "inet", "traefik" ]
     volumes:
       - "./data:/data:rw"
+
+  postgres:
+    <<: *service
+    image: "postgres:18"
+    environment:
+      POSTGRES_INITDB_ARGS: '--encoding=UTF-8 --lc-collate=C --lc-ctype=C'
+      POSTGRES_DB: 'synapse'
+      POSTGRES_PASSWORD: 'secretpassword'
+      POSTGRES_USER: 'synapse_user'
+    networks: [ "default" ]
+    volumes:
+      - "./.local/postgres:/var/lib/postgresql/18/docker"
+    read_only: false
 
   element:
     << : *service
@@ -37,5 +50,6 @@ services:
     profiles: [ "TEST" ]
 
 networks:
+  default: { internal: true }
   inet: { external: true }
   traefik: { external: true }
