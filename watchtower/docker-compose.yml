@@ -16,8 +16,9 @@ services:
   watchtower:
     <<: *service
     image: "containrrr/watchtower"
-    command: --cleanup --remove-volumes --rolling-restart --interval=450000
+    command: --cleanup --remove-volumes --interval=450000
     environment:
+      DOCKER_API_VERSION: "1.52"
       WATCHTOWER_NOTIFICATIONS_HOSTNAME: '${HOST:?}'
       WATCHTOWER_NOTIFICATIONS_LEVEL: 'info'
       WATCHTOWER_NOTIFICATION_REPORT: 'true'

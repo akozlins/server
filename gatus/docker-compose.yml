@@ -7,8 +7,10 @@ x-service: &service
   cap_drop: [ "ALL" ]
   read_only: true
   security_opt: [ "no-new-privileges:true" ]
+  mem_limit: 256m
 
 services:
+
   gatus:
     <<: *service
     image: "akozlins/gatus"

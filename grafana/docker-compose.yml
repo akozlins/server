@@ -5,6 +5,7 @@ x-service: &service
   restart: "always"
   stop_grace_period: "5s"
   user: "1000:1000"
+  mem_limit: 2048m
 
 services:
 

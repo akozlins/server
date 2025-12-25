@@ -4,12 +4,15 @@ x-service: &service
   logging: { options: { max-size: "1m" } }
   restart: "always"
   stop_grace_period: "5s"
+  user: '1000:1000'
+  mem_limit: 256m
 
 services:
 
   matrix:
     <<: *service
     image: "matrixdotorg/synapse"
+    depends_on: [ "postgres" ]
     environment:
       - "GID=1000"
       - "UID=1000"

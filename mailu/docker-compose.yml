@@ -6,6 +6,7 @@ x-service: &service
   logging: { options: { max-size: "1m" } }
   restart: "always"
   stop_grace_period: "15s"
+  mem_limit: 256m
 
 services:
 
@@ -71,6 +72,7 @@ services:
     volumes:
       - "./data/rspamd:/var/lib/rspamd"
       - "./overrides/rspamd:/etc/rspamd/override.d:ro"
+    mem_limit: 512m
 
   redis:
     <<: *service

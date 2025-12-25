@@ -2,10 +2,13 @@
 
 include ../makefile.mk
 
+init ::
+	mkdir -p .local/postgres
+
 synapse_generate :
 	source .env
-	docker run -it --rm \
-	    -v "$(pwd)/data:/data" \
+	$(SUDO) docker run -it --rm \
+	    -v ./data:/data \
 	    -e SYNAPSE_SERVER_NAME="$$DOMAIN" \
 	    -e SYNAPSE_REPORT_STATS=no \
 	    -e UID=1000 \
@@ -15,12 +18,10 @@ synapse_generate :
 
 synapse_register_user :
 	source .env
-	docker run -it --rm \
-	    -v "$(pwd)/data:/data" \
-	    -e SYNAPSE_SERVER_NAME="$$DOMAIN" \
-	    -e SYNAPSE_REPORT_STATS=no \
-	    -e UID=1000 \
-	    -e GID=1000 \
+	$(SUDO) docker run -it --rm \
+	    -v ./data:/data \
+	    --user 1000:1000 \
+	    --entrypoint= \
 	    matrixdotorg/synapse \
 	    register_new_matrix_user http://127.0.0.1:8008 -c /data/homeserver.yaml
 

@@ -5,7 +5,7 @@ SHELL := bash
 .SHELLFLAGS := -euf -c
 
 ENVS := \
-    HOME=$(HOME) \
+    HOME0=$(HOME) \
     MACHINE_ID=$(shell cat /etc/machine-id | head -c 8) \
     DOCKER_GID=$(shell getent group docker | cut -d: -f3) \
     HOST=$(shell cat /etc/hostname)
@@ -65,7 +65,7 @@ ps :
 pull :
 	$(SUDO) docker-compose pull
 
-restart : | stop start
+restart : stop .WAIT start
 
 sh :
 	$(SUDO) docker-compose exec $(shell basename -- $(shell pwd)) sh
@@ -75,3 +75,6 @@ up : init
 
 .PHONY : init
 init ::
+
+sh-% :
+	$(SUDO) docker compose exec $* sh

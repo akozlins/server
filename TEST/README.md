@@ -23,8 +23,8 @@
   organice:
     <<: *service
     image: "twohundredok/organice"
-#    environment:
-#      - "ORGANICE_WEBDAV_URL=http://webdav.example.com"
+    #environment:
+    #  - "ORGANICE_WEBDAV_URL=http://webdav.example.com"
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.organice.rule=PathRegexp(`^/organice($|/)`)"

@@ -8,7 +8,7 @@ x-service: &service
   #read_only: true
   security_opt: [ "no-new-privileges:true" ]
   user: "1000:1000"
-  mem_limit: 1024m
+  mem_limit: 2048m
 
 services:
 

@@ -4,6 +4,7 @@ x-service: &service
   logging: { options: { max-size: "1m" } }
   restart: "always"
   stop_grace_period: "5s"
+  mem_limit: 256m
 
 services:
 
