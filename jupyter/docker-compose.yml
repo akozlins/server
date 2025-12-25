@@ -5,7 +5,19 @@ x-service: &service
   restart: "always"
   stop_grace_period: "5s"
 
+x-uv: &uv
+  <<: *service
+  environment:
+    HOME: "/home/1000"
+    XDG_DATA_HOME: "/home/1000/.cache"
+    PYTHONPYCACHEPREFIX: "/home/1000/.cache/pycache"
+    PYTHONUNBUFFERED: 1
+    UV_PROJECT_ENVIRONMENT: ".cache/venv"
+  user: "1000:1000"
+  working_dir: "/home/1000"
+
 services:
+
   jupyter:
     <<: *service
     image: "quay.io/jupyter/scipy-notebook:latest"
@@ -24,6 +36,24 @@ services:
     networks: [ "inet", "traefik" ]
     volumes:
       - "./.local/jovyan:/home/jovyan"
+
+  marimo:
+    <<: *uv
+    image: "ghcr.io/astral-sh/uv:debian"
+    command:
+      - /bin/bash
+      - -c
+      - |
+        uv add --upgrade marimo
+        uv run --compile-bytecode marimo edit --host=0.0.0.0 -p 8080 --base-url=/marimo --no-token
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.marimo.middlewares=auth@file"
+      - "traefik.http.routers.marimo.rule=PathRegexp(`^/marimo($|/)`)"
+      - "traefik.http.services.marimo.loadbalancer.server.port=8080"
+    networks: [ "inet", "traefik" ]
+    volumes:
+      - "./.local/marimo:/home/1000"
 
 networks:
   inet: { external: true }
